@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Nexus | Real User System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --bg-charcoal: #0e0e10; 
+            --bg-deep: #050506;
+            --text-white: #ececec;
+            --text-muted: #9ca3af;
+            --accent-primary: rgba(100, 210, 255, 0.7);
+            --accent-solid: #64d2ff;
+            --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body.state-danger { --accent-primary: rgba(150, 50, 50, 0.8); --accent-solid: #aa2a2a; }
+        body.state-danger.alarm-active { --accent-primary: rgba(255, 0, 0, 1); --accent-solid: #ff0000; }
+        body.state-success { --accent-primary: rgba(0, 255, 150, 0.8); --accent-solid: #00ff96; }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+        body {
+            background-color: var(--bg-charcoal); color: var(--text-white);
+            font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; width: 100%;
+            transition: --accent-solid 0.5s;
+        }
+
+        /* --- FX --- */
+        .cinematic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 0%, #1a1f2e 0%, var(--bg-deep) 60%); pointer-events: none; transition: background 0.5s; }
+        body.state-danger.alarm-active .cinematic-bg { animation: violentFlash 0.5s infinite alternate; }
+        @keyframes violentFlash { 0% { opacity: 0.8; background: radial-gradient(circle at 50% 0%, #500000 0%, var(--bg-deep) 60%); } 100% { opacity: 1; background: radial-gradient(circle at 50% 0%, #ff0000 0%, var(--bg-deep) 60%); } }
+
+        .noise-overlay { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: transparent; opacity: 0.05; pointer-events: none; z-index: 9999; filter: url(#noiseFilter); animation: noiseMove 0.2s infinite; }
+        .glow-orb { position: absolute; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, var(--accent-primary) 0%, rgba(0,0,0,0) 70%); filter: blur(80px); opacity: 0.5; transition: background 0.5s ease; }
+        .orb-1 { top: -10%; left: -10%; } .orb-2 { top: 40%; right: -10%; }
+
+        /* --- LAYOUT --- */
+        #smooth-wrapper { position: fixed; width: 100%; height: 100%; top: 0; left: 0; overflow: hidden; }
+        #smooth-content { width: 100%; padding-bottom: 50px; will-change: transform; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+        /* --- HERO & AUTH --- */
+        .hero-section { min-height: 100vh; display: flex; align-items: center; padding-top: 60px; }
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; width: 100%; }
+        
+        .hero-content h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(180deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 40px;
+        }
+        .styled-input {
+            width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-white); padding: 14px 16px; font-size: 0.95rem; border-radius: 4px; margin-bottom: 15px;
+        }
+        .styled-input:focus { border-color: var(--accent-solid); background: rgba(255, 255, 255, 0.04); }
+        .submit-btn {
+            width: 100%; padding: 16px; background: var(--text-white); color: var(--bg-charcoal); border: none;
+            font-weight: 600; cursor: pointer; text-transform: uppercase; transition: 0.3s;
+        }
+        .submit-btn:hover { background: var(--accent-solid); }
+
+        /* --- DASHBOARD --- */
+        #landing-view { transition: opacity 0.8s; }
+        #dashboard-view { display: none; opacity: 0; transition: opacity 1s; padding-top: 100px; min-height: 100vh; }
+        
+        .dash-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 40px; }
+        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .dash-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 24px; height: 320px; overflow-y: auto; }
+
+        /* Plan Items */
+        .plan-item {
+            background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--accent-solid);
+            font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;
+        }
+        .plan-break { border-left-color: #ff9d00; opacity: 0.7; }
+        .check-btn { background: transparent; border: 1px solid var(--accent-solid); color: var(--accent-solid); padding: 4px 8px; cursor: pointer; font-size: 0.7rem; }
+        .check-btn:hover { background: var(--accent-solid); color: #000; }
+
+        .xp-stat { font-size: 3.5rem; font-weight: 600; }
+
+        /* Mobile */
+        @media (max-width: 900px) { .hero-grid, .dash-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <svg style="display: none;">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
+            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0"/>
+        </filter>
+    </svg>
+    <div class="noise-overlay"></div>
+    <div class="cinematic-bg">
+        <div class="glow-orb orb-1" data-speed="0.04"></div>
+        <div class="glow-orb orb-2" data-speed="0.07"></div>
+    </div>
+
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            
+            <div id="landing-view">
+                <section class="hero-section container">
+                    <div class="hero-grid">
+                        <div class="hero-content">
+                            <div style="color: var(--accent-solid); letter-spacing: 0.2em; margin-bottom: 20px;">SYSTEM V.1.0</div>
+                            <h1>Identity <br>Initialization.</h1>
+                            <p>Create your persistent profile. The system will analyze your availability and generate a tailored tactical plan.</p>
+                        </div>
+
+                        <div class="auth-card">
+                            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                                <button onclick="toggleAuth('signup')" id="btn-signup" style="flex:1; padding:10px; background:rgba(255,255,255,0.1); border:none; color:white; cursor:pointer;">REGISTER</button>
+                                <button onclick="toggleAuth('login')" id="btn-login" style="flex:1; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#666; cursor:pointer;">LOGIN</button>
+                            </div>
+
+                            <input type="email" id="email" class="styled-input input-field" placeholder="Email Address">
+                            <input type="password" id="password" class="styled-input input-field" placeholder="Password (Min 6 chars)">
+                            
+                            <div id="onboarding-fields">
+                                <input type="text" id="target" class="styled-input input-field" placeholder="Target Goal (e.g. React Developer)">
+                                <input type="number" id="hours" class="styled-input input-field" placeholder="Daily Availability (Hours)">
+                                <select id="level" class="styled-input input-field" style="background:rgba(0,0,0,0.3); color:#999;">
+                                    <option value="beginner">Current Level: Beginner</option>
+                                    <option value="intermediate">Current Level: Intermediate</option>
+                                    <option value="advanced">Current Level: Advanced</option>
+                                </select>
+                            </div>
+
+                            <button class="submit-btn" onclick="handleAuth()">
+                                <span id="auth-action-text">INITIALIZE SYSTEM</span>
+                            </button>
+                            <p id="auth-error" style="color: #ff4b4b; font-size: 0.8rem; margin-top: 10px; display: none;"></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="dashboard-view" class="container">
+                <header class="dash-header">
+                    <div>
+                        <div style="font-size: 1.5rem;">Nexus Command</div>
+                        <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">USER: <span id="user-email-display">LOADING...</span></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; color: var(--accent-solid);">TARGET: <span id="user-target-display">...</span></div>
+                        <button onclick="logout()" style="background:none; border:none; color:#ff4b4b; cursor:pointer; font-size:0.7rem; margin-top:5px;">[ TERMINATE SESSION ]</button>
+                    </div>
+                </header>
+
+                <div class="dash-grid">
+                    <div class="dash-card">
+                        <h3>Tactical Plan (Daily)</h3>
+                        <div id="plan-container">
+                            </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <h3>Performance Metric</h3>
+                        <div class="xp-stat" id="xp-display">0</div>
+                        <div style="color: var(--accent-solid); font-size: 0.8rem;">TOTAL XP EARNED</div>
+                        <div style="margin-top: 20px; font-size: 0.9rem; line-height: 1.6; color: #999;">
+                            Completion of tasks grants +50 XP. <br>Consistent uptime required.
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <h3>System Environment</h3>
+                        <div style="font-family: 'JetBrains Mono'; font-size: 0.8rem; color: #666; margin-bottom: 20px;">
+                            > Alarm Cycle: <span id="cycle-status">STANDBY</span><br>
+                            > Status: <span id="sys-status">OPTIMAL</span>
+                        </div>
+                        <button class="submit-btn" style="padding: 10px; font-size: 0.8rem; margin-bottom: 10px; border: 1px solid #ff4b4b; color: #ff4b4b; background: transparent;" onclick="toggleAlarm()">
+                            TOGGLE DANGER CYCLE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. FIREBASE CONFIGURATION (IMPORTANT!)
+        // ==========================================
+        // Replace the object below with your OWN keys from Firebase Console
+        const firebaseConfig = {
+     
+  apiKey: "AIzaSyAUAcDdEikDwipXktN6VGuDQOi4Ov9RHOI",
+  authDomain: "codenexus-c89ac.firebaseapp.com",
+  projectId: "codenexus-c89ac",
+  storageBucket: "codenexus-c89ac.firebasestorage.app",
+  messagingSenderId: "976765621106",
+  appId: "1:976765621106:web:902b06a82a7437e80643eb",
+
+
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ==========================================
+        // 2. LOGIC ENGINE (PLANNER)
+        // ==========================================
+        function generateLogicalPlan(hours, level, target) {
+            const plan = [];
+            const totalMinutes = hours * 60;
+            // Pomodoro: 50min work, 10min break
+            let remaining = totalMinutes;
+            let sessionCount = 1;
+
+            const topics = {
+                "beginner": ["Syntax Fundamentals", "Logic Structuring", "Basic DOM Manipulation"],
+                "intermediate": ["API Integration", "State Management", "Async Patterns"],
+                "advanced": ["Performance Optimization", "System Architecture", "Security Audits"]
+            };
+
+            const selectedTopics = topics[level] || topics["beginner"];
+
+            while (remaining > 0) {
+                // Work Session
+                let workTime = (remaining >= 50) ? 50 : remaining;
+                const topic = selectedTopics[(sessionCount - 1) % selectedTopics.length];
+                
+                plan.push({
+                    type: 'work',
+                    duration: workTime,
+                    title: `Session ${sessionCount}: ${topic}`,
+                    desc: `Deep focus on ${target} concepts.`,
+                    completed: false
+                });
+
+                remaining -= workTime;
+                sessionCount++;
+
+                // Break (if time remains)
+                if (remaining > 10) {
+                    plan.push({ type: 'break', duration: 10, title: "System Cooldown", desc: "Step away. Hydrate." });
+                    remaining -= 10;
+                }
+            }
+            return plan;
+        }
+
+        // ==========================================
+        // 3. AUTHENTICATION LOGIC
+        // ==========================================
+        let isSignup = true;
+
+        function toggleAuth(mode) {
+            isSignup = (mode === 'signup');
+            document.getElementById('onboarding-fields').style.display = isSignup ? 'block' : 'none';
+            document.getElementById('auth-action-text').innerText = isSignup ? 'INITIALIZE SYSTEM' : 'ACCESS TERMINAL';
+            
+            // Visual toggle
+            document.getElementById('btn-signup').style.background = isSignup ? 'rgba(255,255,255,0.1)' : 'transparent';
+            document.getElementById('btn-login').style.background = !isSignup ? 'rgba(255,255,255,0.1)' : 'transparent';
+        }
+
+        async function handleAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('auth-error');
+            const btn = document.querySelector('.submit-btn');
+
+            if(!email || !password) {
+                errorMsg.innerText = "Error: Credentials Missing";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            btn.innerText = "PROCESSING...";
+
+            try {
+                if (isSignup) {
+                    // Register
+                    const target = document.getElementById('target').value;
+                    const hours = document.getElementById('hours').value;
+                    const level = document.getElementById('level').value;
+
+                    if(!target || !hours) throw new Error("Onboarding data required");
+
+                    const userCred = await auth.createUserWithEmailAndPassword(email, password);
+                    const user = userCred.user;
+
+                    // Generate Plan
+                    const generatedPlan = generateLogicalPlan(hours, level, target);
+
+                    // Save to Firestore
+                    await db.collection('users').doc(user.uid).set({
+                        email: email,
+                        target: target,
+                        hours: hours,
+                        level: level,
+                        xp: 0,
+                        plan: generatedPlan,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                } else {
+                    // Login
+                    await auth.signInWithEmailAndPassword(email, password);
+                }
+            } catch (error) {
+                console.error(error);
+                errorMsg.innerText = "Error: " + error.message;
+                errorMsg.style.display = 'block';
+                btn.innerText = "RETRY";
+            }
+        }
+
+        // Auth State Listener (Auto Redirect)
+       // Auth State Listener (Auto Redirect)
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                document.getElementById('landing-view').style.display = 'none';
+                
+                const dashboard = document.getElementById('dashboard-view');
+                dashboard.style.display = 'block';
+                
+                // 🔥 هذا هو السطر الناقص لإظهار الشاشة 🔥
+                setTimeout(() => { dashboard.style.opacity = '1'; }, 100);
+
+                loadUserData(user.uid);
+            } else {
+                document.getElementById('landing-view').style.display = 'block';
+                document.getElementById('dashboard-view').style.display = 'none';
+            }
+        });
+
+        function logout() {
+            auth.signOut();
+            window.location.reload();
+        }
+
+        // ==========================================
+        // 4. DATA MANAGEMENT (DASHBOARD)
+        // ==========================================
+        let currentUserData = null;
+        let currentUserId = null;
+
+        async function loadUserData(uid) {
+            currentUserId = uid;
+            const doc = await db.collection('users').doc(uid).get();
+            if (doc.exists) {
+                currentUserData = doc.data();
+                renderDashboard();
+            }
+        }
+
+        function renderDashboard() {
+            document.getElementById('user-email-display').innerText = currentUserData.email;
+            document.getElementById('user-target-display').innerText = currentUserData.target;
+            document.getElementById('xp-display').innerText = currentUserData.xp;
+
+            const planContainer = document.getElementById('plan-container');
+            planContainer.innerHTML = '';
+
+            currentUserData.plan.forEach((task, index) => {
+                const div = document.createElement('div');
+                div.className = `plan-item ${task.type === 'break' ? 'plan-break' : ''}`;
+                
+                const status = task.completed ? '<span style="color:#00ff96">[DONE]</span>' : 
+                              (task.type === 'work' ? `<button class="check-btn" onclick="completeTask(${index})">COMPLETE</button>` : '<span>--</span>');
+
+                div.innerHTML = `
+                    <div>
+                        <div style="font-weight:600; color:white;">${task.title}</div>
+                        <div style="font-size:0.75rem; color:#999;">${task.duration} min // ${task.desc}</div>
+                    </div>
+                    ${status}
+                `;
+                planContainer.appendChild(div);
+            });
+        }
+
+        async function completeTask(index) {
+            // Update Local
+            if(currentUserData.plan[index].completed) return;
+            currentUserData.plan[index].completed = true;
+            currentUserData.xp += 50; // Give 50 XP
+            
+            // Update UI
+            playTypingSound(); // Sound FX
+            renderDashboard();
+
+            // Update Database
+            await db.collection('users').doc(currentUserId).update({
+                plan: currentUserData.plan,
+                xp: currentUserData.xp
+            });
+        }
+
+        // ==========================================
+        // 5. AUDIO & VISUAL ENGINE
+        // ==========================================
+        // (Simplified from previous version for stability)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        let alarmOsc;
+
+        function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); }
+
+        function playTypingSound() {
+            if(!audioCtx) initAudio();
+            const t = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.setValueAtTime(800, t);
+            gain.gain.setValueAtTime(0.05, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(t); osc.stop(t + 0.1);
+        }
+
+        function playAlarm() {
+            if(!audioCtx) initAudio();
+            const t = audioCtx.currentTime;
+            alarmOsc = audioCtx.createOscillator();
+            alarmOsc.type = 'sawtooth';
+            alarmOsc.frequency.value = 110;
+            const gain = audioCtx.createGain();
+            gain.gain.value = 0.1;
+            alarmOsc.connect(gain); gain.connect(audioCtx.destination);
+            alarmOsc.start(t);
+        }
+
+        function stopAlarm() {
+            if(alarmOsc) { alarmOsc.stop(); alarmOsc = null; }
+        }
+
+        // Alarm Logic (Cycle)
+        let alarmInterval;
+        let isActive = false;
+
+        function toggleAlarm() {
+            isActive = !isActive;
+            const status = document.getElementById('cycle-status');
+            const body = document.body;
+
+            if (isActive) {
+                status.innerText = "ACTIVE (5s/3m)";
+                status.style.color = "#ff4b4b";
+                startAlarmCycle();
+            } else {
+                status.innerText = "STANDBY";
+                status.style.color = "#999";
+                stopAlarmCycle();
+                body.className = '';
+            }
+        }
+
+        function startAlarmCycle() {
+            // Trigger immediately
+            triggerBurst();
+            // Then every 3 minutes (180000ms). Use 10000ms for testing.
+            alarmInterval = setInterval(triggerBurst, 180000); 
+        }
+
+        function stopAlarmCycle() {
+            clearInterval(alarmInterval);
+            stopAlarm();
+        }
+
+        function triggerBurst() {
+            document.body.classList.add('state-danger', 'alarm-active');
+            playAlarm();
+            setTimeout(() => {
+                stopAlarm();
+                document.body.classList.remove('alarm-active');
+                // Keeps 'state-danger' (Red) but stops flashing/sound
+            }, 5000);
+        }
+        
+        // Scroll FX
+        const body = document.body;
+        const main = document.getElementById('smooth-content');
+        let sy = 0, dy = 0;
+        body.style.height = main.getBoundingClientRect().height + 'px';
+        function renderScroll() {
+            dy = window.scrollY;
+            sy = (1 - 0.075) * sy + 0.075 * dy;
+            main.style.transform = `translate3d(0, -${sy}px, 0)`;
+            requestAnimationFrame(renderScroll);
+        }
+        requestAnimationFrame(renderScroll);
+
+    </script>
+</body>
+</html>
