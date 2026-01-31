@@ -1,202 +1,891 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Nexus | Real User System</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>UniPilot — Student OS</title>
 
-    <style>
-        /* --- CORE VARIABLES --- */
-        :root {
-            --bg-charcoal: #0e0e10; 
-            --bg-deep: #050506;
-            --text-white: #ececec;
-            --text-muted: #9ca3af;
-            --accent-primary: rgba(100, 210, 255, 0.7);
-            --accent-solid: #64d2ff;
-            --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-        body.state-danger { --accent-primary: rgba(150, 50, 50, 0.8); --accent-solid: #aa2a2a; }
-        body.state-danger.alarm-active { --accent-primary: rgba(255, 0, 0, 1); --accent-solid: #ff0000; }
-        body.state-success { --accent-primary: rgba(0, 255, 150, 0.8); --accent-solid: #00ff96; }
+  <style>
+    :root{
+      --bgA:#070b14; --bgB:#0a1324;
+      --surface: rgba(255,255,255,.045);
+      --stroke: rgba(255,255,255,.09);
+      --stroke2: rgba(255,255,255,.14);
+      --txt:#eaf1ff; --mut:#a8b6cf;
+      --accent:#67e8f9; --accent2:#a7f3d0;
+      --warn:#fbbf24; --danger:#fb7185; --ok:#34d399;
+      --r1: 14px; --r2: 18px; --r3: 22px;
+      --shadow1: 0 16px 38px rgba(0,0,0,.35);
+      --shadow2: 0 10px 22px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family:"Tajawal",system-ui,-apple-system,Segoe UI,Arial;
+      color: var(--txt);
+      padding:24px 14px 60px;
+      display:flex; justify-content:center; align-items:flex-start;
+      background:
+        radial-gradient(1200px 650px at 80% -10%, rgba(103,232,249,.14), transparent 58%),
+        radial-gradient(900px 520px at 10% 10%, rgba(167,243,208,.10), transparent 55%),
+        linear-gradient(180deg, var(--bgB), var(--bgA));
+    }
+    .wrap{width:min(1120px,100%)}
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+    header{
+      position: sticky; top: 12px; z-index: 20;
+      padding: 12px; border-radius: var(--r3);
+      border: 1px solid var(--stroke);
+      background: rgba(10,18,32,.62);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow2);
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; flex-wrap:wrap; margin-bottom: 14px;
+    }
+    .brand{display:flex; gap:10px; align-items:center;}
+    .logo{
+      width:42px; height:42px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(103,232,249,.95), rgba(167,243,208,.9));
+      box-shadow:0 10px 28px rgba(103,232,249,.12);
+    }
+    .brand h1{margin:0; font-size:19px; font-weight:900}
+    .brand .sub{margin-top:3px; color:var(--mut); font-size:12.8px}
 
-        body {
-            background-color: var(--bg-charcoal); color: var(--text-white);
-            font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; width: 100%;
-            transition: --accent-solid 0.5s;
-        }
+    .top{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
+    .pill{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--mut);
+      display:flex; gap:8px; align-items:center;
+      white-space:nowrap;
+    }
 
-        /* --- FX --- */
-        .cinematic-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 0%, #1a1f2e 0%, var(--bg-deep) 60%); pointer-events: none; transition: background 0.5s; }
-        body.state-danger.alarm-active .cinematic-bg { animation: violentFlash 0.5s infinite alternate; }
-        @keyframes violentFlash { 0% { opacity: 0.8; background: radial-gradient(circle at 50% 0%, #500000 0%, var(--bg-deep) 60%); } 100% { opacity: 1; background: radial-gradient(circle at 50% 0%, #ff0000 0%, var(--bg-deep) 60%); } }
+    .btn{
+      cursor:pointer; user-select:none;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.035);
+      color:var(--txt);
+      padding:10px 13px;
+      border-radius: 14px;
+      font-weight:800;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{background: rgba(255,255,255,.06); border-color: var(--stroke2);}
+    .btn:active{transform: translateY(1px);}
+    .btn.primary{
+      border:none; color:#06202a;
+      background: linear-gradient(135deg, rgba(103,232,249,.95), rgba(167,243,208,.9));
+      box-shadow: 0 16px 32px rgba(103,232,249,.10);
+    }
+    .btn.danger{
+      background: rgba(251,113,133,.07);
+      border-color: rgba(251,113,133,.25);
+      color: #ffd2da;
+    }
+    .smallBtn{ padding: 8px 10px; border-radius: 12px; font-weight: 900; }
 
-        .noise-overlay { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: transparent; opacity: 0.05; pointer-events: none; z-index: 9999; filter: url(#noiseFilter); animation: noiseMove 0.2s infinite; }
-        .glow-orb { position: absolute; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, var(--accent-primary) 0%, rgba(0,0,0,0) 70%); filter: blur(80px); opacity: 0.5; transition: background 0.5s ease; }
-        .orb-1 { top: -10%; left: -10%; } .orb-2 { top: 40%; right: -10%; }
+    .tabs{
+      margin: 14px 0 18px;
+      padding: 10px;
+      border-radius: var(--r3);
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadow2);
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .tab{
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--mut);
+      cursor:pointer;
+      font-weight:900;
+      user-select:none;
+      transition:.12s ease;
+    }
+    .tab:hover{ background: rgba(255,255,255,.04); color: var(--txt);}
+    .tab.active{
+      background: linear-gradient(135deg, rgba(103,232,249,.16), rgba(167,243,208,.10));
+      border-color: rgba(103,232,249,.32);
+      color: var(--txt);
+    }
 
-        /* --- LAYOUT --- */
-        #smooth-wrapper { position: fixed; width: 100%; height: 100%; top: 0; left: 0; overflow: hidden; }
-        #smooth-content { width: 100%; padding-bottom: 50px; will-change: transform; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .grid{display:grid; grid-template-columns:1.15fr .85fr; gap:16px;}
+    @media(max-width: 980px){ .grid{grid-template-columns:1fr; gap:14px;} header{top:10px;} }
 
-        /* --- HERO & AUTH --- */
-        .hero-section { min-height: 100vh; display: flex; align-items: center; padding-top: 60px; }
-        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; width: 100%; }
-        
-        .hero-content h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; background: linear-gradient(180deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .card{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+      border-radius: var(--r3);
+      box-shadow: var(--shadow1);
+      overflow:hidden;
+    }
+    .hd{padding: 18px 18px 0;}
+    .body{padding: 20px;}
+    .title{margin:0 0 6px; font-size: 18.5px; font-weight: 950;}
+    .hint{margin:0 0 12px; color: var(--mut); font-size: 13.6px; line-height:1.9;}
 
-        .auth-card {
-            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px); 
-            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 40px;
-        }
-        .styled-input {
-            width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-white); padding: 14px 16px; font-size: 0.95rem; border-radius: 4px; margin-bottom: 15px;
-        }
-        .styled-input:focus { border-color: var(--accent-solid); background: rgba(255, 255, 255, 0.04); }
-        .submit-btn {
-            width: 100%; padding: 16px; background: var(--text-white); color: var(--bg-charcoal); border: none;
-            font-weight: 600; cursor: pointer; text-transform: uppercase; transition: 0.3s;
-        }
-        .submit-btn:hover { background: var(--accent-solid); }
+    .sep{height:1px; background: var(--stroke); margin:16px 0; opacity:.9;}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+    @media(max-width: 700px){ .two{grid-template-columns:1fr;} }
 
-        /* --- DASHBOARD --- */
-        #landing-view { transition: opacity 0.8s; }
-        #dashboard-view { display: none; opacity: 0; transition: opacity 1s; padding-top: 100px; min-height: 100vh; }
-        
-        .dash-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 40px; }
-        .dash-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .dash-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 24px; height: 320px; overflow-y: auto; }
+    label{display:block; font-size: 12.5px; color: var(--mut); margin-bottom:6px;}
+    input, select, textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--txt);
+      border-radius: 16px;
+      padding: 11px 12px;
+      outline:none;
+      font-family:inherit;
+      font-size:14px;
+    }
+    input:focus, select:focus, textarea:focus{border-color: rgba(103,232,249,.55);}
+    input::placeholder, textarea::placeholder{ color: rgba(168,182,207,.75); }
+    textarea{min-height:92px; resize:vertical; line-height:1.7;}
 
-        /* Plan Items */
-        .plan-item {
-            background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--accent-solid);
-            font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center;
-        }
-        .plan-break { border-left-color: #ff9d00; opacity: 0.7; }
-        .check-btn { background: transparent; border: 1px solid var(--accent-solid); color: var(--accent-solid); padding: 4px 8px; cursor: pointer; font-size: 0.7rem; }
-        .check-btn:hover { background: var(--accent-solid); color: #000; }
+    .kpi{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;}
+    @media(max-width: 520px){ .kpi{grid-template-columns:1fr;} }
+    .box{
+      border: 1px solid var(--stroke);
+      border-radius: var(--r2);
+      background: rgba(255,255,255,.03);
+      padding:12px;
+    }
+    .box .k{font-size:12px; color: var(--mut);}
+    .box .v{font-size:22px; font-weight:950; margin-top:6px;}
 
-        .xp-stat { font-size: 3.5rem; font-weight: 600; }
+    .list{
+      display:flex; flex-direction:column; gap:12px;
+      max-height: 460px;
+      overflow:auto;
+      padding-left:2px;
+    }
+    @media(max-width: 980px){ .list{max-height: 380px;} }
 
-        /* Mobile */
-        @media (max-width: 900px) { .hero-grid, .dash-grid { grid-template-columns: 1fr; } }
-    </style>
+    .item{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--r2);
+      padding:14px;
+    }
+    .item .top{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:flex-start;}
+    .meta{font-size:12px; color: var(--mut); line-height:1.6;}
+
+    .badge{
+      font-size:12px; font-weight:950;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color:#06202a;
+      background: linear-gradient(135deg, rgba(103,232,249,.9), rgba(167,243,208,.85));
+    }
+    .badge.warn{ background: linear-gradient(135deg, rgba(251,191,36,.92), rgba(167,243,208,.55)); }
+    .badge.danger{ background: linear-gradient(135deg, rgba(251,113,133,.92), rgba(251,191,36,.6)); }
+
+    .quote{
+      border-right: 3px solid rgba(103,232,249,.55);
+      background: rgba(103,232,249,.05);
+      border-radius: var(--r2);
+      padding:10px 12px;
+      line-height:1.8;
+      font-size:13.4px;
+      color: rgba(234,241,255,.92);
+    }
+    .hr{height:1px; background: var(--stroke); margin:10px 0;}
+
+    .actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      width:100%; justify-content:flex-end;
+    }
+    .actions .btn{
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.03);
+    }
+    .actions .btn.primary{
+      background: linear-gradient(135deg, rgba(103,232,249,.85), rgba(167,243,208,.80));
+      color:#06202a;
+    }
+
+    .seg{
+      display:flex; gap:8px; flex-wrap:wrap;
+      padding:8px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+    }
+    .segBtn{
+      cursor:pointer;
+      border:1px solid transparent;
+      background: transparent;
+      color: var(--mut);
+      padding: 9px 12px;
+      border-radius: 14px;
+      font-weight: 950;
+      user-select:none;
+    }
+    .segBtn:hover{ background: rgba(255,255,255,.04); color: var(--txt); }
+    .segBtn.active{
+      background: linear-gradient(135deg, rgba(103,232,249,.16), rgba(167,243,208,.10));
+      border-color: rgba(103,232,249,.30);
+      color: var(--txt);
+    }
+
+    .hidden{display:none !important;}
+
+    .toast{
+      position:fixed;
+      left:14px; bottom:14px;
+      background: rgba(10,18,32,.82);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:10px 12px;
+      color: var(--txt);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow1);
+      display:none;
+      max-width: min(560px, calc(100% - 28px));
+      z-index: 9999;
+      font-size:14px;
+      line-height:1.6;
+    }
+    .toast.show{display:block;}
+    .dangerText{color:#ffd2da}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+
+    /* Optional details UI */
+    .optBox{
+      border:1px solid var(--stroke);
+      border-radius: var(--r2);
+      background: rgba(255,255,255,.02);
+      padding:10px 12px;
+    }
+    .optSum{
+      cursor:pointer;
+      font-weight:950;
+      color: var(--txt);
+      list-style:none;
+    }
+    .optSum::-webkit-details-marker{display:none;}
+    .optSum::before{
+      content:"▸";
+      display:inline-block;
+      margin-left:8px;
+      transform: translateY(-1px);
+      color: var(--accent);
+    }
+    details[open] .optSum::before{content:"▾";}
+
+    /* Auth modal */
+    .modalBack{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(6px);
+      display:flex; align-items:center; justify-content:center;
+      z-index:9998;
+      padding: 18px;
+    }
+    .modal{
+      width:min(520px, 100%);
+      border:1px solid var(--stroke);
+      background: rgba(10,18,32,.85);
+      border-radius: var(--r3);
+      box-shadow: var(--shadow1);
+      overflow:hidden;
+    }
+    .modalHd{padding:16px 16px 0;}
+    .modalBody{padding:16px;}
+    .modalFooter{padding:0 16px 16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
+    .linkBtn{
+      background:transparent; border:none;
+      color: var(--accent);
+      cursor:pointer; font-weight:900;
+      padding:0;
+    }
+    .mini{font-size:12.8px; color:var(--mut); line-height:1.7;}
+  </style>
 </head>
-<body>
 
-    <svg style="display: none;">
-        <filter id="noiseFilter">
-            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/>
-            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0"/>
-        </filter>
-    </svg>
-    <div class="noise-overlay"></div>
-    <div class="cinematic-bg">
-        <div class="glow-orb orb-1" data-speed="0.04"></div>
-        <div class="glow-orb orb-2" data-speed="0.07"></div>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>UniPilot — Student OS</h1>
+        <div class="sub">Email Login · Tasks · GPA (A+) · Planner · Insights</div>
+      </div>
     </div>
 
-    <div id="smooth-wrapper">
-        <div id="smooth-content">
-            
-            <div id="landing-view">
-                <section class="hero-section container">
-                    <div class="hero-grid">
-                        <div class="hero-content">
-                            <div style="color: var(--accent-solid); letter-spacing: 0.2em; margin-bottom: 20px;">SYSTEM V.1.0</div>
-                            <h1>Identity <br>Initialization.</h1>
-                            <p>Create your persistent profile. The system will analyze your availability and generate a tailored tactical plan.</p>
-                        </div>
+    <div class="top">
+      <div class="pill"><span>الحساب:</span> <span id="userLabel">غير مسجّل</span></div>
+      <button class="btn" id="btnBackup" disabled>تصدير</button>
+      <button class="btn" id="btnRestore" disabled>استيراد</button>
+      <button class="btn" id="btnOpenSettings" disabled>إعدادات</button>
+      <button class="btn danger" id="btnLogout" disabled>تسجيل خروج</button>
+    </div>
+  </header>
 
-                        <div class="auth-card">
-                            <div style="display:flex; gap:10px; margin-bottom:20px;">
-                                <button onclick="toggleAuth('signup')" id="btn-signup" style="flex:1; padding:10px; background:rgba(255,255,255,0.1); border:none; color:white; cursor:pointer;">REGISTER</button>
-                                <button onclick="toggleAuth('login')" id="btn-login" style="flex:1; padding:10px; background:transparent; border:1px solid rgba(255,255,255,0.1); color:#666; cursor:pointer;">LOGIN</button>
-                            </div>
+  <div class="tabs">
+    <div class="tab active" data-view="tasks">المهام</div>
+    <div class="tab" data-view="gpa">GPA</div>
+    <div class="tab" data-view="planner">خطة المواد</div>
+    <div class="tab" data-view="insights">تحليل</div>
+    <div class="tab" data-view="settings">إعدادات</div>
+  </div>
 
-                            <input type="email" id="email" class="styled-input input-field" placeholder="Email Address">
-                            <input type="password" id="password" class="styled-input input-field" placeholder="Password (Min 6 chars)">
-                            
-                            <div id="onboarding-fields">
-                                <input type="text" id="target" class="styled-input input-field" placeholder="Target Goal (e.g. React Developer)">
-                                <input type="number" id="hours" class="styled-input input-field" placeholder="Daily Availability (Hours)">
-                                <select id="level" class="styled-input input-field" style="background:rgba(0,0,0,0.3); color:#999;">
-                                    <option value="beginner">Current Level: Beginner</option>
-                                    <option value="intermediate">Current Level: Intermediate</option>
-                                    <option value="advanced">Current Level: Advanced</option>
-                                </select>
-                            </div>
+  <!-- ===== TASKS ===== -->
+  <div id="view_tasks">
+    <div class="grid">
+      <section class="card">
+        <div class="hd">
+          <h2 class="title">أضف مهمة بسرعة</h2>
+          <p class="hint">بس 3 أشياء: شو؟ متى؟ قديش؟ (والباقي اختياري)</p>
+        </div>
+        <div class="body">
 
-                            <button class="submit-btn" onclick="handleAuth()">
-                                <span id="auth-action-text">INITIALIZE SYSTEM</span>
-                            </button>
-                            <p id="auth-error" style="color: #ff4b4b; font-size: 0.8rem; margin-top: 10px; display: none;"></p>
-                        </div>
-                    </div>
-                </section>
+          <div class="two">
+            <div>
+              <label>شو بدك تعمل؟</label>
+              <input id="taskTitle" placeholder="مثال: تلخيص محاضرة 5" />
+            </div>
+            <div>
+              <label>آخر موعد</label>
+              <input id="taskDue" type="date"/>
+            </div>
+          </div>
+
+          <div class="two" style="margin-top:12px;">
+            <div>
+              <label>قديش بدها وقت؟ (بالدقائق)</label>
+              <input id="taskMin" type="number" min="5" step="5" value="60"/>
+            </div>
+            <div class="row" style="align-items:flex-end; justify-content:flex-end;">
+              <button class="btn primary" id="btnAddTask" disabled>إضافة</button>
+              <button class="btn" id="btnPlanToday" disabled>خطة اليوم</button>
+            </div>
+          </div>
+
+          <details class="optBox" style="margin-top:12px;">
+            <summary class="optSum">تفاصيل اختيارية</summary>
+
+            <div class="two" style="margin-top:12px;">
+              <div>
+                <label>المادة (اختياري)</label>
+                <input id="taskCourse" placeholder="مثال: CS201" />
+              </div>
+              <div>
+                <label>الأولوية</label>
+                <select id="taskPrio">
+                  <option value="high">عالية</option>
+                  <option value="med" selected>متوسطة</option>
+                  <option value="low">منخفضة</option>
+                </select>
+              </div>
             </div>
 
-            <div id="dashboard-view" class="container">
-                <header class="dash-header">
-                    <div>
-                        <div style="font-size: 1.5rem;">Nexus Command</div>
-                        <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">USER: <span id="user-email-display">LOADING...</span></div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 0.8rem; color: var(--accent-solid);">TARGET: <span id="user-target-display">...</span></div>
-                        <button onclick="logout()" style="background:none; border:none; color:#ff4b4b; cursor:pointer; font-size:0.7rem; margin-top:5px;">[ TERMINATE SESSION ]</button>
-                    </div>
-                </header>
-
-                <div class="dash-grid">
-                    <div class="dash-card">
-                        <h3>Tactical Plan (Daily)</h3>
-                        <div id="plan-container">
-                            </div>
-                    </div>
-
-                    <div class="dash-card">
-                        <h3>Performance Metric</h3>
-                        <div class="xp-stat" id="xp-display">0</div>
-                        <div style="color: var(--accent-solid); font-size: 0.8rem;">TOTAL XP EARNED</div>
-                        <div style="margin-top: 20px; font-size: 0.9rem; line-height: 1.6; color: #999;">
-                            Completion of tasks grants +50 XP. <br>Consistent uptime required.
-                        </div>
-                    </div>
-
-                    <div class="dash-card">
-                        <h3>System Environment</h3>
-                        <div style="font-family: 'JetBrains Mono'; font-size: 0.8rem; color: #666; margin-bottom: 20px;">
-                            > Alarm Cycle: <span id="cycle-status">STANDBY</span><br>
-                            > Status: <span id="sys-status">OPTIMAL</span>
-                        </div>
-                        <button class="submit-btn" style="padding: 10px; font-size: 0.8rem; margin-bottom: 10px; border: 1px solid #ff4b4b; color: #ff4b4b; background: transparent;" onclick="toggleAlarm()">
-                            TOGGLE DANGER CYCLE
-                        </button>
-                    </div>
-                </div>
+            <div class="two" style="margin-top:12px;">
+              <div>
+                <label>نوع المهمة</label>
+                <select id="taskType">
+                  <option value="assignment" selected>واجب</option>
+                  <option value="quiz">كويز</option>
+                  <option value="exam">امتحان</option>
+                  <option value="project">مشروع</option>
+                  <option value="study">دراسة</option>
+                  <option value="admin">أمور جامعة</option>
+                </select>
+              </div>
+              <div>
+                <label>ملاحظة سريعة (اختياري)</label>
+                <input id="taskNotes" placeholder="مثال: ابدأ بأول صفحة" />
+              </div>
             </div>
+          </details>
+
+          <div class="sep"></div>
+
+          <div class="kpi">
+            <div class="box">
+              <div class="k">مهمات اليوم</div>
+              <div class="v" id="kToday">—</div>
+            </div>
+            <div class="box">
+              <div class="k">خلال 7 أيام</div>
+              <div class="v" id="kWeek">—</div>
+            </div>
+            <div class="box">
+              <div class="k">إنجاز الأسبوع</div>
+              <div class="v" id="kDonePct">—</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+          <div class="quote" id="todayPlanMsg">سجّل دخولك أولاً، وبعدها نبدأ ✅</div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2 class="title">قائمة المهام</h2>
+          <p class="hint">فلترة بسيطة وواضحة</p>
+        </div>
+        <div class="body">
+          <div class="seg" id="taskSeg">
+            <button class="segBtn active" id="fToday" data-f="today" disabled>اليوم</button>
+            <button class="segBtn" id="fWeek" data-f="week" disabled>الأسبوع</button>
+            <button class="segBtn" id="fAll" data-f="all" disabled>الكل</button>
+            <button class="segBtn" id="fOver" data-f="over" disabled>متأخرة</button>
+          </div>
+
+          <div class="sep"></div>
+          <div class="list" id="taskList">
+            <div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ===== GPA ===== -->
+  <div id="view_gpa" class="hidden">
+    <div class="grid">
+      <section class="card">
+        <div class="hd">
+          <h2 class="title">GPA — إدخال مادة</h2>
+          <p class="hint">ادخل: اسم المادة + ساعات + العلامة. (A+ موجودة) والباقي اختياري.</p>
+        </div>
+        <div class="body">
+          <div class="two">
+            <div>
+              <label>اسم/كود المادة</label>
+              <input id="takenName" placeholder="مثال: CS201 / Calculus II" />
+            </div>
+            <div>
+              <label>الساعات</label>
+              <input id="takenCredits" type="number" min="1" step="1" value="3"/>
+            </div>
+          </div>
+
+          <div class="two" style="margin-top:12px;">
+            <div>
+              <label>العلامة</label>
+              <select id="takenGrade">
+                <option>F</option><option>D</option><option>D+</option>
+                <option>C-</option><option>C</option><option>C+</option>
+                <option>B-</option><option>B</option><option selected>B+</option>
+                <option>A-</option><option>A</option><option>A+</option>
+              </select>
+            </div>
+            <div class="row" style="align-items:flex-end; justify-content:flex-end;">
+              <button class="btn primary" id="btnAddTaken" disabled>إضافة</button>
+            </div>
+          </div>
+
+          <details class="optBox" style="margin-top:12px;">
+            <summary class="optSum">تفاصيل اختيارية (للتحليل)</summary>
+            <div class="two" style="margin-top:12px;">
+              <div>
+                <label>تصنيف</label>
+                <select id="takenCat">
+                  <option value="major" selected>تخصص</option>
+                  <option value="math">رياضيات</option>
+                  <option value="programming">برمجة</option>
+                  <option value="lab">مختبر</option>
+                  <option value="general">جامعة</option>
+                  <option value="elective">اختياري</option>
+                </select>
+              </div>
+              <div>
+                <label>الفصل (اختياري)</label>
+                <input id="takenTerm" placeholder="مثال: 2025/1"/>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label>ليش كانت صعبة؟ (اختياري)</label>
+              <select id="takenWeak">
+                <option value="">—</option>
+                <option value="theory">نظري</option>
+                <option value="problem">حل مسائل</option>
+                <option value="time">وقت/تأجيل</option>
+                <option value="exam">امتحانات</option>
+              </select>
+            </div>
+          </details>
+
+          <div class="sep"></div>
+
+          <div class="kpi">
+            <div class="box">
+              <div class="k">GPA تراكمي</div>
+              <div class="v" id="gpaC">—</div>
+            </div>
+            <div class="box">
+              <div class="k">ساعات منجزة</div>
+              <div class="v" id="crDone">—</div>
+            </div>
+            <div class="box">
+              <div class="k">رينج العلامات</div>
+              <div class="v" id="gradeRange">—</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <!-- المطلوب الجديد: أعلى/أدنى علامة + أعلى/أدنى Points -->
+          <div class="kpi">
+            <div class="box">
+              <div class="k">أدنى علامة</div>
+              <div class="v" id="minGrade">—</div>
+            </div>
+            <div class="box">
+              <div class="k">أعلى علامة</div>
+              <div class="v" id="maxGrade">—</div>
+            </div>
+            <div class="box">
+              <div class="k">متوسط Points/ساعة</div>
+              <div class="v" id="ppc">—</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="kpi">
+            <div class="box">
+              <div class="k">أدنى Points</div>
+              <div class="v" id="minPts">—</div>
+            </div>
+            <div class="box">
+              <div class="k">أعلى Points</div>
+              <div class="v" id="maxPts">—</div>
+            </div>
+            <div class="box">
+              <div class="k">معلومة سريعة</div>
+              <div class="v" id="gpaTip">—</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <h3 class="title" style="margin:0 0 6px;">هدف المعدل (GPA Goal)</h3>
+          <p class="hint">ينحفظ على حسابك في Firestore (يكمل معك طول الجامعة).</p>
+
+          <div class="two">
+            <div>
+              <label>هدفك (Target GPA)</label>
+              <input id="goalGpa" type="number" step="0.01" min="0" max="4" placeholder="مثال: 3.20">
+            </div>
+            <div>
+              <label>إجمالي ساعات الخطة (Total Program Credits)</label>
+              <input id="goalTotalCredits" type="number" step="1" min="1" placeholder="مثال: 160">
+            </div>
+          </div>
+
+          <div class="two" style="margin-top:12px;">
+            <div>
+              <label>ساعات الفصل القادم (اختياري)</label>
+              <input id="goalNextCredits" type="number" step="1" min="0" placeholder="مثال: 15">
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-end; justify-content:flex-end;">
+              <button class="btn primary" id="btnSaveGoal" disabled>حفظ الهدف</button>
+              <button class="btn" id="btnClearGoal" disabled>مسح</button>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="kpi">
+            <div class="box">
+              <div class="k">ساعات متبقية</div>
+              <div class="v" id="remainCredits">—</div>
+            </div>
+            <div class="box">
+              <div class="k">المطلوب على المتبقي</div>
+              <div class="v" id="needRemainGpa">—</div>
+            </div>
+            <div class="box">
+              <div class="k">المطلوب الفصل الجاي</div>
+              <div class="v" id="needNextTermGpa">—</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+          <div class="quote" id="goalMsg">سجّل دخولك أولاً، ثم احفظ هدفك.</div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2 class="title">مواد أخذتها</h2>
+          <p class="hint">حذف سريع</p>
+        </div>
+        <div class="body">
+          <div class="list" id="takenList">
+            <div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ===== PLANNER ===== -->
+  <div id="view_planner" class="hidden">
+    <div class="grid">
+      <section class="card">
+        <div class="hd">
+          <h2 class="title">خطة المواد + المتطلبات</h2>
+          <p class="hint">أضف مواد خطتك، وبعدها زر “مواد متاحة” يطلع لك شو بتقدر تنزل.</p>
+        </div>
+        <div class="body">
+
+          <div class="two">
+            <div>
+              <label>كود المادة</label>
+              <input id="planCode" placeholder="مثال: CS220"/>
+            </div>
+            <div>
+              <label>اسم المادة</label>
+              <input id="planName" placeholder="مثال: Data Structures"/>
+            </div>
+          </div>
+
+          <div class="two" style="margin-top:12px;">
+            <div>
+              <label>الساعات</label>
+              <input id="planCredits" type="number" min="1" step="1" value="3"/>
+            </div>
+            <div>
+              <label>تصنيف</label>
+              <select id="planCat">
+                <option value="major" selected>تخصص</option>
+                <option value="general">جامعة</option>
+                <option value="elective">اختياري</option>
+                <option value="support">مساندة</option>
+              </select>
+            </div>
+          </div>
+
+          <details class="optBox" style="margin-top:12px;">
+            <summary class="optSum">متطلبات سابقة (اختياري)</summary>
+            <div style="margin-top:12px;">
+              <label>المتطلبات — افصل بفاصلة</label>
+              <input id="planPrereq" placeholder="مثال: CS101, MATH101"/>
+            </div>
+          </details>
+
+          <div class="row" style="margin-top:12px; justify-content:flex-end;">
+            <button class="btn primary" id="btnAddPlan" disabled>إضافة</button>
+            <button class="btn" id="btnSuggestCourses" disabled>مواد متاحة</button>
+          </div>
+
+          <div class="sep"></div>
+          <div class="quote" id="planMsg">سجّل دخولك عشان نقدر نبني خطتك.</div>
+
+          <div class="sep"></div>
+          <div class="list" id="suggestList"></div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2 class="title">قائمة الخطة</h2>
+          <p class="hint">مواد برنامجك (مش اللي أخذتها)</p>
+        </div>
+        <div class="body">
+          <div class="list" id="planList">
+            <div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ===== INSIGHTS ===== -->
+  <div id="view_insights" class="hidden">
+    <div class="grid">
+      <section class="card">
+        <div class="hd">
+          <h2 class="title">تحليل نقاط الضعف</h2>
+          <p class="hint">يعتمد على GPA + المهام. يعطيك وين تركز اليوم.</p>
+        </div>
+        <div class="body">
+          <div class="kpi">
+            <div class="box">
+              <div class="k">أضعف مجال</div>
+              <div class="v" id="weakCat">—</div>
+            </div>
+            <div class="box">
+              <div class="k">سبب شائع</div>
+              <div class="v" id="weakReason">—</div>
+            </div>
+            <div class="box">
+              <div class="k">توصية اليوم</div>
+              <div class="v" id="weakTip">—</div>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+          <div class="quote" id="insightMsg">سجّل دخولك عشان يشتغل التحليل.</div>
+
+          <div class="sep"></div>
+          <div class="list" id="catBreakdown"></div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2 class="title">ملخص المهام</h2>
+          <p class="hint">ضغطك الحالي + أقرب مواعيد</p>
+        </div>
+        <div class="body">
+          <div class="list" id="taskInsights"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ===== SETTINGS ===== -->
+  <div id="view_settings" class="hidden">
+    <div class="grid">
+      <section class="card">
+        <div class="hd">
+          <h2 class="title">الإعدادات + أمان البيانات</h2>
+          <p class="hint">هاي الصفحة هدفها: أمان + نسخ احتياطي + حل مشاكل Firebase بسهولة.</p>
+        </div>
+        <div class="body">
+
+          <div class="quote">
+            <b>1) Firestore Rules (انسخها وحطها بالكونسول):</b><br><br>
+            <pre class="mono" style="white-space:pre-wrap;margin:0;background:rgba(0,0,0,.20);padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);color:rgba(234,241,255,.92);font-size:12px;line-height:1.7;">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      match /{sub=**} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}</pre>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="item">
+            <div class="top">
+              <div style="font-weight:950">2) توضيح سريع</div>
+              <div class="meta">ليش هاي الرولز مهمة؟</div>
+            </div>
+            <div class="hr"></div>
+            <div class="meta">
+              لأنها بتخلي كل طالب يشوف ويعدل بياناته فقط حسب <b>UID</b> تبعه.
+              بدونها ممكن يطلع Permission Error أو أسوأ: بيانات ناس ثانية!
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="item">
+            <div class="top">
+              <div style="font-weight:950">خيارات خطرة</div>
+              <div class="meta">بحذر</div>
+            </div>
+            <div class="hr"></div>
+            <div class="row" style="justify-content:space-between;">
+              <div class="meta">مسح كل بياناتك من Firestore</div>
+              <button class="btn danger" id="btnResetAll" disabled>مسح كل بياناتي</button>
+            </div>
+          </div>
 
         </div>
-    </div>
+      </section>
 
-    <script>
-        // ==========================================
-        // 1. FIREBASE CONFIGURATION (IMPORTANT!)
-        // ==========================================
-        // Replace the object below with your OWN keys from Firebase Console
+      <aside class="card">
+        <div class="hd">
+          <h2 class="title">حالة النظام</h2>
+          <p class="hint">بتشوف حالة Auth وFirestore وعدد العناصر</p>
+        </div>
+        <div class="body">
+          <div class="list" id="sysStatus"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- AUTH MODAL -->
+<div id="authBack" class="modalBack">
+  <div class="modal">
+    <div class="modalHd">
+      <h2 class="title" id="authTitle">تسجيل الدخول</h2>
+      <p class="hint" id="authHint">ادخل إيميلك وكلمة السر. بياناتك رح تنحفظ مع حسابك.</p>
+    </div>
+    <div class="modalBody">
+      <div class="two">
+        <div>
+          <label>الإيميل</label>
+          <input id="authEmail" type="email" placeholder="name@example.com"/>
+        </div>
+        <div>
+          <label>كلمة السر</label>
+          <input id="authPass" type="password" placeholder="••••••••"/>
+        </div>
+      </div>
+
+      <div id="authNameWrap" class="two hidden" style="margin-top:12px;">
+        <div style="grid-column:1 / -1;">
+          <label>اسمك (اختياري)</label>
+          <input id="authName" placeholder="مثال: Mohammad"/>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="mini">
+        <span id="authSwitchText">مش عندك حساب؟</span>
+        <button class="linkBtn" id="btnSwitchMode">اعمل حساب جديد</button>
+        <span> · </span>
+        <button class="linkBtn" id="btnForgot">نسيت كلمة السر؟</button>
+      </div>
+
+      <div class="sep"></div>
+      <div class="quote" id="authMsg">ملاحظة: فعّل Email/Password من Firebase Authentication.</div>
+    </div>
+    <div class="modalFooter">
+      <button class="btn" id="btnAuthDemo">تلميح الإعدادات</button>
+      <button class="btn primary" id="btnAuthGo">دخول</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+    sendPasswordResetEmail, signOut, updateProfile
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import {
+    getFirestore, doc, setDoc, getDoc, addDoc, deleteDoc, updateDoc,
+    collection, getDocs, query, orderBy, limit, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  // ====== ضع Firebase Config هنا ======
         const firebaseConfig = {
      
   apiKey: "AIzaSyAUAcDdEikDwipXktN6VGuDQOi4Ov9RHOI",
@@ -208,298 +897,1140 @@
 
 
         };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+  const $ = (id)=>document.getElementById(id);
+  const toastEl = $("toast");
 
-        // ==========================================
-        // 2. LOGIC ENGINE (PLANNER)
-        // ==========================================
-        function generateLogicalPlan(hours, level, target) {
-            const plan = [];
-            const totalMinutes = hours * 60;
-            // Pomodoro: 50min work, 10min break
-            let remaining = totalMinutes;
-            let sessionCount = 1;
+  function toast(msg, isErr=false){
+    toastEl.textContent = msg;
+    toastEl.style.borderColor = isErr ? "rgba(251,113,133,.45)" : "rgba(103,232,249,.35)";
+    toastEl.classList.add("show");
+    setTimeout(()=>toastEl.classList.remove("show"), 2900);
+  }
+  function esc(s){
+    return String(s ?? "")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+  }
+  function todayKey(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+  }
+  function addDaysKey(baseKey, days){
+    const [y,m,d] = baseKey.split("-").map(Number);
+    const dt = new Date(y, m-1, d);
+    dt.setDate(dt.getDate()+days);
+    const yy = dt.getFullYear();
+    const mm = String(dt.getMonth()+1).padStart(2,"0");
+    const dd = String(dt.getDate()).padStart(2,"0");
+    return `${yy}-${mm}-${dd}`;
+  }
+  function getDueKey(task){
+    const d = (task.dueDate ?? "").toString().trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : "";
+  }
 
-            const topics = {
-                "beginner": ["Syntax Fundamentals", "Logic Structuring", "Basic DOM Manipulation"],
-                "intermediate": ["API Integration", "State Management", "Async Patterns"],
-                "advanced": ["Performance Optimization", "System Architecture", "Security Audits"]
-            };
+  // GPA mapping (4.0) with A+
+  const GRADE_POINTS = {
+    "F":0.0,
+    "D":1.0, "D+":1.3,
+    "C-":1.7, "C":2.0, "C+":2.3,
+    "B-":2.7, "B":3.0, "B+":3.3,
+    "A-":3.7, "A":4.0, "A+":4.0
+  };
+  const GRADE_ORDER = ["F","D","D+","C-","C","C+","B-","B","B+","A-","A","A+"];
 
-            const selectedTopics = topics[level] || topics["beginner"];
+  const TASK_TYPE_LABEL = {
+    assignment:"واجب", quiz:"كويز", exam:"امتحان",
+    project:"مشروع", study:"دراسة", admin:"أمور جامعة"
+  };
+  const CAT_LABEL = {
+    major:"تخصص", math:"رياضيات", programming:"برمجة", lab:"مختبر",
+    general:"جامعة", elective:"اختياري", support:"مساندة"
+  };
 
-            while (remaining > 0) {
-                // Work Session
-                let workTime = (remaining >= 50) ? 50 : remaining;
-                const topic = selectedTopics[(sessionCount - 1) % selectedTopics.length];
-                
-                plan.push({
-                    type: 'work',
-                    duration: workTime,
-                    title: `Session ${sessionCount}: ${topic}`,
-                    desc: `Deep focus on ${target} concepts.`,
-                    completed: false
-                });
+  let UID = null;
+  let USER_EMAIL = null;
 
-                remaining -= workTime;
-                sessionCount++;
+  let tasks = [];
+  let taken = [];
+  let plan  = [];
+  let goal  = { target:null, totalCredits:null, nextCredits:null };
 
-                // Break (if time remains)
-                if (remaining > 10) {
-                    plan.push({ type: 'break', duration: 10, title: "System Cooldown", desc: "Step away. Hydrate." });
-                    remaining -= 10;
-                }
-            }
-            return plan;
+  let taskFilter = "today";
+
+  // Tabs
+  const tabs = document.querySelectorAll(".tab");
+  function openTab(view){
+    tabs.forEach(x=>x.classList.toggle("active", x.dataset.view === view));
+    ["tasks","gpa","planner","insights","settings"].forEach(k=>{
+      $("view_"+k).classList.toggle("hidden", k!==view);
+    });
+    localStorage.setItem("unipilot_tab", view);
+    if(view==="insights") renderInsights();
+    if(view==="settings") renderSysStatus();
+  }
+  tabs.forEach(t=>t.addEventListener("click", ()=>openTab(t.dataset.view)));
+  $("btnOpenSettings").addEventListener("click", ()=>openTab("settings"));
+  const savedTab = localStorage.getItem("unipilot_tab");
+  if(savedTab) openTab(savedTab);
+
+  // Auth Modal
+  const authBack = $("authBack");
+  let authMode = "login";
+
+  function setAuthMode(mode){
+    authMode = mode;
+    const isSignup = mode === "signup";
+    $("authTitle").textContent = isSignup ? "إنشاء حساب" : "تسجيل الدخول";
+    $("authHint").textContent  = isSignup
+      ? "اعمل حساب بإيميلك. كل بياناتك رح تنحفظ على حسابك."
+      : "ادخل إيميلك وكلمة السر.";
+    $("btnAuthGo").textContent = isSignup ? "إنشاء" : "دخول";
+    $("authNameWrap").classList.toggle("hidden", !isSignup);
+    $("authSwitchText").textContent = isSignup ? "عندك حساب؟" : "مش عندك حساب؟";
+    $("btnSwitchMode").textContent  = isSignup ? "سجّل دخول" : "اعمل حساب جديد";
+  }
+  $("btnSwitchMode").addEventListener("click", ()=>{
+    setAuthMode(authMode==="login" ? "signup" : "login");
+  });
+  $("btnAuthDemo").addEventListener("click", ()=>{
+    $("authMsg").innerHTML =
+      `فعّل <b>Email/Password</b> من Firebase → Authentication.<br>` +
+      `وبعدها فعّل Firestore وطبّق Rules في صفحة الإعدادات.`;
+    toast("شوف التلميح داخل النافذة.");
+  });
+  $("btnForgot").addEventListener("click", async ()=>{
+    const email = $("authEmail").value.trim();
+    if(!email){ toast("اكتب الإيميل أولاً.", true); return; }
+    try{
+      await sendPasswordResetEmail(auth, email);
+      toast("تم إرسال رابط إعادة تعيين كلمة السر ✅");
+    }catch(e){
+      console.error(e);
+      toast("تعذر الإرسال. تأكد من الإيميل/إعدادات Firebase.", true);
+    }
+  });
+  $("btnAuthGo").addEventListener("click", async ()=>{
+    const email = $("authEmail").value.trim();
+    const pass  = $("authPass").value;
+    if(!email || !pass){ toast("اكتب الإيميل وكلمة السر.", true); return; }
+
+    try{
+      if(authMode==="login"){
+        await signInWithEmailAndPassword(auth, email, pass);
+        toast("تم تسجيل الدخول ✅");
+      }else{
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        const name = $("authName").value.trim();
+        if(name){
+          try{ await updateProfile(cred.user, { displayName: name }); }catch{}
+        }
+        toast("تم إنشاء الحساب ✅");
+      }
+    }catch(e){
+      console.error(e);
+      const msg = e?.code === "auth/invalid-credential" ? "بيانات الدخول غلط." :
+                  e?.code === "auth/email-already-in-use" ? "الإيميل مستخدم." :
+                  e?.code === "auth/weak-password" ? "كلمة السر ضعيفة (6+)." :
+                  "خطأ تسجيل الدخول.";
+      toast(msg, true);
+    }
+  });
+  $("btnLogout").addEventListener("click", async ()=>{
+    try{ await signOut(auth); toast("تم تسجيل الخروج"); }
+    catch(e){ console.error(e); toast("تعذر تسجيل الخروج.", true); }
+  });
+
+  // Enable/disable app
+  function setAppEnabled(enabled){
+    [
+      "btnBackup","btnRestore","btnOpenSettings","btnLogout",
+      "btnAddTask","btnPlanToday",
+      "fToday","fWeek","fAll","fOver",
+      "btnAddTaken","btnSaveGoal","btnClearGoal",
+      "btnAddPlan","btnSuggestCourses",
+      "btnResetAll"
+    ].forEach(id=>{
+      const el = $(id);
+      if(el) el.disabled = !enabled;
+    });
+  }
+  function resetUIForGuest(){
+    $("taskList").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
+    $("takenList").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
+    $("planList").innerHTML  = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
+    $("suggestList").innerHTML = "";
+    $("catBreakdown").innerHTML = "";
+    $("taskInsights").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان يظهر التحليل.</div></div>`;
+    $("todayPlanMsg").textContent = "سجّل دخولك أولاً، وبعدها نبدأ ✅";
+    $("planMsg").textContent = "سجّل دخولك عشان نقدر نبني خطتك.";
+    $("insightMsg").textContent = "سجّل دخولك عشان يشتغل التحليل.";
+  }
+
+  // Firestore paths
+  const userDoc = ()=>doc(db, "users", UID);
+  const colTasks = ()=>collection(db,"users",UID,"tasks");
+  const colTaken = ()=>collection(db,"users",UID,"taken");
+  const colPlan  = ()=>collection(db,"users",UID,"courses");
+
+  async function ensureUserDoc(user){
+    const ref = userDoc();
+    const snap = await getDoc(ref);
+    if(!snap.exists()){
+      await setDoc(ref, {
+        createdAt: serverTimestamp(),
+        email: user.email || null,
+        displayName: user.displayName || null,
+        gradeScale: "4.0"
+      }, { merge: true });
+    }else{
+      await setDoc(ref, {
+        email: user.email || null,
+        displayName: user.displayName || null
+      }, { merge:true });
+    }
+  }
+
+  async function safeGetDocs(qBuild, fallbackCol){
+    try{
+      const snap = await getDocs(qBuild());
+      return snap.docs.map(d=>({id:d.id, ...d.data()}));
+    }catch(e){
+      console.warn("Query failed, fallback:", e);
+      const snap = await getDocs(query(fallbackCol, limit(300)));
+      return snap.docs.map(d=>({id:d.id, ...d.data()}));
+    }
+  }
+
+  async function loadAll(){
+    tasks = await safeGetDocs(() => query(colTasks(), orderBy("createdAt","desc"), limit(300)), colTasks());
+    taken = await safeGetDocs(() => query(colTaken(), orderBy("createdAt","desc"), limit(600)), colTaken());
+    plan  = await safeGetDocs(() => query(colPlan(),  orderBy("code","asc"), limit(1200)), colPlan());
+  }
+
+  function renderAll(){
+    renderTasks();
+    renderTaken();
+    renderGPA();
+    renderPlan();
+    renderInsights();
+    renderSysStatus();
+  }
+
+  // Auth state
+  onAuthStateChanged(auth, async (user)=>{
+    if(!user){
+      UID = null; USER_EMAIL = null;
+      setAuthMode("login");
+      authBack.classList.remove("hidden");
+      $("userLabel").textContent = "غير مسجّل";
+      setAppEnabled(false);
+      resetUIForGuest();
+      return;
+    }
+
+    UID = user.uid;
+    USER_EMAIL = user.email || "(no email)";
+    const disp = user.displayName ? `(${user.displayName})` : "";
+    $("userLabel").textContent = `${USER_EMAIL} ${disp}`;
+    authBack.classList.add("hidden");
+
+    setAppEnabled(true);
+
+    $("taskDue").value = todayKey();
+
+    await ensureUserDoc(user);
+    await loadAll();
+    await loadGoal();
+    renderAll();
+    toast("جاهز ✅ بياناتك محفوظة على حسابك");
+  });
+
+  // ===== TASKS =====
+  $("btnAddTask").addEventListener("click", addTask);
+  $("btnPlanToday").addEventListener("click", suggestTodayPlan);
+
+  $("fToday").onclick = ()=>{ taskFilter="today"; renderTasks(); };
+  $("fWeek").onclick  = ()=>{ taskFilter="week"; renderTasks(); };
+  $("fAll").onclick   = ()=>{ taskFilter="all"; renderTasks(); };
+  $("fOver").onclick  = ()=>{ taskFilter="over"; renderTasks(); };
+
+  $("taskSeg").addEventListener("click", (e)=>{
+    const b = e.target.closest(".segBtn");
+    if(!b || b.disabled) return;
+    $("taskSeg").querySelectorAll(".segBtn").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+  });
+
+  function inToday(task){
+    const d = getDueKey(task);
+    return d && d === todayKey();
+  }
+  function inNext7(task){
+    const d = getDueKey(task);
+    if(!d) return false;
+    const k = todayKey();
+    const end = addDaysKey(k, 7);
+    return d >= k && d <= end;
+  }
+  function isOverdue(task){
+    const d = getDueKey(task);
+    if(!d) return false;
+    const k = todayKey();
+    return d < k && task.status !== "done";
+  }
+
+  async function addTask(){
+    if(!UID) return;
+    const title = $("taskTitle").value.trim();
+    if(!title){ toast("اكتب عنوان المهمة.", true); return; }
+
+    const due = $("taskDue").value || "";
+    const minutes = Math.max(5, Number($("taskMin").value||60));
+    const prio = $("taskPrio") ? $("taskPrio").value : "med";
+    const type = $("taskType") ? $("taskType").value : "assignment";
+    const course = $("taskCourse") ? $("taskCourse").value.trim() : "";
+    const notes = $("taskNotes") ? $("taskNotes").value.trim() : "";
+
+    const payload = {
+      title, course, dueDate: due,
+      minutes, prio, type, notes,
+      status: "todo",
+      createdAt: serverTimestamp()
+    };
+
+    try{
+      await addDoc(colTasks(), payload);
+      $("taskTitle").value=""; if($("taskCourse")) $("taskCourse").value=""; if($("taskNotes")) $("taskNotes").value="";
+      toast("تمت الإضافة ✅");
+      await loadAll(); renderTasks(); renderInsights(); renderSysStatus();
+    }catch(e){
+      console.error(e);
+      toast("فشل إضافة المهمة. راجع Firestore Rules.", true);
+    }
+  }
+
+  function renderTasks(){
+    if(!UID) return;
+
+    const today = tasks.filter(t=> inToday(t) && t.status!=="done");
+    const week = tasks.filter(t=> inNext7(t) && t.status!=="done");
+    const allWeek = tasks.filter(t=> inNext7(t));
+    const doneWeek = allWeek.filter(t=> t.status==="done");
+
+    $("kToday").textContent = today.length;
+    $("kWeek").textContent = week.length;
+    $("kDonePct").textContent = allWeek.length ? Math.round((doneWeek.length/allWeek.length)*100) + "%" : "—";
+
+    let filtered = [];
+    if(taskFilter==="today") filtered = tasks.filter(t=> inToday(t));
+    else if(taskFilter==="week") filtered = tasks.filter(t=> inNext7(t));
+    else if(taskFilter==="over") filtered = tasks.filter(t=> isOverdue(t));
+    else filtered = tasks.slice();
+
+    filtered.sort((a,b)=>{
+      if(a.status==="done" && b.status!=="done") return 1;
+      if(b.status==="done" && a.status!=="done") return -1;
+
+      const ao = isOverdue(a), bo = isOverdue(b);
+      if(ao !== bo) return ao ? -1 : 1;
+
+      const ad = getDueKey(a) || "9999-12-31";
+      const bd = getDueKey(b) || "9999-12-31";
+      if(ad !== bd) return ad < bd ? -1 : 1;
+
+      const pv = (p)=> p==="high"?0 : p==="med"?1 : 2;
+      if(pv(a.prio) !== pv(b.prio)) return pv(a.prio)-pv(b.prio);
+
+      return (Number(a.minutes||0) - Number(b.minutes||0));
+    });
+
+    const list = $("taskList");
+    list.innerHTML = "";
+
+    if(filtered.length === 0){
+      list.innerHTML = `<div class="item"><div class="meta">ما في مهام هون. أضف مهمة بسيطة.</div></div>`;
+      return;
+    }
+
+    for(const t of filtered){
+      const dueTxt = getDueKey(t) ? t.dueDate : "بدون موعد";
+      const courseTxt = t.course ? ` · <b>${esc(t.course)}</b>` : "";
+      const note = t.notes ? `<div class="quote" style="margin-top:10px;">${esc(t.notes)}</div>` : "";
+      const badgeClass = isOverdue(t) ? "danger" : (t.prio==="low" ? "warn" : (t.prio==="high" ? "danger" : ""));
+
+      list.insertAdjacentHTML("beforeend", `
+        <div class="item" data-id="${esc(t.id)}">
+          <div class="top">
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+              <div class="badge ${badgeClass}">${esc(TASK_TYPE_LABEL[t.type] || "مهمة")}</div>
+              <div style="font-weight:950">${esc(t.title)}</div>
+              <div class="meta">${courseTxt}</div>
+            </div>
+            <div class="meta">${isOverdue(t) ? "متأخرة" : "موعد: " + esc(dueTxt)} · ${Number(t.minutes||0)} د</div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row" style="justify-content:space-between; width:100%;">
+            <div class="meta">${t.prio==="high"?"أولوية عالية":t.prio==="low"?"أولوية منخفضة":"أولوية متوسطة"}</div>
+            <div class="actions">
+              <button class="btn smallBtn ${t.status==="todo"?"primary":""}" data-act="todo">To-Do</button>
+              <button class="btn smallBtn ${t.status==="doing"?"primary":""}" data-act="doing">شغال</button>
+              <button class="btn smallBtn ${t.status==="done"?"primary":""}" data-act="done">تم ✅</button>
+              <button class="btn smallBtn danger" data-act="del">حذف</button>
+            </div>
+          </div>
+
+          ${note}
+        </div>
+      `);
+    }
+
+    list.querySelectorAll(".item .btn").forEach(btn=>{
+      btn.addEventListener("click", async (e)=>{
+        const item = e.target.closest(".item");
+        const id = item.dataset.id;
+        const act = e.target.dataset.act;
+
+        try{
+          if(act==="del"){
+            if(!confirm("متأكد تحذف المهمة؟")) return;
+            await deleteDoc(doc(db,"users",UID,"tasks",id));
+            toast("تم الحذف");
+          }else{
+            await updateDoc(doc(db,"users",UID,"tasks",id), { status: act });
+            toast("تم التحديث ✅");
+          }
+          await loadAll(); renderTasks(); renderInsights(); renderSysStatus();
+        }catch(err){
+          console.error(err);
+          toast("صار خطأ. راجع Rules/الاتصال.", true);
+        }
+      });
+    });
+  }
+
+  function suggestTodayPlan(){
+    const cand = tasks
+      .filter(t=>t.status!=="done")
+      .sort((a,b)=>{
+        const ao=isOverdue(a), bo=isOverdue(b);
+        if(ao!==bo) return ao?-1:1;
+        const at=inToday(a), bt=inToday(b);
+        if(at!==bt) return at?-1:1;
+        const pv=(p)=>p==="high"?0:p==="med"?1:2;
+        if(pv(a.prio)!==pv(b.prio)) return pv(a.prio)-pv(b.prio);
+        const ad=getDueKey(a)||"9999-12-31", bd=getDueKey(b)||"9999-12-31";
+        if(ad!==bd) return ad<bd?-1:1;
+        return (Number(a.minutes||0))-(Number(b.minutes||0));
+      });
+
+    const pick = cand.slice(0,3);
+    if(pick.length===0){
+      $("todayPlanMsg").textContent = "اليوم خفيف ✅ حضّر لمهمة بكرا 20 دقيقة.";
+      toast("ما في مهام مستعجلة.");
+      return;
+    }
+    const total = pick.reduce((s,x)=>s+(Number(x.minutes)||0),0);
+    const lines = pick.map((t,i)=>`${i+1}) ${t.title} (${Number(t.minutes||0)}د)`);
+    $("todayPlanMsg").innerHTML =
+      `خطة اليوم (≈ ${total} دقيقة):<br><b>${lines.map(esc).join("<br>")}</b><br><span class="meta">25 دقيقة شغل + 5 راحة.</span>`;
+    toast("تم اقتراح خطة اليوم ✅");
+  }
+
+  // ===== GPA / TAKEN =====
+  $("btnAddTaken").addEventListener("click", addTaken);
+
+  async function addTaken(){
+    const name = $("takenName").value.trim();
+    const credits = Math.max(1, Number($("takenCredits").value||3));
+    const grade = $("takenGrade").value;
+
+    const cat = $("takenCat") ? $("takenCat").value : "major";
+    const term = $("takenTerm") ? $("takenTerm").value.trim() : "";
+    const weak = $("takenWeak") ? $("takenWeak").value : "";
+
+    if(!name){ toast("اكتب اسم/كود المادة.", true); return; }
+    const gp = GRADE_POINTS[grade];
+    if(gp===undefined){ toast("Grade غير مدعوم.", true); return; }
+
+    const payload = {
+      name, credits, grade, gradePoints: gp,
+      category: cat, term,
+      weakness: weak,
+      createdAt: serverTimestamp()
+    };
+
+    try{
+      await addDoc(colTaken(), payload);
+      $("takenName").value=""; if($("takenTerm")) $("takenTerm").value=""; if($("takenWeak")) $("takenWeak").value="";
+      toast("تمت الإضافة ✅");
+      await loadAll();
+      renderTaken(); renderGPA(); renderInsights(); renderSysStatus();
+    }catch(e){
+      console.error(e);
+      toast("فشل إضافة المادة. راجع Rules.", true);
+    }
+  }
+
+  function renderTaken(){
+    if(!UID) return;
+    const list = $("takenList");
+    list.innerHTML = "";
+    if(taken.length===0){
+      list.innerHTML = `<div class="item"><div class="meta">لسا ما ضفت مواد. أضف مادة عشان نحسب GPA.</div></div>`;
+      return;
+    }
+
+    for(const t of taken){
+      list.insertAdjacentHTML("beforeend", `
+        <div class="item" data-id="${esc(t.id)}">
+          <div class="top">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <div class="badge">${esc(t.grade)}</div>
+              <div style="font-weight:950">${esc(t.name)}</div>
+              <div class="meta">· ${esc(CAT_LABEL[t.category]||"—")} · ${Number(t.credits||0)} س</div>
+            </div>
+            <div class="actions">
+              <button class="btn smallBtn danger" data-act="del">حذف</button>
+            </div>
+          </div>
+          <div class="meta" style="margin-top:8px;">
+            Points: <b>${Number(t.gradePoints ?? 0).toFixed(2)}</b>
+            ${t.term ? " · فصل: <b>"+esc(t.term)+"</b>" : ""}
+            ${t.weakness ? " · صعوبة: <b>"+esc(t.weakness)+"</b>" : ""}
+          </div>
+        </div>
+      `);
+    }
+
+    list.querySelectorAll(".item .btn").forEach(btn=>{
+      btn.addEventListener("click", async (e)=>{
+        const item = e.target.closest(".item");
+        const id = item.dataset.id;
+        if(!confirm("تحذف المادة؟")) return;
+        try{
+          await deleteDoc(doc(db,"users",UID,"taken",id));
+          toast("تم الحذف");
+          await loadAll(); renderTaken(); renderGPA(); renderInsights(); renderSysStatus();
+        }catch(err){
+          console.error(err);
+          toast("تعذر الحذف.", true);
+        }
+      });
+    });
+  }
+
+  function renderGPA(){
+    if(!UID) return;
+
+    let totC=0, totPts=0;
+    let minPts = Infinity, maxPts = -Infinity;
+
+    let minGradeIdx = Infinity, maxGradeIdx = -Infinity;
+
+    for(const t of taken){
+      const c = Number(t.credits||0);
+      const p = Number(t.gradePoints||0);
+      totC += c;
+      totPts += c*p;
+
+      if(Number.isFinite(p)){
+        minPts = Math.min(minPts, p);
+        maxPts = Math.max(maxPts, p);
+      }
+
+      const g = String(t.grade||"").trim();
+      const idx = GRADE_ORDER.indexOf(g);
+      if(idx !== -1){
+        minGradeIdx = Math.min(minGradeIdx, idx);
+        maxGradeIdx = Math.max(maxGradeIdx, idx);
+      }
+    }
+
+    const gpa = totC ? (totPts/totC) : 0;
+
+    $("gpaC").textContent = totC ? gpa.toFixed(2) : "—";
+    $("crDone").textContent = totC ? totC : "—";
+    $("ppc").textContent = totC ? (totPts/totC).toFixed(2) : "—";
+
+    if(taken.length && Number.isFinite(minGradeIdx) && Number.isFinite(maxGradeIdx)){
+      $("gradeRange").textContent = `${GRADE_ORDER[minGradeIdx]} → ${GRADE_ORDER[maxGradeIdx]}`;
+      $("minGrade").textContent = GRADE_ORDER[minGradeIdx];
+      $("maxGrade").textContent = GRADE_ORDER[maxGradeIdx];
+    } else {
+      $("gradeRange").textContent = "—";
+      $("minGrade").textContent = "—";
+      $("maxGrade").textContent = "—";
+    }
+
+    $("minPts").textContent = (taken.length && minPts !== Infinity) ? minPts.toFixed(2) : "—";
+    $("maxPts").textContent = (taken.length && maxPts !== -Infinity) ? maxPts.toFixed(2) : "—";
+
+    if(!totC){
+      $("gpaTip").textContent = "أضف موادك ليظهر التحليل.";
+    }else if(gpa >= 3.5){
+      $("gpaTip").textContent = "ممتاز — حافظ على الأداء ✅";
+    }else if(gpa >= 3.0){
+      $("gpaTip").textContent = "جيد — ركّز على الأضعف تدريجيًا";
+    }else{
+      $("gpaTip").textContent = "بدها خطة: تنظيم + رفع مواد";
+    }
+
+    renderGoalCalc(gpa, totC);
+  }
+
+  // ===== GOAL =====
+  function clamp(n, a, b){
+    n = Number(n);
+    if(Number.isNaN(n)) return NaN;
+    return Math.max(a, Math.min(b, n));
+  }
+
+  async function loadGoal(){
+    if(!UID) return;
+    try{
+      const snap = await getDoc(userDoc());
+      const data = snap.exists() ? snap.data() : {};
+      goal = data?.goal ?? { target:null, totalCredits:null, nextCredits:null };
+      $("goalGpa").value = goal.target ?? "";
+      $("goalTotalCredits").value = goal.totalCredits ?? "";
+      $("goalNextCredits").value = goal.nextCredits ?? "";
+    }catch(e){
+      console.error(e);
+      goal = { target:null, totalCredits:null, nextCredits:null };
+    }
+  }
+
+  async function saveGoalToDb(newGoal){
+    if(!UID) return;
+    await setDoc(userDoc(), { goal: newGoal }, { merge:true });
+    goal = newGoal;
+  }
+
+  function calcRequiredAvg(currentGpa, doneCredits, targetGpa, totalCredits){
+    const remaining = totalCredits - doneCredits;
+    if(remaining <= 0) return { remaining: 0, required: NaN };
+    const currentPoints = currentGpa * doneCredits;
+    const targetPoints = targetGpa * totalCredits;
+    const needPoints = targetPoints - currentPoints;
+    const required = needPoints / remaining;
+    return { remaining, required };
+  }
+
+  function calcRequiredNextTerm(currentGpa, doneCredits, targetGpa, totalCredits, nextCredits){
+    const remaining = totalCredits - doneCredits;
+    if(remaining <= 0) return NaN;
+    const x = Math.max(0, Math.min(Number(nextCredits||0), remaining));
+    if(x <= 0) return NaN;
+
+    const currentPoints = currentGpa * doneCredits;
+    const targetPoints = targetGpa * totalCredits;
+    const needPointsTotal = targetPoints - currentPoints;
+
+    const later = remaining - x;
+    const bestLaterAvg = 4.0;
+    const bestLaterPoints = later * bestLaterAvg;
+    const needThisTerm = (needPointsTotal - bestLaterPoints) / x;
+
+    return needThisTerm;
+  }
+
+  function renderGoalCalc(currentGpa, doneCredits){
+    const target = clamp($("goalGpa").value, 0, 4);
+    const total  = Math.max(0, Number($("goalTotalCredits").value||0));
+    const next   = Math.max(0, Number($("goalNextCredits").value||0));
+
+    if(!total || !Number.isFinite(target)){
+      $("remainCredits").textContent = "—";
+      $("needRemainGpa").textContent = "—";
+      $("needNextTermGpa").textContent = "—";
+      $("goalMsg").textContent = "اكتب هدفك وإجمالي ساعات الخطة ثم اضغط حفظ.";
+      return;
+    }
+
+    if(total < doneCredits){
+      $("goalMsg").textContent = "إجمالي ساعات الخطة أقل من الساعات المنجزة… عدّل الرقم.";
+      $("remainCredits").textContent = "—";
+      $("needRemainGpa").textContent = "—";
+      $("needNextTermGpa").textContent = "—";
+      return;
+    }
+
+    const { remaining, required } = calcRequiredAvg(currentGpa, doneCredits, target, total);
+    $("remainCredits").textContent = remaining;
+    $("needRemainGpa").textContent = Number.isFinite(required) ? required.toFixed(2) : "—";
+
+    const reqNext = calcRequiredNextTerm(currentGpa, doneCredits, target, total, next);
+    $("needNextTermGpa").textContent = Number.isFinite(reqNext) ? reqNext.toFixed(2) : "—";
+
+    if(required > 4.0){
+      $("goalMsg").textContent = "هدفك صعب جدًا حسب الساعات المتبقية (المطلوب > 4.00).";
+    } else if(required < 0){
+      $("goalMsg").textContent = "أنت متجاوز الهدف تقريبًا ✅";
+    } else {
+      $("goalMsg").textContent =
+        `للوصول إلى ${target.toFixed(2)} مطلوب متوسط على الساعات المتبقية ≈ ${required.toFixed(2)}.` +
+        (next>0 && Number.isFinite(reqNext) ? ` والفصل الجاي (إذا ${next} ساعة) ≈ ${reqNext.toFixed(2)}.` : "");
+    }
+  }
+
+  $("btnSaveGoal").addEventListener("click", async ()=>{
+    if(!UID) return;
+    const target = clamp($("goalGpa").value, 0, 4);
+    const total  = Math.max(0, Number($("goalTotalCredits").value||0));
+    const next   = Math.max(0, Number($("goalNextCredits").value||0));
+
+    if(!Number.isFinite(target) || !total){
+      toast("اكتب Target GPA وإجمالي ساعات الخطة.", true);
+      return;
+    }
+
+    try{
+      await saveGoalToDb({
+        target: Number(target.toFixed(2)),
+        totalCredits: total,
+        nextCredits: next || null,
+        updatedAt: new Date().toISOString()
+      });
+      toast("تم حفظ الهدف ✅");
+      renderGPA();
+    }catch(e){
+      console.error(e);
+      toast("تعذر حفظ الهدف. راجع Rules.", true);
+    }
+  });
+
+  $("btnClearGoal").addEventListener("click", async ()=>{
+    if(!UID) return;
+    try{
+      await saveGoalToDb({ target:null, totalCredits:null, nextCredits:null, updatedAt: new Date().toISOString() });
+      $("goalGpa").value=""; $("goalTotalCredits").value=""; $("goalNextCredits").value="";
+      toast("تم المسح");
+      renderGPA();
+    }catch(e){
+      console.error(e);
+      toast("تعذر المسح.", true);
+    }
+  });
+
+  // ===== PLANNER =====
+  $("btnAddPlan").addEventListener("click", addPlanCourse);
+  $("btnSuggestCourses").addEventListener("click", suggestCourses);
+
+  async function addPlanCourse(){
+    const code = $("planCode").value.trim().toUpperCase().replace(/\s+/g,"");
+    const name = $("planName").value.trim();
+    const credits = Math.max(1, Number($("planCredits").value||3));
+    const category = $("planCat").value;
+    const prereqRaw = ($("planPrereq")?.value || "").trim();
+    const prereqs = prereqRaw ? prereqRaw.split(",").map(x=>x.trim().toUpperCase().replace(/\s+/g,"")).filter(Boolean) : [];
+
+    if(!code){ toast("اكتب كود المادة.", true); return; }
+    if(!name){ toast("اكتب اسم المادة.", true); return; }
+
+    const payload = { code, name, credits, category, prereqs, createdAt: serverTimestamp() };
+
+    try{
+      await addDoc(colPlan(), payload);
+      $("planCode").value=""; $("planName").value=""; if($("planPrereq")) $("planPrereq").value="";
+      toast("تمت الإضافة ✅");
+      await loadAll();
+      renderPlan(); renderSysStatus();
+    }catch(e){
+      console.error(e);
+      toast("فشل إضافة مادة للخطة.", true);
+    }
+  }
+
+  function renderPlan(){
+    if(!UID) return;
+    const list = $("planList");
+    list.innerHTML = "";
+    if(plan.length===0){
+      list.innerHTML = `<div class="item"><div class="meta">أضف مواد خطتك (حتى 10 كبداية).</div></div>`;
+      return;
+    }
+
+    for(const c of plan){
+      const pre = (c.prereqs||[]).length ? (c.prereqs||[]).join(", ") : "—";
+      list.insertAdjacentHTML("beforeend", `
+        <div class="item" data-id="${esc(c.id)}">
+          <div class="top">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <div class="badge">${esc(c.code)}</div>
+              <div style="font-weight:950">${esc(c.name)}</div>
+              <div class="meta">· ${esc(CAT_LABEL[c.category]||"—")} · ${Number(c.credits||0)} س</div>
+            </div>
+            <div class="actions">
+              <button class="btn smallBtn danger" data-act="del">حذف</button>
+            </div>
+          </div>
+          <div class="meta" style="margin-top:8px;">متطلبات: <b>${esc(pre)}</b></div>
+        </div>
+      `);
+    }
+
+    list.querySelectorAll(".item .btn").forEach(btn=>{
+      btn.addEventListener("click", async (e)=>{
+        const item = e.target.closest(".item");
+        const id = item.dataset.id;
+        if(!confirm("تحذف من الخطة؟")) return;
+        try{
+          await deleteDoc(doc(db,"users",UID,"courses",id));
+          toast("تم الحذف");
+          await loadAll(); renderPlan(); renderSysStatus();
+        }catch(err){
+          console.error(err);
+          toast("تعذر الحذف.", true);
+        }
+      });
+    });
+  }
+
+  function suggestCourses(){
+    if(!UID) return;
+
+    const doneCodes = new Set();
+    for(const t of taken){
+      const raw = String(t.name||"").trim().toUpperCase();
+      const m = raw.match(/[A-Z]{2,}\s*\d{2,}/);
+      if(m) doneCodes.add(m[0].replace(/\s+/g,""));
+      const exact = raw.replace(/\s+/g,"");
+      if(/^[A-Z]{2,}\d{2,}$/.test(exact)) doneCodes.add(exact);
+    }
+
+    const notTaken = plan.filter(c=> !doneCodes.has(String(c.code||"").toUpperCase().replace(/\s+/g,"")) );
+    const available = [];
+    const blocked = [];
+
+    for(const c of notTaken){
+      const reqs = (c.prereqs||[]).map(x=>String(x||"").toUpperCase().replace(/\s+/g,"")).filter(Boolean);
+      const missing = reqs.filter(r=> !doneCodes.has(r));
+      if(missing.length===0) available.push(c);
+      else blocked.push({c, missing});
+    }
+
+    const unlockScore = (code)=>{
+      const cd = String(code||"").toUpperCase().replace(/\s+/g,"");
+      let s=0;
+      for(const x of notTaken){
+        const reqs = (x.prereqs||[]).map(r=>String(r||"").toUpperCase().replace(/\s+/g,""));
+        if(reqs.includes(cd)) s++;
+      }
+      return s;
+    };
+
+    available.sort((a,b)=>{
+      const catRank = (x)=> x.category==="major"?0 : x.category==="support"?1 : x.category==="general"?2 : 3;
+      if(catRank(a)!==catRank(b)) return catRank(a)-catRank(b);
+      const ua = unlockScore(a.code), ub = unlockScore(b.code);
+      if(ua!==ub) return ub-ua;
+      return (Number(a.credits||0))-(Number(b.credits||0));
+    });
+
+    const sug = $("suggestList");
+    sug.innerHTML = "";
+
+    const top = available.slice(0,8);
+
+    if(top.length){
+      $("planMsg").textContent = "مواد متاحة حسب المتطلبات ✅";
+      sug.insertAdjacentHTML("beforeend", `<div class="item"><div class="meta"><b>مواد متاحة للتسجيل الآن</b></div></div>`);
+      for(const c of top){
+        sug.insertAdjacentHTML("beforeend", `
+          <div class="item">
+            <div class="top">
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <div class="badge">${esc(c.code)}</div>
+                <div style="font-weight:950">${esc(c.name)}</div>
+                <div class="meta">· ${esc(CAT_LABEL[c.category]||"—")} · ${Number(c.credits||0)} س</div>
+              </div>
+              <div class="badge warn">يفتح مواد: ${unlockScore(c.code)}</div>
+            </div>
+          </div>
+        `);
+      }
+    } else {
+      $("planMsg").textContent = "ما في مواد متاحة حسب المتطلبات… أو ناقص متطلبات.";
+      sug.insertAdjacentHTML("beforeend", `<div class="item"><div class="meta">ما في مواد متاحة الآن.</div></div>`);
+    }
+
+    if(blocked.length){
+      sug.insertAdjacentHTML("beforeend", `<div class="item"><div class="meta"><b>مواد غير متاحة</b> (ناقص متطلبات)</div></div>`);
+      for(const x of blocked.slice(0,6)){
+        sug.insertAdjacentHTML("beforeend", `
+          <div class="item">
+            <div class="top">
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <div class="badge danger">${esc(x.c.code)}</div>
+                <div style="font-weight:950">${esc(x.c.name)}</div>
+              </div>
+              <div class="meta">ناقص: <b class="dangerText">${esc(x.missing.join(", "))}</b></div>
+            </div>
+          </div>
+        `);
+      }
+    }
+
+    toast("تم تحليل المواد ✅");
+  }
+
+  // ===== INSIGHTS =====
+  function renderInsights(){
+    if(!UID) return;
+
+    const groups = {};
+    const reasonCount = {theory:0, problem:0, time:0, exam:0};
+
+    for(const t of taken){
+      const cat = t.category || "general";
+      if(!groups[cat]) groups[cat] = {sum:0, n:0};
+      const gp = Number(t.gradePoints ?? 0);
+      const c  = Number(t.credits ?? 0);
+      groups[cat].sum += gp * c;
+      groups[cat].n += c;
+      if(t.weakness && reasonCount[t.weakness] !== undefined) reasonCount[t.weakness] += 1;
+    }
+
+    let weakCat = null, weakAvg = Infinity;
+    for(const [cat,v] of Object.entries(groups)){
+      const avg = v.n ? (v.sum/v.n) : 999;
+      if(avg < weakAvg){ weakAvg = avg; weakCat = cat; }
+    }
+    $("weakCat").textContent = weakCat ? (CAT_LABEL[weakCat] || weakCat) : "—";
+
+    let wr = null, wrV = 0;
+    for(const [k,v] of Object.entries(reasonCount)){
+      if(v > wrV){ wrV = v; wr = k; }
+    }
+    const wrLabel = {theory:"نظري", problem:"حل مسائل", time:"وقت/تأجيل", exam:"امتحانات"};
+    $("weakReason").textContent = wr ? wrLabel[wr] : "—";
+
+    const tip = (!wr) ? "ابدأ 25 دقيقة لمهمة صعبة" :
+      (wr==="problem" ? "حل 10 مسائل قصيرة يوميًا" :
+      (wr==="theory" ? "خريطة مفاهيم + تلخيص صفحة" :
+      (wr==="time" ? "قفل مشتتات 30 دقيقة + مؤقت" :
+      "محاكاة امتحان + مراجعة أخطاء")));
+    $("weakTip").textContent = tip;
+
+    $("insightMsg").textContent = weakCat
+      ? `الأضعف عندك: ${CAT_LABEL[weakCat]||weakCat} (متوسط ≈ ${weakAvg.toFixed(2)}).`
+      : "أضف مواد GPA عشان يظهر التحليل.";
+
+    const bd = $("catBreakdown");
+    bd.innerHTML = "";
+    const entries = Object.entries(groups).map(([cat,v])=>{
+      const avg = v.n ? (v.sum/v.n) : 0;
+      return {cat, avg};
+    }).sort((a,b)=>a.avg-b.avg);
+
+    if(entries.length===0){
+      bd.innerHTML = `<div class="item"><div class="meta">أضف مواد GPA عشان يظهر التحليل.</div></div>`;
+    } else {
+      for(const e of entries){
+        const badge = e.avg < 2.6 ? "danger" : (e.avg < 3.0 ? "warn" : "");
+        bd.insertAdjacentHTML("beforeend", `
+          <div class="item">
+            <div class="top">
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <div class="badge ${badge}">${esc(CAT_LABEL[e.cat]||e.cat)}</div>
+                <div class="meta">متوسط Points: <b>${e.avg.toFixed(2)}</b></div>
+              </div>
+              <div class="meta">${e.avg < 3.0 ? "ركز على تحسينه" : "حافظ عليه"}</div>
+            </div>
+          </div>
+        `);
+      }
+    }
+
+    const ti = $("taskInsights");
+    ti.innerHTML = "";
+    const open = tasks.filter(t=>t.status!=="done");
+    const overdue = open.filter(t=>isOverdue(t));
+    const dueSoon = open.filter(t=>inNext7(t)).sort((a,b)=>{
+      const ad=getDueKey(a)||"9999-12-31", bd=getDueKey(b)||"9999-12-31";
+      return ad<bd?-1:1;
+    });
+
+    const totalMin = open.reduce((s,x)=>s+(Number(x.minutes)||0),0);
+
+    ti.insertAdjacentHTML("beforeend", `
+      <div class="item">
+        <div class="top">
+          <div style="font-weight:950">ضغطك الحالي</div>
+          <div class="meta">${open.length} مهمة · ${totalMin} دقيقة</div>
+        </div>
+        <div class="meta" style="margin-top:8px;">
+          ${overdue.length ? `<b class="dangerText">${overdue.length}</b> مهام متأخرة — خلّص وحدة اليوم.` : `ما عندك مهام متأخرة ✅`}
+        </div>
+      </div>
+    `);
+
+    if(dueSoon.length){
+      const top3 = dueSoon.slice(0,3).map(t=>{
+        const title = esc(t.title);
+        const d = esc(getDueKey(t) || "—");
+        return `• ${title} <span class="meta">(${d})</span>`;
+      }).join("<br>");
+
+      ti.insertAdjacentHTML("beforeend", `
+        <div class="item">
+          <div class="top">
+            <div style="font-weight:950">الأقرب موعدًا</div>
+            <div class="meta">أفضل 3</div>
+          </div>
+          <div class="quote" style="margin-top:10px;">${top3}</div>
+        </div>
+      `);
+    }
+  }
+
+  // ===== BACKUP / RESTORE =====
+  $("btnBackup").addEventListener("click", async ()=>{
+    if(!UID) return;
+    const data = { tasks, taken, plan, goal, exportedAt: new Date().toISOString(), email: USER_EMAIL };
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `unipilot_backup_${todayKey()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast("تم التصدير ✅");
+  });
+
+  $("btnRestore").addEventListener("click", ()=>{
+    if(!UID) return;
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json";
+    input.onchange = async ()=>{
+      const file = input.files?.[0];
+      if(!file) return;
+      let json;
+      try{ json = JSON.parse(await file.text()); }
+      catch{ toast("ملف غير صالح.", true); return; }
+
+      if(!confirm("سيتم إضافة بيانات الملف بدون مسح الحالي. موافق؟")) return;
+
+      try{
+        const adds = [];
+        for(const t of (json.tasks||[])){
+          const payload = {
+            title: (t.title||"").toString().slice(0,200),
+            course: (t.course||"").toString().slice(0,60),
+            dueDate: (t.dueDate||"").toString(),
+            minutes: Math.max(5, Number(t.minutes||60)),
+            prio: t.prio||"med",
+            type: t.type||"assignment",
+            notes: (t.notes||"").toString().slice(0,300),
+            status: t.status||"todo",
+            createdAt: serverTimestamp()
+          };
+          if(payload.title) adds.push(addDoc(colTasks(), payload));
+        }
+        for(const k of (json.taken||[])){
+          const grade = (k.grade||"B").toString();
+          const payload = {
+            name: (k.name||"").toString().slice(0,120),
+            credits: Math.max(1, Number(k.credits||3)),
+            grade,
+            gradePoints: Number(k.gradePoints ?? GRADE_POINTS[grade] ?? 3.0),
+            category: k.category||"major",
+            term: (k.term||"").toString().slice(0,20),
+            weakness: k.weakness||"",
+            createdAt: serverTimestamp()
+          };
+          if(payload.name) adds.push(addDoc(colTaken(), payload));
+        }
+        for(const c of (json.plan||[])){
+          const payload = {
+            code: String(c.code||"").toUpperCase().replace(/\s+/g,""),
+            name: (c.name||"").toString().slice(0,120),
+            credits: Math.max(1, Number(c.credits||3)),
+            category: c.category||"major",
+            prereqs: Array.isArray(c.prereqs) ? c.prereqs.map(x=>String(x||"").toUpperCase().replace(/\s+/g,"")) : [],
+            createdAt: serverTimestamp()
+          };
+          if(payload.code && payload.name) adds.push(addDoc(colPlan(), payload));
         }
 
-        // ==========================================
-        // 3. AUTHENTICATION LOGIC
-        // ==========================================
-        let isSignup = true;
-
-        function toggleAuth(mode) {
-            isSignup = (mode === 'signup');
-            document.getElementById('onboarding-fields').style.display = isSignup ? 'block' : 'none';
-            document.getElementById('auth-action-text').innerText = isSignup ? 'INITIALIZE SYSTEM' : 'ACCESS TERMINAL';
-            
-            // Visual toggle
-            document.getElementById('btn-signup').style.background = isSignup ? 'rgba(255,255,255,0.1)' : 'transparent';
-            document.getElementById('btn-login').style.background = !isSignup ? 'rgba(255,255,255,0.1)' : 'transparent';
+        if(json.goal && typeof json.goal === "object"){
+          await saveGoalToDb({
+            target: json.goal.target ?? null,
+            totalCredits: json.goal.totalCredits ?? null,
+            nextCredits: json.goal.nextCredits ?? null,
+            updatedAt: new Date().toISOString()
+          });
         }
 
-        async function handleAuth() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('auth-error');
-            const btn = document.querySelector('.submit-btn');
+        await Promise.allSettled(adds);
+        toast("تم الاستيراد ✅");
+        await loadAll(); await loadGoal(); renderAll();
+      }catch(e){
+        console.error(e);
+        toast("فشل الاستيراد.", true);
+      }
+    };
+    input.click();
+  });
 
-            if(!email || !password) {
-                errorMsg.innerText = "Error: Credentials Missing";
-                errorMsg.style.display = 'block';
-                return;
-            }
+  // ===== RESET ALL =====
+  $("btnResetAll").addEventListener("click", async ()=>{
+    if(!UID) return;
+    if(!confirm("تحذير: هذا سيمسح كل بياناتك من Firestore. متأكد؟")) return;
 
-            btn.innerText = "PROCESSING...";
-
-            try {
-                if (isSignup) {
-                    // Register
-                    const target = document.getElementById('target').value;
-                    const hours = document.getElementById('hours').value;
-                    const level = document.getElementById('level').value;
-
-                    if(!target || !hours) throw new Error("Onboarding data required");
-
-                    const userCred = await auth.createUserWithEmailAndPassword(email, password);
-                    const user = userCred.user;
-
-                    // Generate Plan
-                    const generatedPlan = generateLogicalPlan(hours, level, target);
-
-                    // Save to Firestore
-                    await db.collection('users').doc(user.uid).set({
-                        email: email,
-                        target: target,
-                        hours: hours,
-                        level: level,
-                        xp: 0,
-                        plan: generatedPlan,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                } else {
-                    // Login
-                    await auth.signInWithEmailAndPassword(email, password);
-                }
-            } catch (error) {
-                console.error(error);
-                errorMsg.innerText = "Error: " + error.message;
-                errorMsg.style.display = 'block';
-                btn.innerText = "RETRY";
-            }
+    try{
+      const delAll = async (colRef)=>{
+        while(true){
+          const snap = await getDocs(query(colRef, limit(300)));
+          if(snap.empty) break;
+          await Promise.allSettled(snap.docs.map(d=>deleteDoc(d.ref)));
         }
+      };
 
-        // Auth State Listener (Auto Redirect)
-       // Auth State Listener (Auto Redirect)
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                document.getElementById('landing-view').style.display = 'none';
-                
-                const dashboard = document.getElementById('dashboard-view');
-                dashboard.style.display = 'block';
-                
-                // 🔥 هذا هو السطر الناقص لإظهار الشاشة 🔥
-                setTimeout(() => { dashboard.style.opacity = '1'; }, 100);
+      await delAll(colTasks());
+      await delAll(colTaken());
+      await delAll(colPlan());
+      await saveGoalToDb({ target:null, totalCredits:null, nextCredits:null, updatedAt: new Date().toISOString() });
 
-                loadUserData(user.uid);
-            } else {
-                document.getElementById('landing-view').style.display = 'block';
-                document.getElementById('dashboard-view').style.display = 'none';
-            }
-        });
+      tasks=[]; taken=[]; plan=[]; goal={target:null,totalCredits:null,nextCredits:null};
+      renderAll();
+      toast("تم المسح بالكامل.");
+    }catch(e){
+      console.error(e);
+      toast("تعذر المسح. راجع Rules.", true);
+    }
+  });
 
-        function logout() {
-            auth.signOut();
-            window.location.reload();
-        }
+  // ===== System status =====
+  function renderSysStatus(){
+    const list = $("sysStatus");
+    if(!list) return;
+    list.innerHTML = "";
+    list.insertAdjacentHTML("beforeend", `
+      <div class="item"><div class="top"><div style="font-weight:950">Auth</div><div class="meta">${UID ? "Email ✅" : "—"}</div></div></div>
+    `);
+    list.insertAdjacentHTML("beforeend", `
+      <div class="item"><div class="top"><div style="font-weight:950">User</div><div class="meta">${esc(USER_EMAIL||"—")}</div></div></div>
+    `);
+    list.insertAdjacentHTML("beforeend", `
+      <div class="item"><div class="top"><div style="font-weight:950">Firestore</div><div class="meta">tasks:${tasks.length} · taken:${taken.length} · plan:${plan.length}</div></div></div>
+    `);
+    list.insertAdjacentHTML("beforeend", `
+      <div class="item"><div class="meta">إذا ظهر Permission Error: طبّق Rules في الإعدادات.</div></div>
+    `);
+  }
+</script>
 
-        // ==========================================
-        // 4. DATA MANAGEMENT (DASHBOARD)
-        // ==========================================
-        let currentUserData = null;
-        let currentUserId = null;
-
-        async function loadUserData(uid) {
-            currentUserId = uid;
-            const doc = await db.collection('users').doc(uid).get();
-            if (doc.exists) {
-                currentUserData = doc.data();
-                renderDashboard();
-            }
-        }
-
-        function renderDashboard() {
-            document.getElementById('user-email-display').innerText = currentUserData.email;
-            document.getElementById('user-target-display').innerText = currentUserData.target;
-            document.getElementById('xp-display').innerText = currentUserData.xp;
-
-            const planContainer = document.getElementById('plan-container');
-            planContainer.innerHTML = '';
-
-            currentUserData.plan.forEach((task, index) => {
-                const div = document.createElement('div');
-                div.className = `plan-item ${task.type === 'break' ? 'plan-break' : ''}`;
-                
-                const status = task.completed ? '<span style="color:#00ff96">[DONE]</span>' : 
-                              (task.type === 'work' ? `<button class="check-btn" onclick="completeTask(${index})">COMPLETE</button>` : '<span>--</span>');
-
-                div.innerHTML = `
-                    <div>
-                        <div style="font-weight:600; color:white;">${task.title}</div>
-                        <div style="font-size:0.75rem; color:#999;">${task.duration} min // ${task.desc}</div>
-                    </div>
-                    ${status}
-                `;
-                planContainer.appendChild(div);
-            });
-        }
-
-        async function completeTask(index) {
-            // Update Local
-            if(currentUserData.plan[index].completed) return;
-            currentUserData.plan[index].completed = true;
-            currentUserData.xp += 50; // Give 50 XP
-            
-            // Update UI
-            playTypingSound(); // Sound FX
-            renderDashboard();
-
-            // Update Database
-            await db.collection('users').doc(currentUserId).update({
-                plan: currentUserData.plan,
-                xp: currentUserData.xp
-            });
-        }
-
-        // ==========================================
-        // 5. AUDIO & VISUAL ENGINE
-        // ==========================================
-        // (Simplified from previous version for stability)
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
-        let alarmOsc;
-
-        function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); }
-
-        function playTypingSound() {
-            if(!audioCtx) initAudio();
-            const t = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.frequency.setValueAtTime(800, t);
-            gain.gain.setValueAtTime(0.05, t);
-            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(t); osc.stop(t + 0.1);
-        }
-
-        function playAlarm() {
-            if(!audioCtx) initAudio();
-            const t = audioCtx.currentTime;
-            alarmOsc = audioCtx.createOscillator();
-            alarmOsc.type = 'sawtooth';
-            alarmOsc.frequency.value = 110;
-            const gain = audioCtx.createGain();
-            gain.gain.value = 0.1;
-            alarmOsc.connect(gain); gain.connect(audioCtx.destination);
-            alarmOsc.start(t);
-        }
-
-        function stopAlarm() {
-            if(alarmOsc) { alarmOsc.stop(); alarmOsc = null; }
-        }
-
-        // Alarm Logic (Cycle)
-        let alarmInterval;
-        let isActive = false;
-
-        function toggleAlarm() {
-            isActive = !isActive;
-            const status = document.getElementById('cycle-status');
-            const body = document.body;
-
-            if (isActive) {
-                status.innerText = "ACTIVE (5s/3m)";
-                status.style.color = "#ff4b4b";
-                startAlarmCycle();
-            } else {
-                status.innerText = "STANDBY";
-                status.style.color = "#999";
-                stopAlarmCycle();
-                body.className = '';
-            }
-        }
-
-        function startAlarmCycle() {
-            // Trigger immediately
-            triggerBurst();
-            // Then every 3 minutes (180000ms). Use 10000ms for testing.
-            alarmInterval = setInterval(triggerBurst, 180000); 
-        }
-
-        function stopAlarmCycle() {
-            clearInterval(alarmInterval);
-            stopAlarm();
-        }
-
-        function triggerBurst() {
-            document.body.classList.add('state-danger', 'alarm-active');
-            playAlarm();
-            setTimeout(() => {
-                stopAlarm();
-                document.body.classList.remove('alarm-active');
-                // Keeps 'state-danger' (Red) but stops flashing/sound
-            }, 5000);
-        }
-        
-        // Scroll FX
-        const body = document.body;
-        const main = document.getElementById('smooth-content');
-        let sy = 0, dy = 0;
-        body.style.height = main.getBoundingClientRect().height + 'px';
-        function renderScroll() {
-            dy = window.scrollY;
-            sy = (1 - 0.075) * sy + 0.075 * dy;
-            main.style.transform = `translate3d(0, -${sy}px, 0)`;
-            requestAnimationFrame(renderScroll);
-        }
-        requestAnimationFrame(renderScroll);
-
-    </script>
 </body>
 </html>
