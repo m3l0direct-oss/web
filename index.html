@@ -549,8 +549,10 @@
       <div class="grid">
         <section class="card">
           <div class="hd">
-            <h2 class="title">خطة المواد + المتطلبات</h2>
-            <p class="hint">أضف مواد خطتك. بعدها بنطلع لك “شو متاح تنزل”.</p>
+<h2 class="title">
+  خطة المواد + المتطلبات 
+  <span class="badge warn" style="font-size:12px; vertical-align:middle;">نسخة تجريبية (Beta)</span>
+</h2>            <p class="hint">أضف مواد خطتك. بعدها بنطلع لك “شو متاح تنزل”.</p>
           </div>
           <div class="body">
             <div class="two">
@@ -1074,9 +1076,7 @@
       </div>
 
       <div class="sep"></div>
-      <div class="quote" id="authMsg">
-        لازم تفعّل <b>Email/Password</b> من Firebase → Authentication.
-      </div>
+      
     </div>
     <div class="modalFooter">
       <button class="btn" id="btnAuthTips">تلميح</button>
@@ -1297,14 +1297,11 @@ const firebaseConfig = {
         await signInWithEmailAndPassword(auth, email, pass);
         toast("تم تسجيل الدخول ✅");
       }else{
-        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        const name = ($("authName").value || "").trim();
-        if(name){
-          try{ await updateProfile(cred.user, { displayName: name }); }catch(_){}
-        }
-        try{ await sendEmailVerification(cred.user); }catch(_){}
-        toast("تم إنشاء الحساب ✅ تفقد الإيميل للتحقق");
-        setAuthMode("login");
+// داخل زر btnGo عند حالة signup
+const cred = await createUserWithEmailAndPassword(auth, email, pass);
+await sendEmailVerification(cred.user);
+toast("تم إنشاء الحساب بنجاح! 🚀 يرجى تفقد إيميلك وتفعيل الحساب لتتمكن من الدخول.", false);
+setAuthMode("login"); // إرجاعه لشاشة الدخول 
       }
     }catch(e){
       console.error(e);
@@ -2256,67 +2253,84 @@ ${lengthInstruction}
   // =========================
   // Profile settings
   // =========================
-  async function loadProfile(uid){
-    const snap = await getDoc(userDoc(uid));
-    if(!snap.exists()) return;
-    const data = snap.data();
-    const p = data.profile || {};
-    $("pName").value = p.name || "";
-    $("pPhone").value = p.phone || "";
-    $("pMajor").value = p.major || "";
-    $("pYear").value = p.year || "";
-    $("pTerm").value = p.term || "";
-    $("pDob").value = p.dob || "";
-    $("emailVerified").textContent = data.emailVerified ? "Yes" : "No";
+ async function loadProfile(uid){
+      const s = await getDoc(userDoc(uid));
+      if(s.exists()){
+          const p = s.data().profile || {};
+          
+          // 1. تعبئة الحقول النصية
+          $("pName").value = p.name || "";
+          $("pPhone").value = p.phone || "";
+          $("pMajor").value = p.major || "";
+          $("pYear").value = p.year || "";
+          $("pTerm").value = p.term || "";
+          $("pDob").value = p.dob || "";
+          $("degreeLevelSelect").value = p.degree || "bachelor";
+          
+          if(s.data().emailVerified && $("emailVerified")) {
+             $("emailVerified").textContent = "Yes";
+          }
+
+          // 2. تعبئة القوائم المتسلسلة (إعادة بناء القوائم)
+          if(p.sector){
+              $("sectorSelect").value = p.sector;
+              $("sectorSelect").dispatchEvent(new Event('change')); // تشغيل كود تعبئة الجامعات
+
+              if(p.uniKey){
+                  $("universitySelect").value = p.uniKey;
+                  $("universitySelect").dispatchEvent(new Event('change')); // تشغيل كود تعبئة الكليات
+
+                  if(p.colKey){
+                      $("collegeSelect").value = p.colKey;
+                      $("collegeSelect").dispatchEvent(new Event('change')); // تشغيل كود تعبئة التخصصات
+
+                      if(p.major){
+                          $("majorSelect").value = p.major;
+                      }
+                  }
+              }
+          }
+      }
   }
-
-$("btnSaveProfile")?.addEventListener("click", async ()=>{
-    const u = auth.currentUser; if(!u) return;
-
-    // القيم الجديدة من القوائم
-    const secVal = $("sectorSelect").value;
-    const uniVal = $("universitySelect").value;
-    const colVal = $("collegeSelect").value;
-    const majVal = $("majorSelect").value;
-    const degVal = $("degreeLevelSelect").value; // الدرجة العلمية
-
-    // جلب الأسماء العربية للحفظ
-    let uniName = "";
-    let colName = "";
-    
-    if(window.JORDAN_ACADEMIC_DATA && uniVal){
-        const uData = window.JORDAN_ACADEMIC_DATA[uniVal];
-        uniName = uData.name;
-        if(colVal && uData.colleges[colVal]){
-            colName = uData.colleges[colVal].name;
-        }
-    }
-
-    const profile = {
-      name: ($("pName").value||"").trim(),
-      phone: ($("pPhone").value||"").trim(),
+$("btnSaveProfile").onclick = async ()=>{
+      const u = auth.currentUser;
+      const uniKey = $("universitySelect").value;
+      const colKey = $("collegeSelect").value;
       
-      // البيانات الأكاديمية الجديدة
-      sector: secVal,       // gov/pvt
-      degree: degVal,       // bachelor/diploma...
-      university: uniName,
-      college: colName,
-      major: majVal || ($("pMajor").value||"").trim(),
+      // جلب الأسماء المقروءة للحفظ (للعرض فقط)
+      let uniName="", colName="";
+      if(uniKey && window.JORDAN_ACADEMIC_DATA[uniKey]){
+          uniName = window.JORDAN_ACADEMIC_DATA[uniKey].name;
+          if(colKey && window.JORDAN_ACADEMIC_DATA[uniKey].colleges[colKey]){
+              colName = window.JORDAN_ACADEMIC_DATA[uniKey].colleges[colKey].name;
+          }
+      }
 
-      year: ($("pYear").value||"").trim(),
-      term: ($("pTerm").value||"").trim(),
-      dob: ($("pDob").value||"").trim()
-    };
+      await setDoc(userDoc(u.uid), {
+          profile: {
+              name: $("pName").value,
+              phone: $("pPhone").value,
+              year: $("pYear").value,
+              term: $("pTerm").value,
+              dob: $("pDob").value,
+              
+              // حفظ مفاتيح القوائم (مهم جداً للاسترجاع)
+              sector: $("sectorSelect").value,
+              uniKey: uniKey, 
+              colKey: colKey,
+              major: $("majorSelect").value,
+              degree: $("degreeLevelSelect").value,
 
-    try{
-      await setDoc(userDoc(u.uid), { profile, lastSeen: nowISO() }, { merge:true });
-      toast("تم الحفظ ✅");
-      $("profileMsg").textContent = "تم تحديث ملفك الأكاديمي ✅";
-    }catch(e){
-      console.error(e);
-      toast("فشل الحفظ.", true);
-    }
-  });
+              // حفظ الأسماء للقراءة
+              universityName: uniName,
+              collegeName: colName
+          }
+      }, {merge:true});
+      
+      // تحديث الحقل النصي للتخصص
+      $("pMajor").value = $("majorSelect").value || $("pMajor").value;
+      toast("تم حفظ وتوثيق بياناتك ✅");
+  };
 
   $("btnSendVerify")?.addEventListener("click", async ()=>{
     const u = auth.currentUser; if(!u) return;
@@ -3135,6 +3149,7 @@ majSel.addEventListener("change", function() {
   }
 });
 </script>
+
 
 </body>
 </html>
