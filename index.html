@@ -27,17 +27,17 @@
       margin:0; min-height:100vh;
       font-family:"Tajawal",system-ui,-apple-system,Segoe UI,Arial;
       color: var(--txt);
-      padding:24px 14px 60px;
+      padding:22px 14px 60px;
       display:flex; justify-content:center; align-items:flex-start;
       background:
         radial-gradient(1200px 650px at 80% -10%, rgba(103,232,249,.14), transparent 58%),
         radial-gradient(900px 520px at 10% 10%, rgba(167,243,208,.10), transparent 55%),
         linear-gradient(180deg, var(--bgB), var(--bgA));
     }
-    .wrap{width:min(1120px,100%)}
+    .wrap{width:min(1180px,100%)}
 
     header{
-      position: sticky; top: 12px; z-index: 20;
+      position: sticky; top: 10px; z-index: 20;
       padding: 12px; border-radius: var(--r3);
       border: 1px solid var(--stroke);
       background: rgba(10,18,32,.62);
@@ -50,9 +50,19 @@
     .logo{
       width:42px; height:42px; border-radius:14px;
       background: linear-gradient(135deg, rgba(103,232,249,.95), rgba(167,243,208,.9));
+      position:relative;
       box-shadow:0 10px 28px rgba(103,232,249,.12);
+      overflow:hidden;
     }
-    .brand h1{margin:0; font-size:19px; font-weight:900}
+    .logo:before{
+      content:"";
+      position:absolute; inset:-30%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 45%),
+        radial-gradient(circle at 70% 80%, rgba(0,0,0,.25), transparent 55%);
+      transform: rotate(18deg);
+    }
+    .brand h1{margin:0; font-size:18px; font-weight:950; letter-spacing:.2px}
     .brand .sub{margin-top:3px; color:var(--mut); font-size:12.8px}
 
     .top{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;}
@@ -71,10 +81,10 @@
       cursor:pointer; user-select:none;
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.035);
-      color:var(--txt);
+      color: var(--txt);
       padding:10px 13px;
       border-radius: 14px;
-      font-weight:800;
+      font-weight:900;
       transition: transform .08s ease, background .12s ease, border-color .12s ease;
       white-space:nowrap;
     }
@@ -90,7 +100,13 @@
       border-color: rgba(251,113,133,.25);
       color: #ffd2da;
     }
-    .smallBtn{ padding: 8px 10px; border-radius: 12px; font-weight: 900; }
+    .btn.ok{
+      background: rgba(52,211,153,.08);
+      border-color: rgba(52,211,153,.22);
+      color: rgba(220,255,242,.95);
+    }
+    .smallBtn{ padding: 8px 10px; border-radius: 12px; font-weight: 950; }
+    .ghostBtn{ background:transparent; border:none; color: var(--accent); font-weight:950; cursor:pointer; padding:0; }
 
     .tabs{
       margin: 14px 0 18px;
@@ -108,7 +124,7 @@
       background: transparent;
       color: var(--mut);
       cursor:pointer;
-      font-weight:900;
+      font-weight:950;
       user-select:none;
       transition:.12s ease;
     }
@@ -119,7 +135,7 @@
       color: var(--txt);
     }
 
-    .grid{display:grid; grid-template-columns:1.15fr .85fr; gap:16px;}
+    .grid{display:grid; grid-template-columns:1.2fr .8fr; gap:16px;}
     @media(max-width: 980px){ .grid{grid-template-columns:1fr; gap:14px;} header{top:10px;} }
 
     .card{
@@ -130,9 +146,9 @@
       overflow:hidden;
     }
     .hd{padding: 18px 18px 0;}
-    .body{padding: 20px;}
-    .title{margin:0 0 6px; font-size: 18.5px; font-weight: 950;}
-    .hint{margin:0 0 12px; color: var(--mut); font-size: 13.6px; line-height:1.9;}
+    .body{padding: 18px;}
+    .title{margin:0 0 6px; font-size: 17px; font-weight: 950;}
+    .hint{margin:0 0 12px; color: var(--mut); font-size: 13.2px; line-height:1.8;}
 
     .sep{height:1px; background: var(--stroke); margin:16px 0; opacity:.9;}
     .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
@@ -142,8 +158,8 @@
     label{display:block; font-size: 12.5px; color: var(--mut); margin-bottom:6px;}
     input, select, textarea{
       width:100%;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.16);
       color: var(--txt);
       border-radius: 16px;
       padding: 11px 12px;
@@ -152,7 +168,6 @@
       font-size:14px;
     }
     input:focus, select:focus, textarea:focus{border-color: rgba(103,232,249,.55);}
-    input::placeholder, textarea::placeholder{ color: rgba(168,182,207,.75); }
     textarea{min-height:92px; resize:vertical; line-height:1.7;}
 
     .kpi{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;}
@@ -164,24 +179,22 @@
       padding:12px;
     }
     .box .k{font-size:12px; color: var(--mut);}
-    .box .v{font-size:22px; font-weight:950; margin-top:6px;}
+    .box .v{font-size:20px; font-weight:950; margin-top:6px; letter-spacing:.2px}
 
     .list{
       display:flex; flex-direction:column; gap:12px;
-      max-height: 460px;
+      max-height: 560px;
       overflow:auto;
       padding-left:2px;
     }
-    @media(max-width: 980px){ .list{max-height: 380px;} }
-
     .item{
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.03);
       border-radius: var(--r2);
       padding:14px;
     }
-    .item .top{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:flex-start;}
-    .meta{font-size:12px; color: var(--mut); line-height:1.6;}
+    .item .topRow{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:flex-start;}
+    .meta{font-size:12px; color: var(--mut); line-height:1.7;}
 
     .badge{
       font-size:12px; font-weight:950;
@@ -192,13 +205,14 @@
     }
     .badge.warn{ background: linear-gradient(135deg, rgba(251,191,36,.92), rgba(167,243,208,.55)); }
     .badge.danger{ background: linear-gradient(135deg, rgba(251,113,133,.92), rgba(251,191,36,.6)); }
+    .badge.ok{ background: linear-gradient(135deg, rgba(52,211,153,.92), rgba(103,232,249,.55)); }
 
     .quote{
       border-right: 3px solid rgba(103,232,249,.55);
       background: rgba(103,232,249,.05);
       border-radius: var(--r2);
       padding:10px 12px;
-      line-height:1.8;
+      line-height:1.85;
       font-size:13.4px;
       color: rgba(234,241,255,.92);
     }
@@ -208,15 +222,8 @@
       display:flex; gap:10px; flex-wrap:wrap;
       width:100%; justify-content:flex-end;
     }
-    .actions .btn{
-      padding: 8px 10px;
-      border-radius: 12px;
-      background: rgba(255,255,255,.03);
-    }
-    .actions .btn.primary{
-      background: linear-gradient(135deg, rgba(103,232,249,.85), rgba(167,243,208,.80));
-      color:#06202a;
-    }
+    .actions .btn{ padding: 8px 10px; border-radius: 12px; background: rgba(255,255,255,.03);}
+    .actions .btn.primary{ background: linear-gradient(135deg, rgba(103,232,249,.85), rgba(167,243,208,.80)); color:#06202a; }
 
     .seg{
       display:flex; gap:8px; flex-wrap:wrap;
@@ -261,33 +268,8 @@
       line-height:1.6;
     }
     .toast.show{display:block;}
-    .dangerText{color:#ffd2da}
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
 
-    /* Optional details UI */
-    .optBox{
-      border:1px solid var(--stroke);
-      border-radius: var(--r2);
-      background: rgba(255,255,255,.02);
-      padding:10px 12px;
-    }
-    .optSum{
-      cursor:pointer;
-      font-weight:950;
-      color: var(--txt);
-      list-style:none;
-    }
-    .optSum::-webkit-details-marker{display:none;}
-    .optSum::before{
-      content:"▸";
-      display:inline-block;
-      margin-left:8px;
-      transform: translateY(-1px);
-      color: var(--accent);
-    }
-    details[open] .optSum::before{content:"▾";}
-
-    /* Auth modal */
     .modalBack{
       position:fixed; inset:0;
       background: rgba(0,0,0,.55);
@@ -297,9 +279,9 @@
       padding: 18px;
     }
     .modal{
-      width:min(520px, 100%);
+      width:min(560px, 100%);
       border:1px solid var(--stroke);
-      background: rgba(10,18,32,.85);
+      background: rgba(10,18,32,.88);
       border-radius: var(--r3);
       box-shadow: var(--shadow1);
       overflow:hidden;
@@ -307,13 +289,27 @@
     .modalHd{padding:16px 16px 0;}
     .modalBody{padding:16px;}
     .modalFooter{padding:0 16px 16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
-    .linkBtn{
-      background:transparent; border:none;
-      color: var(--accent);
-      cursor:pointer; font-weight:900;
-      padding:0;
+    .mini{font-size:12.8px; color:var(--mut); line-height:1.75;}
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      border:1px solid var(--stroke);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.02);
     }
-    .mini{font-size:12.8px; color:var(--mut); line-height:1.7;}
+    th, td{
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      text-align:right;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    th{color: rgba(234,241,255,.90); font-weight:950; background: rgba(255,255,255,.03);}
+    td{color: rgba(234,241,255,.92);}
+    tr:hover td{background: rgba(103,232,249,.04);}
+    .clickRow{cursor:pointer}
   </style>
 </head>
 
@@ -322,15 +318,17 @@
 
   <header>
     <div class="brand">
-      <div class="logo"></div>
+      <div class="logo" aria-label="UniPilot logo"></div>
       <div>
-        <h1>UniPilot — Student OS</h1>
-        <div class="sub">Email Login · Tasks · GPA (A+) · Planner · Insights</div>
+        <h1>UniPilot</h1>
+        <div class="sub">Student OS · GPA · Tasks · Planner · Coach · Admin</div>
       </div>
     </div>
 
     <div class="top">
       <div class="pill"><span>الحساب:</span> <span id="userLabel">غير مسجّل</span></div>
+      <div class="pill"><span>الدور:</span> <span id="roleLabel">—</span></div>
+
       <button class="btn" id="btnBackup" disabled>تصدير</button>
       <button class="btn" id="btnRestore" disabled>استيراد</button>
       <button class="btn" id="btnOpenSettings" disabled>إعدادات</button>
@@ -338,54 +336,59 @@
     </div>
   </header>
 
-  <div class="tabs">
+  <!-- STUDENT TABS -->
+  <div id="studentTabs" class="tabs hidden">
     <div class="tab active" data-view="tasks">المهام</div>
     <div class="tab" data-view="gpa">GPA</div>
     <div class="tab" data-view="planner">خطة المواد</div>
-    <div class="tab" data-view="insights">تحليل</div>
+   
+
+    <div class="tab" data-view="coach">Coach</div>
     <div class="tab" data-view="settings">إعدادات</div>
   </div>
 
-  <!-- ===== TASKS ===== -->
-  <div id="view_tasks">
-    <div class="grid">
-      <section class="card">
-        <div class="hd">
-          <h2 class="title">أضف مهمة بسرعة</h2>
-          <p class="hint">بس 3 أشياء: شو؟ متى؟ قديش؟ (والباقي اختياري)</p>
-        </div>
-        <div class="body">
+  <!-- ADMIN TABS -->
+  <div id="adminTabs" class="tabs hidden">
+    <div class="tab active" data-adminview="admin_home">Admin Dashboard</div>
+    <div class="tab" data-adminview="admin_users">الطلاب</div>
+    <div class="tab" data-adminview="admin_settings">إعدادات النظام</div>
+  </div>
 
-          <div class="two">
-            <div>
-              <label>شو بدك تعمل؟</label>
-              <input id="taskTitle" placeholder="مثال: تلخيص محاضرة 5" />
-            </div>
-            <div>
-              <label>آخر موعد</label>
-              <input id="taskDue" type="date"/>
-            </div>
+  <!-- ================= STUDENT APP ================= -->
+  <div id="studentApp" class="hidden">
+
+    <!-- TASKS -->
+    <div id="view_tasks">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">إضافة مهمة</h2>
+            <p class="hint">اكتب “أول خطوة” وبس — هيك بتقلل التوتر وتزيد الإنجاز.</p>
           </div>
-
-          <div class="two" style="margin-top:12px;">
-            <div>
-              <label>قديش بدها وقت؟ (بالدقائق)</label>
-              <input id="taskMin" type="number" min="5" step="5" value="60"/>
+          <div class="body">
+            <div class="two">
+              <div>
+                <label>عنوان المهمة</label>
+                <input id="taskTitle" placeholder="مثال: تلخيص محاضرة 5 / حل واجب 3" />
+              </div>
+              <div>
+                <label>المادة (اختياري)</label>
+                <input id="taskCourse" placeholder="مثال: CS201 / CALC2" />
+              </div>
             </div>
-            <div class="row" style="align-items:flex-end; justify-content:flex-end;">
-              <button class="btn primary" id="btnAddTask" disabled>إضافة</button>
-              <button class="btn" id="btnPlanToday" disabled>خطة اليوم</button>
-            </div>
-          </div>
-
-          <details class="optBox" style="margin-top:12px;">
-            <summary class="optSum">تفاصيل اختيارية</summary>
 
             <div class="two" style="margin-top:12px;">
               <div>
-                <label>المادة (اختياري)</label>
-                <input id="taskCourse" placeholder="مثال: CS201" />
+                <label>تاريخ التسليم</label>
+                <input id="taskDue" type="date"/>
               </div>
+              <div>
+                <label>الوقت المتوقع (دقائق)</label>
+                <input id="taskMin" type="number" min="5" step="5" value="60"/>
+              </div>
+            </div>
+
+            <div class="two" style="margin-top:12px;">
               <div>
                 <label>الأولوية</label>
                 <select id="taskPrio">
@@ -394,9 +397,6 @@
                   <option value="low">منخفضة</option>
                 </select>
               </div>
-            </div>
-
-            <div class="two" style="margin-top:12px;">
               <div>
                 <label>نوع المهمة</label>
                 <select id="taskType">
@@ -408,422 +408,631 @@
                   <option value="admin">أمور جامعة</option>
                 </select>
               </div>
-              <div>
-                <label>ملاحظة سريعة (اختياري)</label>
-                <input id="taskNotes" placeholder="مثال: ابدأ بأول صفحة" />
+            </div>
+
+            <div style="margin-top:12px;">
+              <label>ملاحظات (اختياري)</label>
+              <textarea id="taskNotes" placeholder="مثال: افتح الملف + اكتب العناوين."></textarea>
+            </div>
+
+            <div class="row" style="margin-top:12px;">
+              <button class="btn primary" id="btnAddTask" disabled>إضافة</button>
+              <button class="btn" id="btnPlanToday" disabled>خطة اليوم</button>
+            </div>
+
+            <div class="sep"></div>
+
+            <div class="kpi">
+              <div class="box"><div class="k">مهمات اليوم</div><div class="v" id="kToday">—</div></div>
+              <div class="box"><div class="k">خلال 7 أيام</div><div class="v" id="kWeek">—</div></div>
+              <div class="box"><div class="k">إنجاز الأسبوع</div><div class="v" id="kDonePct">—</div></div>
+            </div>
+
+            <div class="sep"></div>
+            <div class="quote" id="todayPlanMsg">سجّل دخولك أولاً ✅</div>
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">قائمة المهام</h2>
+            <p class="hint">فلترة بسيطة: اليوم / الأسبوع / الكل / متأخرة</p>
+          </div>
+          <div class="body">
+            <div class="seg" id="taskSeg">
+              <button class="segBtn" id="fToday" data-f="today" disabled>اليوم</button>
+              <button class="segBtn" id="fWeek" data-f="week" disabled>الأسبوع</button>
+              <button class="segBtn active" id="fAll" data-f="all" disabled>الكل</button>
+              <button class="segBtn" id="fOver" data-f="over" disabled>متأخرة</button>
+            </div>
+
+            <div class="sep"></div>
+            <div class="list" id="taskList">
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- GPA -->
+    <div id="view_gpa" class="hidden">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">GPA — إدخال الرموز + أقل/أعلى معدل</h2>
+            <p class="hint">اكتب الرمز (مثلاً: أ+ / A+). النظام يحسب أقل/أعلى معدل حسب رينج الرمز.</p>
+          </div>
+
+          <div class="body">
+
+            <div class="item">
+              <div class="topRow">
+                <div style="font-weight:950">إضافة مادة مأخوذة</div>
+                <div class="meta">الرمز عربي/إنجليزي ✅</div>
+              </div>
+              <div class="hr"></div>
+
+              <div class="two">
+                <div>
+                  <label>اسم/كود المادة</label>
+                  <input id="takenName" placeholder="مثال: CS201 / Calculus II" />
+                </div>
+                <div>
+                  <label>الساعات</label>
+                  <input id="takenCredits" type="number" min="1" step="1" value="3"/>
+                </div>
+              </div>
+
+              <div class="two" style="margin-top:12px;">
+                <div>
+                  <label>الرمز (مثال: أ+ أو A+)</label>
+                  <input id="takenGrade" list="gradeSymbols" placeholder="أ+ / أ / أ- / ب+ ..." />
+                  <datalist id="gradeSymbols"></datalist>
+                </div>
+                <div>
+                  <label>تصنيف (للتحليل)</label>
+                  <select id="takenCat">
+                    <option value="major" selected>تخصص</option>
+                    <option value="math">رياضيات</option>
+                    <option value="programming">برمجة</option>
+                    <option value="lab">مختبر</option>
+                    <option value="general">جامعة</option>
+                    <option value="elective">اختياري</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top:12px;">
+                <button class="btn primary" id="btnAddTaken" disabled>إضافة</button>
               </div>
             </div>
-          </details>
 
-          <div class="sep"></div>
+            <div class="sep"></div>
 
-          <div class="kpi">
-            <div class="box">
-              <div class="k">مهمات اليوم</div>
-              <div class="v" id="kToday">—</div>
+            <div class="kpi">
+              <div class="box"><div class="k">GPA (تقريبي)</div><div class="v" id="gpaC">—</div></div>
+              <div class="box"><div class="k">ساعات منجزة</div><div class="v" id="crDone">—</div></div>
+              <div class="box"><div class="k">عدد المواد</div><div class="v" id="coursesCount">—</div></div>
             </div>
-            <div class="box">
-              <div class="k">خلال 7 أيام</div>
-              <div class="v" id="kWeek">—</div>
+
+            <div class="sep"></div>
+
+            <div class="kpi">
+              <div class="box"><div class="k">أقل معدل ممكن</div><div class="v" id="minGpaPossible">—</div></div>
+              <div class="box"><div class="k">أعلى معدل ممكن</div><div class="v" id="maxGpaPossible">—</div></div>
+              <div class="box"><div class="k">Points/ساعة</div><div class="v" id="ppc">—</div></div>
             </div>
-            <div class="box">
-              <div class="k">إنجاز الأسبوع</div>
-              <div class="v" id="kDonePct">—</div>
+
+            <div class="sep"></div>
+            <div class="quote" id="gpaMsg">أضف موادك عشان يطلع التحليل.</div>
+
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">مواد أخذتها</h2>
+            <p class="hint">حذف سريع لأي مادة.</p>
+          </div>
+          <div class="body">
+            <div class="list" id="takenList">
+             </div>
             </div>
           </div>
+        </aside>
 
-          <div class="sep"></div>
-          <div class="quote" id="todayPlanMsg">سجّل دخولك أولاً، وبعدها نبدأ ✅</div>
-        </div>
-      </section>
-
-      <aside class="card">
-        <div class="hd">
-          <h2 class="title">قائمة المهام</h2>
-          <p class="hint">فلترة بسيطة وواضحة</p>
-        </div>
-        <div class="body">
-          <div class="seg" id="taskSeg">
-            <button class="segBtn active" id="fToday" data-f="today" disabled>اليوم</button>
-            <button class="segBtn" id="fWeek" data-f="week" disabled>الأسبوع</button>
-            <button class="segBtn" id="fAll" data-f="all" disabled>الكل</button>
-            <button class="segBtn" id="fOver" data-f="over" disabled>متأخرة</button>
-          </div>
-
-          <div class="sep"></div>
-          <div class="list" id="taskList">
-            <div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>
-          </div>
-        </div>
-      </aside>
+      </div>
     </div>
-  </div>
 
-  <!-- ===== GPA ===== -->
-  <div id="view_gpa" class="hidden">
-    <div class="grid">
-      <section class="card">
-        <div class="hd">
-          <h2 class="title">GPA — إدخال مادة</h2>
-          <p class="hint">ادخل: اسم المادة + ساعات + العلامة. (A+ موجودة) والباقي اختياري.</p>
-        </div>
-        <div class="body">
-          <div class="two">
-            <div>
-              <label>اسم/كود المادة</label>
-              <input id="takenName" placeholder="مثال: CS201 / Calculus II" />
-            </div>
-            <div>
-              <label>الساعات</label>
-              <input id="takenCredits" type="number" min="1" step="1" value="3"/>
-            </div>
+    <!-- PLANNER -->
+    <div id="view_planner" class="hidden">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">خطة المواد + المتطلبات</h2>
+            <p class="hint">أضف مواد خطتك. بعدها بنطلع لك “شو متاح تنزل”.</p>
           </div>
-
-          <div class="two" style="margin-top:12px;">
-            <div>
-              <label>العلامة</label>
-              <select id="takenGrade">
-                <option>F</option><option>D</option><option>D+</option>
-                <option>C-</option><option>C</option><option>C+</option>
-                <option>B-</option><option>B</option><option selected>B+</option>
-                <option>A-</option><option>A</option><option>A+</option>
-              </select>
+          <div class="body">
+            <div class="two">
+              <div>
+                <label>كود المادة</label>
+                <input id="planCode" placeholder="مثال: CS220"/>
+              </div>
+              <div>
+                <label>اسم المادة</label>
+                <input id="planName" placeholder="مثال: Data Structures"/>
+              </div>
             </div>
-            <div class="row" style="align-items:flex-end; justify-content:flex-end;">
-              <button class="btn primary" id="btnAddTaken" disabled>إضافة</button>
-            </div>
-          </div>
 
-          <details class="optBox" style="margin-top:12px;">
-            <summary class="optSum">تفاصيل اختيارية (للتحليل)</summary>
             <div class="two" style="margin-top:12px;">
               <div>
-                <label>تصنيف</label>
-                <select id="takenCat">
-                  <option value="major" selected>تخصص</option>
-                  <option value="math">رياضيات</option>
-                  <option value="programming">برمجة</option>
-                  <option value="lab">مختبر</option>
-                  <option value="general">جامعة</option>
-                  <option value="elective">اختياري</option>
-                </select>
+                <label>الساعات</label>
+                <input id="planCredits" type="number" min="1" step="1" value="3"/>
               </div>
               <div>
-                <label>الفصل (اختياري)</label>
-                <input id="takenTerm" placeholder="مثال: 2025/1"/>
+                <label>تصنيف</label>
+                <select id="planCat">
+                  <option value="major" selected>تخصص</option>
+                  <option value="general">جامعة</option>
+                  <option value="elective">اختياري</option>
+                  <option value="support">مساندة</option>
+                </select>
               </div>
             </div>
 
             <div style="margin-top:12px;">
-              <label>ليش كانت صعبة؟ (اختياري)</label>
-              <select id="takenWeak">
-                <option value="">—</option>
-                <option value="theory">نظري</option>
-                <option value="problem">حل مسائل</option>
-                <option value="time">وقت/تأجيل</option>
-                <option value="exam">امتحانات</option>
-              </select>
-            </div>
-          </details>
-
-          <div class="sep"></div>
-
-          <div class="kpi">
-            <div class="box">
-              <div class="k">GPA تراكمي</div>
-              <div class="v" id="gpaC">—</div>
-            </div>
-            <div class="box">
-              <div class="k">ساعات منجزة</div>
-              <div class="v" id="crDone">—</div>
-            </div>
-            <div class="box">
-              <div class="k">رينج العلامات</div>
-              <div class="v" id="gradeRange">—</div>
-            </div>
-          </div>
-
-          <div class="sep"></div>
-
-          <!-- المطلوب الجديد: أعلى/أدنى علامة + أعلى/أدنى Points -->
-          <div class="kpi">
-            <div class="box">
-              <div class="k">أدنى علامة</div>
-              <div class="v" id="minGrade">—</div>
-            </div>
-            <div class="box">
-              <div class="k">أعلى علامة</div>
-              <div class="v" id="maxGrade">—</div>
-            </div>
-            <div class="box">
-              <div class="k">متوسط Points/ساعة</div>
-              <div class="v" id="ppc">—</div>
-            </div>
-          </div>
-
-          <div class="sep"></div>
-
-          <div class="kpi">
-            <div class="box">
-              <div class="k">أدنى Points</div>
-              <div class="v" id="minPts">—</div>
-            </div>
-            <div class="box">
-              <div class="k">أعلى Points</div>
-              <div class="v" id="maxPts">—</div>
-            </div>
-            <div class="box">
-              <div class="k">معلومة سريعة</div>
-              <div class="v" id="gpaTip">—</div>
-            </div>
-          </div>
-
-          <div class="sep"></div>
-
-          <h3 class="title" style="margin:0 0 6px;">هدف المعدل (GPA Goal)</h3>
-          <p class="hint">ينحفظ على حسابك في Firestore (يكمل معك طول الجامعة).</p>
-
-          <div class="two">
-            <div>
-              <label>هدفك (Target GPA)</label>
-              <input id="goalGpa" type="number" step="0.01" min="0" max="4" placeholder="مثال: 3.20">
-            </div>
-            <div>
-              <label>إجمالي ساعات الخطة (Total Program Credits)</label>
-              <input id="goalTotalCredits" type="number" step="1" min="1" placeholder="مثال: 160">
-            </div>
-          </div>
-
-          <div class="two" style="margin-top:12px;">
-            <div>
-              <label>ساعات الفصل القادم (اختياري)</label>
-              <input id="goalNextCredits" type="number" step="1" min="0" placeholder="مثال: 15">
-            </div>
-            <div style="display:flex; gap:10px; align-items:flex-end; justify-content:flex-end;">
-              <button class="btn primary" id="btnSaveGoal" disabled>حفظ الهدف</button>
-              <button class="btn" id="btnClearGoal" disabled>مسح</button>
-            </div>
-          </div>
-
-          <div class="sep"></div>
-
-          <div class="kpi">
-            <div class="box">
-              <div class="k">ساعات متبقية</div>
-              <div class="v" id="remainCredits">—</div>
-            </div>
-            <div class="box">
-              <div class="k">المطلوب على المتبقي</div>
-              <div class="v" id="needRemainGpa">—</div>
-            </div>
-            <div class="box">
-              <div class="k">المطلوب الفصل الجاي</div>
-              <div class="v" id="needNextTermGpa">—</div>
-            </div>
-          </div>
-
-          <div class="sep"></div>
-          <div class="quote" id="goalMsg">سجّل دخولك أولاً، ثم احفظ هدفك.</div>
-        </div>
-      </section>
-
-      <aside class="card">
-        <div class="hd">
-          <h2 class="title">مواد أخذتها</h2>
-          <p class="hint">حذف سريع</p>
-        </div>
-        <div class="body">
-          <div class="list" id="takenList">
-            <div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </div>
-
-  <!-- ===== PLANNER ===== -->
-  <div id="view_planner" class="hidden">
-    <div class="grid">
-      <section class="card">
-        <div class="hd">
-          <h2 class="title">خطة المواد + المتطلبات</h2>
-          <p class="hint">أضف مواد خطتك، وبعدها زر “مواد متاحة” يطلع لك شو بتقدر تنزل.</p>
-        </div>
-        <div class="body">
-
-          <div class="two">
-            <div>
-              <label>كود المادة</label>
-              <input id="planCode" placeholder="مثال: CS220"/>
-            </div>
-            <div>
-              <label>اسم المادة</label>
-              <input id="planName" placeholder="مثال: Data Structures"/>
-            </div>
-          </div>
-
-          <div class="two" style="margin-top:12px;">
-            <div>
-              <label>الساعات</label>
-              <input id="planCredits" type="number" min="1" step="1" value="3"/>
-            </div>
-            <div>
-              <label>تصنيف</label>
-              <select id="planCat">
-                <option value="major" selected>تخصص</option>
-                <option value="general">جامعة</option>
-                <option value="elective">اختياري</option>
-                <option value="support">مساندة</option>
-              </select>
-            </div>
-          </div>
-
-          <details class="optBox" style="margin-top:12px;">
-            <summary class="optSum">متطلبات سابقة (اختياري)</summary>
-            <div style="margin-top:12px;">
-              <label>المتطلبات — افصل بفاصلة</label>
+              <label>المتطلبات السابقة — افصل بفاصلة</label>
               <input id="planPrereq" placeholder="مثال: CS101, MATH101"/>
             </div>
-          </details>
+         <div class="hr"></div>
+  <div class="row" style="margin-top:12px;">
+              <button class="btn primary" id="btnAddPlan" disabled>إضافة</button>
+              <button class="btn" id="btnSuggestCourses" disabled>مواد متاحة</button>
+            </div>
+<div class="item" style="background: linear-gradient(135deg, rgba(103,232,249,.08), rgba(167,243,208,.05)); border-color:var(--accent);">
+  <div class="topRow">
+  <div class="hr"></div>
 
-          <div class="row" style="margin-top:12px; justify-content:flex-end;">
-            <button class="btn primary" id="btnAddPlan" disabled>إضافة</button>
-            <button class="btn" id="btnSuggestCourses" disabled>مواد متاحة</button>
-          </div>
-
-          <div class="sep"></div>
-          <div class="quote" id="planMsg">سجّل دخولك عشان نقدر نبني خطتك.</div>
-
-          <div class="sep"></div>
-          <div class="list" id="suggestList"></div>
-        </div>
-      </section>
-
-      <aside class="card">
-        <div class="hd">
-          <h2 class="title">قائمة الخطة</h2>
-          <p class="hint">مواد برنامجك (مش اللي أخذتها)</p>
-        </div>
-        <div class="body">
-          <div class="list" id="planList">
-            <div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>
-          </div>
-        </div>
-      </aside>
+<div class="item" style="background: linear-gradient(135deg, rgba(103,232,249,.08), rgba(167,243,208,.05)); border-color:var(--accent);">
+  <div class="topRow">
+    <div style="font-weight:950; color:var(--accent);">🎯 إعدادات الجدول المقترح</div>
+  </div>
+  
+  <div class="two" style="margin-top:10px;">
+    <div>
+      <label>عدد الساعات المطلوب</label>
+      <select id="targetHours">
+        <option value="9-12">خفيف (9-12 ساعة)</option>
+        <option value="12-15" selected>متوسط (12-15 ساعة)</option>
+        <option value="15-18">ضغط (15-18 ساعة)</option>
+        <option value="18+">تخرج/الحد الأقصى</option>
+      </select>
+    </div>
+    <div>
+      <label>تنزيل مختبرات (Labs)؟</label>
+      <select id="labPref">
+        <option value="yes" selected>نعم، نزل لابات</option>
+        <option value="no">لا، بدون لابات هالفصل</option>
+        <option value="focus">ركز ع اللابات المتأخرة</option>
+      </select>
     </div>
   </div>
 
-  <!-- ===== INSIGHTS ===== -->
-  <div id="view_insights" class="hidden">
-    <div class="grid">
-      <section class="card">
-        <div class="hd">
-          <h2 class="title">تحليل نقاط الضعف</h2>
-          <p class="hint">يعتمد على GPA + المهام. يعطيك وين تركز اليوم.</p>
-        </div>
-        <div class="body">
-          <div class="kpi">
-            <div class="box">
-              <div class="k">أضعف مجال</div>
-              <div class="v" id="weakCat">—</div>
-            </div>
-            <div class="box">
-              <div class="k">سبب شائع</div>
-              <div class="v" id="weakReason">—</div>
-            </div>
-            <div class="box">
-              <div class="k">توصية اليوم</div>
-              <div class="v" id="weakTip">—</div>
-            </div>
-          </div>
-
-          <div class="sep"></div>
-          <div class="quote" id="insightMsg">سجّل دخولك عشان يشتغل التحليل.</div>
-
-          <div class="sep"></div>
-          <div class="list" id="catBreakdown"></div>
-        </div>
-      </section>
-
-      <aside class="card">
-        <div class="hd">
-          <h2 class="title">ملخص المهام</h2>
-          <p class="hint">ضغطك الحالي + أقرب مواعيد</p>
-        </div>
-        <div class="body">
-          <div class="list" id="taskInsights"></div>
-        </div>
-      </aside>
-    </div>
+  <div class="row" style="margin-top:12px;">
+     <button class="btn" id="btnSmartSuggest" style="width:100%; background:var(--accent); color:#000; font-weight:bold; border:none;">
+       🤖 اقترح لي جدولاً (AI Planner)
+     </button>
   </div>
+</div>
 
-  <!-- ===== SETTINGS ===== -->
-  <div id="view_settings" class="hidden">
-    <div class="grid">
-      <section class="card">
-        <div class="hd">
-          <h2 class="title">الإعدادات + أمان البيانات</h2>
-          <p class="hint">هاي الصفحة هدفها: أمان + نسخ احتياطي + حل مشاكل Firebase بسهولة.</p>
-        </div>
-        <div class="body">
+<div class="sep"></div>
+<div class="list" id="suggestList"></div>
 
-          <div class="quote">
-            <b>1) Firestore Rules (انسخها وحطها بالكونسول):</b><br><br>
-            <pre class="mono" style="white-space:pre-wrap;margin:0;background:rgba(0,0,0,.20);padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.08);color:rgba(234,241,255,.92);font-size:12px;line-height:1.7;">rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-      match /{sub=**} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-    }
-  }
-}</pre>
+<div class="row" style="margin-top:12px;">
+  <button class="btn primary" id="btnAddPlan" disabled>إضافة يدوية</button>
+  <button class="btn" id="btnImportOfficial">📥 استيراد خطة التخصص</button>
+</div>
+</div>
+
+
+          
+
+            <div class="sep"></div>
+          
+
+            <div class="sep"></div>
+            <div class="list" id="suggestList"></div>
           </div>
+        </section>
 
-          <div class="sep"></div>
-
-          <div class="item">
-            <div class="top">
-              <div style="font-weight:950">2) توضيح سريع</div>
-              <div class="meta">ليش هاي الرولز مهمة؟</div>
-            </div>
-            <div class="hr"></div>
-            <div class="meta">
-              لأنها بتخلي كل طالب يشوف ويعدل بياناته فقط حسب <b>UID</b> تبعه.
-              بدونها ممكن يطلع Permission Error أو أسوأ: بيانات ناس ثانية!
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">قائمة الخطة</h2>
+            <p class="hint">مواد البرنامج (مش المواد اللي أخذتها).</p>
+          </div>
+          <div class="body">
+            <div class="list" id="planList">
+              <div class="item"><div class="meta"</div></div>
             </div>
           </div>
-
-          <div class="sep"></div>
-
-          <div class="item">
-            <div class="top">
-              <div style="font-weight:950">خيارات خطرة</div>
-              <div class="meta">بحذر</div>
-            </div>
-            <div class="hr"></div>
-            <div class="row" style="justify-content:space-between;">
-              <div class="meta">مسح كل بياناتك من Firestore</div>
-              <button class="btn danger" id="btnResetAll" disabled>مسح كل بياناتي</button>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <aside class="card">
-        <div class="hd">
-          <h2 class="title">حالة النظام</h2>
-          <p class="hint">بتشوف حالة Auth وFirestore وعدد العناصر</p>
-        </div>
-        <div class="body">
-          <div class="list" id="sysStatus"></div>
-        </div>
-      </aside>
+        </aside>
+      </div>
     </div>
+
+    <!-- COACH -->
+    <div id="view_coach" class="hidden">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">Coach — متابعة ذكية</h2>
+            <p class="hint">اقتراح سريع شغال. Gemini اختياري إذا حطيت مفتاح.</p>
+          </div>
+          <div class="body">
+            <div class="item">
+              <div class="topRow">
+                <div style="font-weight:950">سؤال سريع</div>
+                <div class="meta">بدون تعقيد</div>
+              </div>
+              <div class="hr"></div>
+
+              <div class="two">
+                <div>
+
+               <div class="two">
+  <div>
+    <label>نركز على</label>
+    <select id="coachFocus">
+      <option value="weak">أضعف مادة</option>
+      <option value="tasks">المهام المتأخرة</option>
+      <option value="plan">خطة الفصل</option>
+    </select>
   </div>
+  <div>
+    <label>الأسلوب</label>
+    <select id="coachStyle">
+      <option value="easy" selected>بسيط ومباشر</option>
+      <option value="strict">صارم (جلد)</option>
+    </select>
+  </div>
+</div>
+
+<div class="two" style="margin-top:12px;">
+  <div>
+    <label>طول الرد</label>
+    <select id="coachLength">
+      <option value="short" selected>مختصر (الزبدة)</option>
+      <option value="long">مفصل (خطة كاملة)</option>
+    </select>
+  </div>
+</div>
+
+              <div style="margin-top:12px;">
+                <label>شو مضايقك اليوم؟ (اختياري)</label>
+                <textarea id="coachInput" placeholder="مثال: خايف من امتحان / متراكم علي واجبات..."></textarea>
+              </div>
+
+              <div class="row" style="margin-top:12px;">
+                <button class="btn primary" id="btnCoachAsk" disabled>اسأل (Gemini)</button>
+                <button class="btn" id="btnCoachQuick" disabled>اقتراح سريع</button>
+              </div>
+
+              <div class="sep"></div>
+              <div class="quote" id="coachAnswer">سجّل دخولك أولاً ✅</div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">ملخصك</h2>
+            <p class="hint">أضعف مادة + أقرب مهمة + نصيحة قصيرة</p>
+          </div>
+          <div class="body">
+            <div class="list" id="coachSummary"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="view_settings" class="hidden">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">إعدادات الطالب</h2>
+            <p class="hint">معلومات بسيطة وواضحة.</p>
+          </div>
+          <div class="body">
+
+            <div class="item">
+              <div class="topRow">
+                <div style="font-weight:950">معلوماتي</div>
+                <div class="meta">تنحفظ على حسابك</div>
+              </div>
+              <div class="hr"></div>
+
+              <div class="two">
+                <div>
+                  <label>الاسم</label>
+                  <input id="pName" placeholder="مثال: Mohammad"/>
+                </div>
+                <div>
+                  <label>رقم الموبايل (اختياري)</label>
+                  <input id="pPhone" placeholder="مثال: 07xxxxxxxx"/>
+                </div>
+              </div>
+
+              <div class="two" style="margin-top:12px;">
+                <div>
+                  <label>التخصص</label>
+                  <input id="pMajor" placeholder="مثال: Computer Engineering"/>
+                </div>
+                <div>
+                  <label>السنة الجامعية</label>
+                  <select id="pYear">
+                    <option value="">—</option>
+                    <option value="1">أولى</option>
+                    <option value="2">ثانية</option>
+                    <option value="3">ثالثة</option>
+                    <option value="4">رابعة</option>
+                    <option value="5">خامسة</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="two" style="margin-top:12px;">
+                <div>
+                  <label>الفصل الحالي</label>
+                  <select id="pTerm">
+                    <option value="">—</option>
+                    <option value="1">فصل 1</option>
+                    <option value="2">فصل 2</option>
+                    <option value="3">صيفي</option>
+                  </select>
+                </div>
+                <div>
+                  <label>تاريخ الميلاد (اختياري)</label>
+                  <input id="pDob" type="date"/>
+                </div>
+              </div>
+<div class="item">
+  <div class="topRow">
+    <div style="font-weight:950">المسار الأكاديمي</div>
+    <div class="meta">حدد قطاع التعليم والدرجة</div>
+  </div>
+  <div class="hr"></div>
+
+  <div class="list" style="gap:15px; padding:0;">
+    
+    <div>
+      <label><b>1. قطاع التعليم:</b></label>
+      <select id="sectorSelect">
+        <option value="">-- اختر القطاع --</option>
+        <option value="gov">جامعة حكومية</option>
+        <option value="pvt">جامعة خاصة</option>
+      </select>
+    </div>
+
+    <div>
+      <label><b>2. الجامعة:</b></label>
+      <select id="universitySelect" disabled>
+        <option value="">-- اختر القطاع أولاً --</option>
+      </select>
+    </div>
+
+    <div>
+      <label><b>3. الكلية:</b></label>
+      <select id="collegeSelect" disabled>
+        <option value="">-- اختر الجامعة أولاً --</option>
+      </select>
+    </div>
+
+    <div>
+      <label><b>4. التخصص:</b></label>
+      <select id="majorSelect" disabled>
+        <option value="">-- اختر الكلية أولاً --</option>
+      </select>
+    </div>
+
+    <div>
+      <label><b>5. الدرجة العلمية:</b></label>
+      <select id="degreeLevelSelect">
+        <option value="bachelor" selected>بكالوريوس (Bachelor)</option>
+        <option value="diploma">دبلوم (Diploma)</option>
+        <option value="master">ماجستير (Master's)</option>
+        <option value="phd">دكتوراه (PhD)</option>
+      </select>
+    </div>
+
+  </div>
+</div>
+              <div class="row" style="margin-top:12px;">
+                <button class="btn primary" id="btnSaveProfile" disabled>حفظ</button>
+                <span class="pill">Email Verified: <b id="emailVerified">—</b></span>
+                <button class="btn ok" id="btnSendVerify" disabled>إرسال تحقق</button>
+              </div>
+
+              <div class="sep"></div>
+              <div class="quote" id="profileMsg">قم بادخال بياناتك الحقيقية !</div>
+            </div>
+
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">خصوصية سريعة</h2>
+            <p class="hint">مختصر ومفيد</p>
+          </div>
+          <div class="body">
+            <div class="quote">
+              • بياناتك انت بتشوفها بحسابك فقط.<br>
+              • سيتم توفير الايميلات الدورية قريبا .            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+  </div><!-- /studentApp -->
+
+  <!-- ================= ADMIN APP ================= -->
+  <div id="adminApp" class="hidden">
+
+    <div id="admin_home">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">Admin Dashboard</h2>
+            <p class="hint">أرقام سريعة عن النظام.</p>
+          </div>
+          <div class="body">
+            <div class="kpi">
+              <div class="box"><div class="k">عدد الطلاب</div><div class="v" id="aUsers">—</div></div>
+              <div class="box"><div class="k">آخر 7 أيام (تقريبي)</div><div class="v" id="aActive">—</div></div>
+              <div class="box"><div class="k">متوسط GPA (تقريبي)</div><div class="v" id="aAvgGpa">—</div></div>
+            </div>
+            <div class="sep"></div>
+            <div class="quote" id="adminHomeMsg">إذا ما ظهر شيء: راجع Firestore Rules للأدمن.</div>
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">أحدث الطلاب</h2>
+            <p class="hint">آخر نشاط (lastSeen)</p>
+          </div>
+          <div class="body">
+            <div class="list" id="aRecent"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div id="admin_users" class="hidden">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">الطلاب (بحث + جدول)</h2>
+            <p class="hint">اضغط على صف لعرض التفاصيل.</p>
+          </div>
+          <div class="body">
+
+            <div class="two">
+              <div>
+                <label>بحث (اسم/إيميل/تخصص)</label>
+                <input id="aQ" placeholder="mohammad / engineering / cs"/>
+              </div>
+              <div>
+                <label>السنة</label>
+                <select id="aYear">
+                  <option value="">الكل</option>
+                  <option value="1">أولى</option><option value="2">ثانية</option><option value="3">ثالثة</option><option value="4">رابعة</option><option value="5">خامسة</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="two" style="margin-top:12px;">
+              <div>
+                <label>فرز</label>
+                <select id="aSort">
+                  <option value="lastSeen_desc" selected>الأحدث نشاطًا</option>
+                  <option value="created_desc">الأحدث تسجيلًا</option>
+                </select>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-end;">
+                <button class="btn primary" id="btnAdminRefresh" disabled>تحديث</button>
+                <span class="pill">Selected: <b id="aSel">—</b></span>
+              </div>
+            </div>
+
+            <div class="sep"></div>
+
+            <div class="item">
+              <div class="topRow">
+                <div style="font-weight:950">قائمة الطلاب</div>
+                <div class="meta">اضغط على صف</div>
+              </div>
+              <div class="hr"></div>
+
+              <div style="overflow:auto">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>الاسم</th>
+                      <th>الإيميل</th>
+                      <th>التخصص</th>
+                      <th>السنة</th>
+                      <th>آخر نشاط</th>
+                    </tr>
+                  </thead>
+                  <tbody id="aTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">تفاصيل الطالب</h2>
+            <p class="hint">Profile + آخر مهام/مواد (قراءة فقط)</p>
+          </div>
+          <div class="body">
+            <div class="list" id="aDetails"></div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <div id="admin_settings" class="hidden">
+      <div class="grid">
+        <section class="card">
+          <div class="hd">
+            <h2 class="title">Admin Settings</h2>
+            <p class="hint">إيميلات Verify/Reset من Firebase Auth جاهزة.</p>
+          </div>
+          <div class="body">
+            <div class="quote">
+              ✅ Email Verification / Reset Password شغالين من Firebase Auth مباشرة.<br>
+              ⚠️ إرسال إيميلات نظام/دورية الأفضل عبر Cloud Functions (لأن API Key داخل HTML خطر).
+            </div>
+
+            <div class="sep"></div>
+
+            <div class="item">
+              <div class="topRow">
+                <div style="font-weight:950">Gemini Key (اختياري)</div>
+                <div class="meta">Coach يستخدمه إذا حطيته</div>
+              </div>
+              <div class="hr"></div>
+              <div class="quote">
+                ضع مفتاح Gemini داخل الكود بمكانه (متغير GEMINI_API_KEY).<br>
+                للإنتاج: الأفضل Proxy/Functions بدل وضع المفتاح داخل HTML.
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="hd">
+            <h2 class="title">معلومة</h2>
+            <p class="hint">الأدمن محدد بالإيميل</p>
+          </div>
+          <div class="body">
+            <div class="quote">
+              الأدمن الرئيسي هون محدد بالإيميل داخل الكود (MAIN_ADMIN_EMAIL).<br>
+              إذا الـ Rules تمنع قراءة users/* للأدمن → مش رح يطلع شيء.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+  </div><!-- /adminApp -->
 
 </div>
 
@@ -834,7 +1043,7 @@ service cloud.firestore {
   <div class="modal">
     <div class="modalHd">
       <h2 class="title" id="authTitle">تسجيل الدخول</h2>
-      <p class="hint" id="authHint">ادخل إيميلك وكلمة السر. بياناتك رح تنحفظ مع حسابك.</p>
+      <p class="hint" id="authHint">بعد التسجيل رح توصلك رسالة تحقق للإيميل.</p>
     </div>
     <div class="modalBody">
       <div class="two">
@@ -859,1177 +1068,2072 @@ service cloud.firestore {
 
       <div class="mini">
         <span id="authSwitchText">مش عندك حساب؟</span>
-        <button class="linkBtn" id="btnSwitchMode">اعمل حساب جديد</button>
+        <button class="ghostBtn" id="btnSwitchMode">اعمل حساب جديد</button>
         <span> · </span>
-        <button class="linkBtn" id="btnForgot">نسيت كلمة السر؟</button>
+        <button class="ghostBtn" id="btnForgot">نسيت كلمة السر؟</button>
       </div>
 
       <div class="sep"></div>
-      <div class="quote" id="authMsg">ملاحظة: فعّل Email/Password من Firebase Authentication.</div>
+      <div class="quote" id="authMsg">
+        لازم تفعّل <b>Email/Password</b> من Firebase → Authentication.
+      </div>
     </div>
     <div class="modalFooter">
-      <button class="btn" id="btnAuthDemo">تلميح الإعدادات</button>
+      <button class="btn" id="btnAuthTips">تلميح</button>
       <button class="btn primary" id="btnAuthGo">دخول</button>
     </div>
   </div>
 </div>
 
 <script type="module">
+  // =========================
+  // Firebase (Modular v10)
+  // =========================
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
   import {
     getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword,
-    sendPasswordResetEmail, signOut, updateProfile
+    sendPasswordResetEmail, signOut, updateProfile, sendEmailVerification
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-  import {
-    getFirestore, doc, setDoc, getDoc, addDoc, deleteDoc, updateDoc,
-    collection, getDocs, query, orderBy, limit, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-  // ====== ضع Firebase Config هنا ======
-        const firebaseConfig = {
-     
+  import {
+    getFirestore,
+    doc, getDoc, setDoc, addDoc, deleteDoc, updateDoc,
+    collection, query, orderBy, limit, onSnapshot, getDocs, where,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+const JORDAN_UNIVERSITIES = {
+  "JU": { name: "الجامعة الأردنية", system: "4.0", symbols: ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"] },
+  "JUST": { name: "العلوم والتكنولوجيا (JUST)", system: "4.2", symbols: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "F"] }, // النظام الحديث صار 4.0 بس القديم 4.2
+  "HU": { name: "الهاشمية", system: "4.0", symbols: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "F"] },
+  "YU": { name: "اليرموك", system: "pct", symbols: [] }, // مئوي
+  "BAU": { name: "البلقاء التطبيقية", system: "4.0", symbols: ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"] },
+  "AABU": { name: "آل البيت", system: "pct", symbols: [] }, // مئوي (أو حسب التخصص)
+  "GJU": { name: "الألمانية الأردنية", system: "gju", symbols: ["0.7", "1.0", "1.3", "1.7", "2.0", "2.3", "2.7", "3.0", "3.3", "3.7", "4.0", "5.0"] } // نظام ألماني معكوس
+};
+  // =========================
+  // CONFIG (ضع إعدادات مشروعك)
+  // =========================
+const firebaseConfig = {
   apiKey: "AIzaSyAUAcDdEikDwipXktN6VGuDQOi4Ov9RHOI",
   authDomain: "codenexus-c89ac.firebaseapp.com",
   projectId: "codenexus-c89ac",
   storageBucket: "codenexus-c89ac.firebasestorage.app",
   messagingSenderId: "976765621106",
   appId: "1:976765621106:web:902b06a82a7437e80643eb",
+  measurementId: "G-H9D48DRM84"
+};
 
+  // الأدمن الرئيسي
+  const MAIN_ADMIN_EMAIL = "m3.l0.direct@gmail.com";
 
-        };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+  // ✅ Gemini API (موحّد) — اختياري
+  const GEMINI_API_KEY = "AIzaSyBJeWYBLH1FIq3w3J2kEZxyc4jO41E0qvc";
+  const GEMINI_MODEL = "gemini-2.5-flash";
+  const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
 
-  const $ = (id)=>document.getElementById(id);
+  // =========================
+  // Helpers
+  // =========================
+  const $ = (id) => document.getElementById(id);
   const toastEl = $("toast");
 
   function toast(msg, isErr=false){
+    if(!toastEl){ alert(msg); return; }
     toastEl.textContent = msg;
     toastEl.style.borderColor = isErr ? "rgba(251,113,133,.45)" : "rgba(103,232,249,.35)";
     toastEl.classList.add("show");
-    setTimeout(()=>toastEl.classList.remove("show"), 2900);
+    setTimeout(()=>toastEl.classList.remove("show"), 3500);
   }
+
+  function must(id){
+    const el = $(id);
+    if(!el) throw new Error("Missing element: #" + id);
+    return el;
+  }
+
   function esc(s){
     return String(s ?? "")
       .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
       .replaceAll('"',"&quot;").replaceAll("'","&#039;");
   }
-  function todayKey(){
-    const d = new Date();
+
+  function ymd(date = new Date()){
+    const d = new Date(date);
     const y = d.getFullYear();
     const m = String(d.getMonth()+1).padStart(2,"0");
-    const day = String(d.getDate()).padStart(2,"0");
-    return `${y}-${m}-${day}`;
+    const dd = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${dd}`;
   }
-  function addDaysKey(baseKey, days){
-    const [y,m,d] = baseKey.split("-").map(Number);
+
+  function addDaysYMD(baseYMD, days){
+    const [y,m,d] = baseYMD.split("-").map(Number);
     const dt = new Date(y, m-1, d);
     dt.setDate(dt.getDate()+days);
-    const yy = dt.getFullYear();
-    const mm = String(dt.getMonth()+1).padStart(2,"0");
-    const dd = String(dt.getDate()).padStart(2,"0");
-    return `${yy}-${mm}-${dd}`;
-  }
-  function getDueKey(task){
-    const d = (task.dueDate ?? "").toString().trim();
-    return /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : "";
+    return ymd(dt);
   }
 
-  // GPA mapping (4.0) with A+
-  const GRADE_POINTS = {
-    "F":0.0,
-    "D":1.0, "D+":1.3,
-    "C-":1.7, "C":2.0, "C+":2.3,
-    "B-":2.7, "B":3.0, "B+":3.3,
-    "A-":3.7, "A":4.0, "A+":4.0
-  };
-  const GRADE_ORDER = ["F","D","D+","C-","C","C+","B-","B","B+","A-","A","A+"];
+  function nowISO(){ return new Date().toISOString(); }
 
-  const TASK_TYPE_LABEL = {
-    assignment:"واجب", quiz:"كويز", exam:"امتحان",
-    project:"مشروع", study:"دراسة", admin:"أمور جامعة"
-  };
-  const CAT_LABEL = {
-    major:"تخصص", math:"رياضيات", programming:"برمجة", lab:"مختبر",
-    general:"جامعة", elective:"اختياري", support:"مساندة"
-  };
+  // =========================
+  // Init
+  // =========================
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  let UID = null;
-  let USER_EMAIL = null;
+  // =========================
+  // UI Elements (Auth)
+  // =========================
+  const authBack = must("authBack");
+  const btnGo = must("btnAuthGo");
+  const btnSwitch = must("btnSwitchMode");
+  const btnForgot = must("btnForgot");
+  const btnTips = must("btnAuthTips");
 
-  let tasks = [];
-  let taken = [];
-  let plan  = [];
-  let goal  = { target:null, totalCredits:null, nextCredits:null };
+  const btnLogout = $("btnLogout");
+  const userLabel = $("userLabel");
+  const roleLabel = $("roleLabel");
 
-  let taskFilter = "today";
+  // Apps
+  const studentApp = $("studentApp");
+  const adminApp   = $("adminApp");
+  const studentTabs = $("studentTabs");
+  const adminTabs   = $("adminTabs");
 
-  // Tabs
-  const tabs = document.querySelectorAll(".tab");
-  function openTab(view){
-    tabs.forEach(x=>x.classList.toggle("active", x.dataset.view === view));
-    ["tasks","gpa","planner","insights","settings"].forEach(k=>{
-      $("view_"+k).classList.toggle("hidden", k!==view);
+  // Buttons
+  const btnOpenSettings = $("btnOpenSettings");
+  const btnBackup = $("btnBackup");
+  const btnRestore = $("btnRestore");
+
+  // =========================
+  // Tabs switching
+  // =========================
+  function showStudentView(view){
+    ["tasks","gpa","planner","coach","settings"].forEach(v=>{
+      const el = $("view_" + v);
+      if(el) el.classList.toggle("hidden", v !== view);
     });
-    localStorage.setItem("unipilot_tab", view);
-    if(view==="insights") renderInsights();
-    if(view==="settings") renderSysStatus();
+    document.querySelectorAll("#studentTabs .tab").forEach(t=>{
+      t.classList.toggle("active", t.dataset.view === view);
+    });
   }
-  tabs.forEach(t=>t.addEventListener("click", ()=>openTab(t.dataset.view)));
-  $("btnOpenSettings").addEventListener("click", ()=>openTab("settings"));
-  const savedTab = localStorage.getItem("unipilot_tab");
-  if(savedTab) openTab(savedTab);
+  function showAdminView(view){
+    ["admin_home","admin_users","admin_settings"].forEach(v=>{
+      const el = $(v);
+      if(el) el.classList.toggle("hidden", v !== view);
+    });
+    document.querySelectorAll("#adminTabs .tab").forEach(t=>{
+      t.classList.toggle("active", t.dataset.adminview === view);
+    });
+  }
 
-  // Auth Modal
-  const authBack = $("authBack");
+  document.querySelectorAll("#studentTabs .tab").forEach(t=>{
+    t.addEventListener("click", ()=> showStudentView(t.dataset.view));
+  });
+  document.querySelectorAll("#adminTabs .tab").forEach(t=>{
+    t.addEventListener("click", ()=> showAdminView(t.dataset.adminview));
+  });
+
+  if(btnOpenSettings){
+    btnOpenSettings.addEventListener("click", ()=>{
+      if(!auth.currentUser) return;
+      const isAdmin = (auth.currentUser.email||"").toLowerCase() === MAIN_ADMIN_EMAIL.toLowerCase();
+      if(isAdmin) showAdminView("admin_settings");
+      else showStudentView("settings");
+      toast("تم فتح الإعدادات ✅");
+    });
+  }
+
+  // =========================
+  // Auth Mode
+  // =========================
   let authMode = "login";
-
   function setAuthMode(mode){
     authMode = mode;
     const isSignup = mode === "signup";
+
     $("authTitle").textContent = isSignup ? "إنشاء حساب" : "تسجيل الدخول";
     $("authHint").textContent  = isSignup
-      ? "اعمل حساب بإيميلك. كل بياناتك رح تنحفظ على حسابك."
+      ? "اعمل حساب بإيميلك. بعدين لازم تعمل تحقق (Verify Email)."
       : "ادخل إيميلك وكلمة السر.";
-    $("btnAuthGo").textContent = isSignup ? "إنشاء" : "دخول";
+
+    btnGo.textContent = isSignup ? "إنشاء" : "دخول";
     $("authNameWrap").classList.toggle("hidden", !isSignup);
     $("authSwitchText").textContent = isSignup ? "عندك حساب؟" : "مش عندك حساب؟";
-    $("btnSwitchMode").textContent  = isSignup ? "سجّل دخول" : "اعمل حساب جديد";
+    btnSwitch.textContent  = isSignup ? "سجّل دخول" : "اعمل حساب جديد";
   }
-  $("btnSwitchMode").addEventListener("click", ()=>{
-    setAuthMode(authMode==="login" ? "signup" : "login");
-  });
-  $("btnAuthDemo").addEventListener("click", ()=>{
+  setAuthMode("login");
+
+  btnSwitch.addEventListener("click", () => setAuthMode(authMode === "login" ? "signup" : "login"));
+
+  btnTips.addEventListener("click", ()=>{
     $("authMsg").innerHTML =
-      `فعّل <b>Email/Password</b> من Firebase → Authentication.<br>` +
-      `وبعدها فعّل Firestore وطبّق Rules في صفحة الإعدادات.`;
-    toast("شوف التلميح داخل النافذة.");
+      "1) Firebase → Authentication → فعّل Email/Password<br>" +
+      "2) Firestore Database → أنشئ قاعدة + ضع Rules<br>" +
+      "3) إن كنت على Spark (مجاني): Firestore مجاني ضمن حدود الاستخدام.";
+    toast("تم عرض التلميح ✅");
   });
-  $("btnForgot").addEventListener("click", async ()=>{
+
+  btnForgot.addEventListener("click", async ()=>{
     const email = $("authEmail").value.trim();
     if(!email){ toast("اكتب الإيميل أولاً.", true); return; }
     try{
       await sendPasswordResetEmail(auth, email);
-      toast("تم إرسال رابط إعادة تعيين كلمة السر ✅");
+      toast("تم إرسال رابط إعادة تعيين ✅");
     }catch(e){
       console.error(e);
-      toast("تعذر الإرسال. تأكد من الإيميل/إعدادات Firebase.", true);
+      toast("تعذر الإرسال. تأكد من Email/Password.", true);
     }
   });
-  $("btnAuthGo").addEventListener("click", async ()=>{
+
+  btnGo.addEventListener("click", async ()=>{
     const email = $("authEmail").value.trim();
     const pass  = $("authPass").value;
     if(!email || !pass){ toast("اكتب الإيميل وكلمة السر.", true); return; }
 
+    btnGo.disabled = true;
     try{
-      if(authMode==="login"){
+      if(authMode === "login"){
         await signInWithEmailAndPassword(auth, email, pass);
         toast("تم تسجيل الدخول ✅");
       }else{
         const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        const name = $("authName").value.trim();
+        const name = ($("authName").value || "").trim();
         if(name){
-          try{ await updateProfile(cred.user, { displayName: name }); }catch{}
+          try{ await updateProfile(cred.user, { displayName: name }); }catch(_){}
         }
-        toast("تم إنشاء الحساب ✅");
+        try{ await sendEmailVerification(cred.user); }catch(_){}
+        toast("تم إنشاء الحساب ✅ تفقد الإيميل للتحقق");
+        setAuthMode("login");
       }
     }catch(e){
       console.error(e);
-      const msg = e?.code === "auth/invalid-credential" ? "بيانات الدخول غلط." :
-                  e?.code === "auth/email-already-in-use" ? "الإيميل مستخدم." :
-                  e?.code === "auth/weak-password" ? "كلمة السر ضعيفة (6+)." :
-                  "خطأ تسجيل الدخول.";
+      const code = e?.code || "";
+      const msg =
+        code === "auth/invalid-credential" ? "بيانات الدخول غلط." :
+        code === "auth/email-already-in-use" ? "الإيميل مستخدم." :
+        code === "auth/weak-password" ? "كلمة السر ضعيفة (6+)." :
+        (e?.message || "خطأ.");
       toast(msg, true);
+    }finally{
+      btnGo.disabled = false;
     }
   });
-  $("btnLogout").addEventListener("click", async ()=>{
-    try{ await signOut(auth); toast("تم تسجيل الخروج"); }
-    catch(e){ console.error(e); toast("تعذر تسجيل الخروج.", true); }
-  });
 
-  // Enable/disable app
-  function setAppEnabled(enabled){
-    [
-      "btnBackup","btnRestore","btnOpenSettings","btnLogout",
-      "btnAddTask","btnPlanToday",
-      "fToday","fWeek","fAll","fOver",
-      "btnAddTaken","btnSaveGoal","btnClearGoal",
-      "btnAddPlan","btnSuggestCourses",
-      "btnResetAll"
-    ].forEach(id=>{
-      const el = $(id);
-      if(el) el.disabled = !enabled;
+  if(btnLogout){
+    btnLogout.addEventListener("click", async ()=>{
+      try{ await signOut(auth); toast("تم تسجيل الخروج ✅"); }
+      catch(e){ console.error(e); toast("تعذر تسجيل الخروج.", true); }
     });
   }
-  function resetUIForGuest(){
-    $("taskList").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
-    $("takenList").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
-    $("planList").innerHTML  = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
-    $("suggestList").innerHTML = "";
-    $("catBreakdown").innerHTML = "";
-    $("taskInsights").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان يظهر التحليل.</div></div>`;
-    $("todayPlanMsg").textContent = "سجّل دخولك أولاً، وبعدها نبدأ ✅";
-    $("planMsg").textContent = "سجّل دخولك عشان نقدر نبني خطتك.";
-    $("insightMsg").textContent = "سجّل دخولك عشان يشتغل التحليل.";
+
+  function resetGuestUI(){
+    if(userLabel) userLabel.textContent = "غير مسجّل";
+    if(roleLabel) roleLabel.textContent = "—";
+    authBack.classList.remove("hidden");
+    studentApp?.classList.add("hidden");
+    adminApp?.classList.add("hidden");
+    studentTabs?.classList.add("hidden");
+    adminTabs?.classList.add("hidden");
+    btnOpenSettings && (btnOpenSettings.disabled = true);
+    btnBackup && (btnBackup.disabled = true);
+    btnRestore && (btnRestore.disabled = true);
+    btnLogout && (btnLogout.disabled = true);
   }
 
-  // Firestore paths
-  const userDoc = ()=>doc(db, "users", UID);
-  const colTasks = ()=>collection(db,"users",UID,"tasks");
-  const colTaken = ()=>collection(db,"users",UID,"taken");
-  const colPlan  = ()=>collection(db,"users",UID,"courses");
+  // =========================
+  // Firestore refs
+  // =========================
+  const userDoc = (uid)=>doc(db, "users", uid);
+  const tasksCol = (uid)=>collection(db, "users", uid, "tasks");
+  const takenCol = (uid)=>collection(db, "users", uid, "taken");
+  const planCol  = (uid)=>collection(db, "users", uid, "plan");
 
-  async function ensureUserDoc(user){
-    const ref = userDoc();
+  // =========================
+  // Ensure user root doc
+  // =========================
+  async function ensureUserRoot(user){
+    const ref = userDoc(user.uid);
     const snap = await getDoc(ref);
+
+    const base = {
+      email: user.email || null,
+      displayName: user.displayName || null,
+      emailVerified: !!user.emailVerified,
+      lastSeen: nowISO()
+    };
+
     if(!snap.exists()){
       await setDoc(ref, {
+        ...base,
         createdAt: serverTimestamp(),
-        email: user.email || null,
-        displayName: user.displayName || null,
-        gradeScale: "4.0"
-      }, { merge: true });
-    }else{
-      await setDoc(ref, {
-        email: user.email || null,
-        displayName: user.displayName || null
+        profile: { name: user.displayName || "", major:"", year:"", term:"", phone:"", dob:"" }
       }, { merge:true });
-    }
-  }
-
-  async function safeGetDocs(qBuild, fallbackCol){
-    try{
-      const snap = await getDocs(qBuild());
-      return snap.docs.map(d=>({id:d.id, ...d.data()}));
-    }catch(e){
-      console.warn("Query failed, fallback:", e);
-      const snap = await getDocs(query(fallbackCol, limit(300)));
-      return snap.docs.map(d=>({id:d.id, ...d.data()}));
-    }
-  }
-
-  async function loadAll(){
-    tasks = await safeGetDocs(() => query(colTasks(), orderBy("createdAt","desc"), limit(300)), colTasks());
-    taken = await safeGetDocs(() => query(colTaken(), orderBy("createdAt","desc"), limit(600)), colTaken());
-    plan  = await safeGetDocs(() => query(colPlan(),  orderBy("code","asc"), limit(1200)), colPlan());
-  }
-
-  function renderAll(){
-    renderTasks();
-    renderTaken();
-    renderGPA();
-    renderPlan();
-    renderInsights();
-    renderSysStatus();
-  }
-
-  // Auth state
-  onAuthStateChanged(auth, async (user)=>{
-    if(!user){
-      UID = null; USER_EMAIL = null;
-      setAuthMode("login");
-      authBack.classList.remove("hidden");
-      $("userLabel").textContent = "غير مسجّل";
-      setAppEnabled(false);
-      resetUIForGuest();
-      return;
-    }
-
-    UID = user.uid;
-    USER_EMAIL = user.email || "(no email)";
-    const disp = user.displayName ? `(${user.displayName})` : "";
-    $("userLabel").textContent = `${USER_EMAIL} ${disp}`;
-    authBack.classList.add("hidden");
-
-    setAppEnabled(true);
-
-    $("taskDue").value = todayKey();
-
-    await ensureUserDoc(user);
-    await loadAll();
-    await loadGoal();
-    renderAll();
-    toast("جاهز ✅ بياناتك محفوظة على حسابك");
-  });
-
-  // ===== TASKS =====
-  $("btnAddTask").addEventListener("click", addTask);
-  $("btnPlanToday").addEventListener("click", suggestTodayPlan);
-
-  $("fToday").onclick = ()=>{ taskFilter="today"; renderTasks(); };
-  $("fWeek").onclick  = ()=>{ taskFilter="week"; renderTasks(); };
-  $("fAll").onclick   = ()=>{ taskFilter="all"; renderTasks(); };
-  $("fOver").onclick  = ()=>{ taskFilter="over"; renderTasks(); };
-
-  $("taskSeg").addEventListener("click", (e)=>{
-    const b = e.target.closest(".segBtn");
-    if(!b || b.disabled) return;
-    $("taskSeg").querySelectorAll(".segBtn").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-  });
-
-  function inToday(task){
-    const d = getDueKey(task);
-    return d && d === todayKey();
-  }
-  function inNext7(task){
-    const d = getDueKey(task);
-    if(!d) return false;
-    const k = todayKey();
-    const end = addDaysKey(k, 7);
-    return d >= k && d <= end;
-  }
-  function isOverdue(task){
-    const d = getDueKey(task);
-    if(!d) return false;
-    const k = todayKey();
-    return d < k && task.status !== "done";
-  }
-
-  async function addTask(){
-    if(!UID) return;
-    const title = $("taskTitle").value.trim();
-    if(!title){ toast("اكتب عنوان المهمة.", true); return; }
-
-    const due = $("taskDue").value || "";
-    const minutes = Math.max(5, Number($("taskMin").value||60));
-    const prio = $("taskPrio") ? $("taskPrio").value : "med";
-    const type = $("taskType") ? $("taskType").value : "assignment";
-    const course = $("taskCourse") ? $("taskCourse").value.trim() : "";
-    const notes = $("taskNotes") ? $("taskNotes").value.trim() : "";
-
-    const payload = {
-      title, course, dueDate: due,
-      minutes, prio, type, notes,
-      status: "todo",
-      createdAt: serverTimestamp()
-    };
-
-    try{
-      await addDoc(colTasks(), payload);
-      $("taskTitle").value=""; if($("taskCourse")) $("taskCourse").value=""; if($("taskNotes")) $("taskNotes").value="";
-      toast("تمت الإضافة ✅");
-      await loadAll(); renderTasks(); renderInsights(); renderSysStatus();
-    }catch(e){
-      console.error(e);
-      toast("فشل إضافة المهمة. راجع Firestore Rules.", true);
-    }
-  }
-
-  function renderTasks(){
-    if(!UID) return;
-
-    const today = tasks.filter(t=> inToday(t) && t.status!=="done");
-    const week = tasks.filter(t=> inNext7(t) && t.status!=="done");
-    const allWeek = tasks.filter(t=> inNext7(t));
-    const doneWeek = allWeek.filter(t=> t.status==="done");
-
-    $("kToday").textContent = today.length;
-    $("kWeek").textContent = week.length;
-    $("kDonePct").textContent = allWeek.length ? Math.round((doneWeek.length/allWeek.length)*100) + "%" : "—";
-
-    let filtered = [];
-    if(taskFilter==="today") filtered = tasks.filter(t=> inToday(t));
-    else if(taskFilter==="week") filtered = tasks.filter(t=> inNext7(t));
-    else if(taskFilter==="over") filtered = tasks.filter(t=> isOverdue(t));
-    else filtered = tasks.slice();
-
-    filtered.sort((a,b)=>{
-      if(a.status==="done" && b.status!=="done") return 1;
-      if(b.status==="done" && a.status!=="done") return -1;
-
-      const ao = isOverdue(a), bo = isOverdue(b);
-      if(ao !== bo) return ao ? -1 : 1;
-
-      const ad = getDueKey(a) || "9999-12-31";
-      const bd = getDueKey(b) || "9999-12-31";
-      if(ad !== bd) return ad < bd ? -1 : 1;
-
-      const pv = (p)=> p==="high"?0 : p==="med"?1 : 2;
-      if(pv(a.prio) !== pv(b.prio)) return pv(a.prio)-pv(b.prio);
-
-      return (Number(a.minutes||0) - Number(b.minutes||0));
-    });
-
-    const list = $("taskList");
-    list.innerHTML = "";
-
-    if(filtered.length === 0){
-      list.innerHTML = `<div class="item"><div class="meta">ما في مهام هون. أضف مهمة بسيطة.</div></div>`;
-      return;
-    }
-
-    for(const t of filtered){
-      const dueTxt = getDueKey(t) ? t.dueDate : "بدون موعد";
-      const courseTxt = t.course ? ` · <b>${esc(t.course)}</b>` : "";
-      const note = t.notes ? `<div class="quote" style="margin-top:10px;">${esc(t.notes)}</div>` : "";
-      const badgeClass = isOverdue(t) ? "danger" : (t.prio==="low" ? "warn" : (t.prio==="high" ? "danger" : ""));
-
-      list.insertAdjacentHTML("beforeend", `
-        <div class="item" data-id="${esc(t.id)}">
-          <div class="top">
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
-              <div class="badge ${badgeClass}">${esc(TASK_TYPE_LABEL[t.type] || "مهمة")}</div>
-              <div style="font-weight:950">${esc(t.title)}</div>
-              <div class="meta">${courseTxt}</div>
-            </div>
-            <div class="meta">${isOverdue(t) ? "متأخرة" : "موعد: " + esc(dueTxt)} · ${Number(t.minutes||0)} د</div>
-          </div>
-
-          <div class="hr"></div>
-
-          <div class="row" style="justify-content:space-between; width:100%;">
-            <div class="meta">${t.prio==="high"?"أولوية عالية":t.prio==="low"?"أولوية منخفضة":"أولوية متوسطة"}</div>
-            <div class="actions">
-              <button class="btn smallBtn ${t.status==="todo"?"primary":""}" data-act="todo">To-Do</button>
-              <button class="btn smallBtn ${t.status==="doing"?"primary":""}" data-act="doing">شغال</button>
-              <button class="btn smallBtn ${t.status==="done"?"primary":""}" data-act="done">تم ✅</button>
-              <button class="btn smallBtn danger" data-act="del">حذف</button>
-            </div>
-          </div>
-
-          ${note}
-        </div>
-      `);
-    }
-
-    list.querySelectorAll(".item .btn").forEach(btn=>{
-      btn.addEventListener("click", async (e)=>{
-        const item = e.target.closest(".item");
-        const id = item.dataset.id;
-        const act = e.target.dataset.act;
-
-        try{
-          if(act==="del"){
-            if(!confirm("متأكد تحذف المهمة؟")) return;
-            await deleteDoc(doc(db,"users",UID,"tasks",id));
-            toast("تم الحذف");
-          }else{
-            await updateDoc(doc(db,"users",UID,"tasks",id), { status: act });
-            toast("تم التحديث ✅");
-          }
-          await loadAll(); renderTasks(); renderInsights(); renderSysStatus();
-        }catch(err){
-          console.error(err);
-          toast("صار خطأ. راجع Rules/الاتصال.", true);
-        }
-      });
-    });
-  }
-
-  function suggestTodayPlan(){
-    const cand = tasks
-      .filter(t=>t.status!=="done")
-      .sort((a,b)=>{
-        const ao=isOverdue(a), bo=isOverdue(b);
-        if(ao!==bo) return ao?-1:1;
-        const at=inToday(a), bt=inToday(b);
-        if(at!==bt) return at?-1:1;
-        const pv=(p)=>p==="high"?0:p==="med"?1:2;
-        if(pv(a.prio)!==pv(b.prio)) return pv(a.prio)-pv(b.prio);
-        const ad=getDueKey(a)||"9999-12-31", bd=getDueKey(b)||"9999-12-31";
-        if(ad!==bd) return ad<bd?-1:1;
-        return (Number(a.minutes||0))-(Number(b.minutes||0));
-      });
-
-    const pick = cand.slice(0,3);
-    if(pick.length===0){
-      $("todayPlanMsg").textContent = "اليوم خفيف ✅ حضّر لمهمة بكرا 20 دقيقة.";
-      toast("ما في مهام مستعجلة.");
-      return;
-    }
-    const total = pick.reduce((s,x)=>s+(Number(x.minutes)||0),0);
-    const lines = pick.map((t,i)=>`${i+1}) ${t.title} (${Number(t.minutes||0)}د)`);
-    $("todayPlanMsg").innerHTML =
-      `خطة اليوم (≈ ${total} دقيقة):<br><b>${lines.map(esc).join("<br>")}</b><br><span class="meta">25 دقيقة شغل + 5 راحة.</span>`;
-    toast("تم اقتراح خطة اليوم ✅");
-  }
-
-  // ===== GPA / TAKEN =====
-  $("btnAddTaken").addEventListener("click", addTaken);
-
-  async function addTaken(){
-    const name = $("takenName").value.trim();
-    const credits = Math.max(1, Number($("takenCredits").value||3));
-    const grade = $("takenGrade").value;
-
-    const cat = $("takenCat") ? $("takenCat").value : "major";
-    const term = $("takenTerm") ? $("takenTerm").value.trim() : "";
-    const weak = $("takenWeak") ? $("takenWeak").value : "";
-
-    if(!name){ toast("اكتب اسم/كود المادة.", true); return; }
-    const gp = GRADE_POINTS[grade];
-    if(gp===undefined){ toast("Grade غير مدعوم.", true); return; }
-
-    const payload = {
-      name, credits, grade, gradePoints: gp,
-      category: cat, term,
-      weakness: weak,
-      createdAt: serverTimestamp()
-    };
-
-    try{
-      await addDoc(colTaken(), payload);
-      $("takenName").value=""; if($("takenTerm")) $("takenTerm").value=""; if($("takenWeak")) $("takenWeak").value="";
-      toast("تمت الإضافة ✅");
-      await loadAll();
-      renderTaken(); renderGPA(); renderInsights(); renderSysStatus();
-    }catch(e){
-      console.error(e);
-      toast("فشل إضافة المادة. راجع Rules.", true);
-    }
-  }
-
-  function renderTaken(){
-    if(!UID) return;
-    const list = $("takenList");
-    list.innerHTML = "";
-    if(taken.length===0){
-      list.innerHTML = `<div class="item"><div class="meta">لسا ما ضفت مواد. أضف مادة عشان نحسب GPA.</div></div>`;
-      return;
-    }
-
-    for(const t of taken){
-      list.insertAdjacentHTML("beforeend", `
-        <div class="item" data-id="${esc(t.id)}">
-          <div class="top">
-            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-              <div class="badge">${esc(t.grade)}</div>
-              <div style="font-weight:950">${esc(t.name)}</div>
-              <div class="meta">· ${esc(CAT_LABEL[t.category]||"—")} · ${Number(t.credits||0)} س</div>
-            </div>
-            <div class="actions">
-              <button class="btn smallBtn danger" data-act="del">حذف</button>
-            </div>
-          </div>
-          <div class="meta" style="margin-top:8px;">
-            Points: <b>${Number(t.gradePoints ?? 0).toFixed(2)}</b>
-            ${t.term ? " · فصل: <b>"+esc(t.term)+"</b>" : ""}
-            ${t.weakness ? " · صعوبة: <b>"+esc(t.weakness)+"</b>" : ""}
-          </div>
-        </div>
-      `);
-    }
-
-    list.querySelectorAll(".item .btn").forEach(btn=>{
-      btn.addEventListener("click", async (e)=>{
-        const item = e.target.closest(".item");
-        const id = item.dataset.id;
-        if(!confirm("تحذف المادة؟")) return;
-        try{
-          await deleteDoc(doc(db,"users",UID,"taken",id));
-          toast("تم الحذف");
-          await loadAll(); renderTaken(); renderGPA(); renderInsights(); renderSysStatus();
-        }catch(err){
-          console.error(err);
-          toast("تعذر الحذف.", true);
-        }
-      });
-    });
-  }
-
-  function renderGPA(){
-    if(!UID) return;
-
-    let totC=0, totPts=0;
-    let minPts = Infinity, maxPts = -Infinity;
-
-    let minGradeIdx = Infinity, maxGradeIdx = -Infinity;
-
-    for(const t of taken){
-      const c = Number(t.credits||0);
-      const p = Number(t.gradePoints||0);
-      totC += c;
-      totPts += c*p;
-
-      if(Number.isFinite(p)){
-        minPts = Math.min(minPts, p);
-        maxPts = Math.max(maxPts, p);
-      }
-
-      const g = String(t.grade||"").trim();
-      const idx = GRADE_ORDER.indexOf(g);
-      if(idx !== -1){
-        minGradeIdx = Math.min(minGradeIdx, idx);
-        maxGradeIdx = Math.max(maxGradeIdx, idx);
-      }
-    }
-
-    const gpa = totC ? (totPts/totC) : 0;
-
-    $("gpaC").textContent = totC ? gpa.toFixed(2) : "—";
-    $("crDone").textContent = totC ? totC : "—";
-    $("ppc").textContent = totC ? (totPts/totC).toFixed(2) : "—";
-
-    if(taken.length && Number.isFinite(minGradeIdx) && Number.isFinite(maxGradeIdx)){
-      $("gradeRange").textContent = `${GRADE_ORDER[minGradeIdx]} → ${GRADE_ORDER[maxGradeIdx]}`;
-      $("minGrade").textContent = GRADE_ORDER[minGradeIdx];
-      $("maxGrade").textContent = GRADE_ORDER[maxGradeIdx];
-    } else {
-      $("gradeRange").textContent = "—";
-      $("minGrade").textContent = "—";
-      $("maxGrade").textContent = "—";
-    }
-
-    $("minPts").textContent = (taken.length && minPts !== Infinity) ? minPts.toFixed(2) : "—";
-    $("maxPts").textContent = (taken.length && maxPts !== -Infinity) ? maxPts.toFixed(2) : "—";
-
-    if(!totC){
-      $("gpaTip").textContent = "أضف موادك ليظهر التحليل.";
-    }else if(gpa >= 3.5){
-      $("gpaTip").textContent = "ممتاز — حافظ على الأداء ✅";
-    }else if(gpa >= 3.0){
-      $("gpaTip").textContent = "جيد — ركّز على الأضعف تدريجيًا";
     }else{
-      $("gpaTip").textContent = "بدها خطة: تنظيم + رفع مواد";
-    }
-
-    renderGoalCalc(gpa, totC);
-  }
-
-  // ===== GOAL =====
-  function clamp(n, a, b){
-    n = Number(n);
-    if(Number.isNaN(n)) return NaN;
-    return Math.max(a, Math.min(b, n));
-  }
-
-  async function loadGoal(){
-    if(!UID) return;
-    try{
-      const snap = await getDoc(userDoc());
-      const data = snap.exists() ? snap.data() : {};
-      goal = data?.goal ?? { target:null, totalCredits:null, nextCredits:null };
-      $("goalGpa").value = goal.target ?? "";
-      $("goalTotalCredits").value = goal.totalCredits ?? "";
-      $("goalNextCredits").value = goal.nextCredits ?? "";
-    }catch(e){
-      console.error(e);
-      goal = { target:null, totalCredits:null, nextCredits:null };
+      await setDoc(ref, base, { merge:true });
     }
   }
 
-  async function saveGoalToDb(newGoal){
-    if(!UID) return;
-    await setDoc(userDoc(), { goal: newGoal }, { merge:true });
-    goal = newGoal;
+  // =========================
+  // Backup / Restore (JSON)
+  // =========================
+  async function buildBackup(uid){
+    const [tSnap, gSnap, pSnap] = await Promise.all([
+      getDocs(query(tasksCol(uid), orderBy("createdAt","desc"))),
+      getDocs(query(takenCol(uid), orderBy("createdAt","desc"))),
+      getDocs(query(planCol(uid),  orderBy("createdAt","desc")))
+    ]);
+
+    const tasks = tSnap.docs.map(d=>({id:d.id, ...d.data()}));
+    const taken = gSnap.docs.map(d=>({id:d.id, ...d.data()}));
+    const plan  = pSnap.docs.map(d=>({id:d.id, ...d.data()}));
+
+    const u = await getDoc(userDoc(uid));
+    const profile = u.exists() ? (u.data()?.profile || {}) : {};
+
+    return { version: 1, exportedAt: nowISO(), profile, tasks, taken, plan };
   }
 
-  function calcRequiredAvg(currentGpa, doneCredits, targetGpa, totalCredits){
-    const remaining = totalCredits - doneCredits;
-    if(remaining <= 0) return { remaining: 0, required: NaN };
-    const currentPoints = currentGpa * doneCredits;
-    const targetPoints = targetGpa * totalCredits;
-    const needPoints = targetPoints - currentPoints;
-    const required = needPoints / remaining;
-    return { remaining, required };
-  }
-
-  function calcRequiredNextTerm(currentGpa, doneCredits, targetGpa, totalCredits, nextCredits){
-    const remaining = totalCredits - doneCredits;
-    if(remaining <= 0) return NaN;
-    const x = Math.max(0, Math.min(Number(nextCredits||0), remaining));
-    if(x <= 0) return NaN;
-
-    const currentPoints = currentGpa * doneCredits;
-    const targetPoints = targetGpa * totalCredits;
-    const needPointsTotal = targetPoints - currentPoints;
-
-    const later = remaining - x;
-    const bestLaterAvg = 4.0;
-    const bestLaterPoints = later * bestLaterAvg;
-    const needThisTerm = (needPointsTotal - bestLaterPoints) / x;
-
-    return needThisTerm;
-  }
-
-  function renderGoalCalc(currentGpa, doneCredits){
-    const target = clamp($("goalGpa").value, 0, 4);
-    const total  = Math.max(0, Number($("goalTotalCredits").value||0));
-    const next   = Math.max(0, Number($("goalNextCredits").value||0));
-
-    if(!total || !Number.isFinite(target)){
-      $("remainCredits").textContent = "—";
-      $("needRemainGpa").textContent = "—";
-      $("needNextTermGpa").textContent = "—";
-      $("goalMsg").textContent = "اكتب هدفك وإجمالي ساعات الخطة ثم اضغط حفظ.";
-      return;
-    }
-
-    if(total < doneCredits){
-      $("goalMsg").textContent = "إجمالي ساعات الخطة أقل من الساعات المنجزة… عدّل الرقم.";
-      $("remainCredits").textContent = "—";
-      $("needRemainGpa").textContent = "—";
-      $("needNextTermGpa").textContent = "—";
-      return;
-    }
-
-    const { remaining, required } = calcRequiredAvg(currentGpa, doneCredits, target, total);
-    $("remainCredits").textContent = remaining;
-    $("needRemainGpa").textContent = Number.isFinite(required) ? required.toFixed(2) : "—";
-
-    const reqNext = calcRequiredNextTerm(currentGpa, doneCredits, target, total, next);
-    $("needNextTermGpa").textContent = Number.isFinite(reqNext) ? reqNext.toFixed(2) : "—";
-
-    if(required > 4.0){
-      $("goalMsg").textContent = "هدفك صعب جدًا حسب الساعات المتبقية (المطلوب > 4.00).";
-    } else if(required < 0){
-      $("goalMsg").textContent = "أنت متجاوز الهدف تقريبًا ✅";
-    } else {
-      $("goalMsg").textContent =
-        `للوصول إلى ${target.toFixed(2)} مطلوب متوسط على الساعات المتبقية ≈ ${required.toFixed(2)}.` +
-        (next>0 && Number.isFinite(reqNext) ? ` والفصل الجاي (إذا ${next} ساعة) ≈ ${reqNext.toFixed(2)}.` : "");
-    }
-  }
-
-  $("btnSaveGoal").addEventListener("click", async ()=>{
-    if(!UID) return;
-    const target = clamp($("goalGpa").value, 0, 4);
-    const total  = Math.max(0, Number($("goalTotalCredits").value||0));
-    const next   = Math.max(0, Number($("goalNextCredits").value||0));
-
-    if(!Number.isFinite(target) || !total){
-      toast("اكتب Target GPA وإجمالي ساعات الخطة.", true);
-      return;
-    }
-
-    try{
-      await saveGoalToDb({
-        target: Number(target.toFixed(2)),
-        totalCredits: total,
-        nextCredits: next || null,
-        updatedAt: new Date().toISOString()
-      });
-      toast("تم حفظ الهدف ✅");
-      renderGPA();
-    }catch(e){
-      console.error(e);
-      toast("تعذر حفظ الهدف. راجع Rules.", true);
-    }
-  });
-
-  $("btnClearGoal").addEventListener("click", async ()=>{
-    if(!UID) return;
-    try{
-      await saveGoalToDb({ target:null, totalCredits:null, nextCredits:null, updatedAt: new Date().toISOString() });
-      $("goalGpa").value=""; $("goalTotalCredits").value=""; $("goalNextCredits").value="";
-      toast("تم المسح");
-      renderGPA();
-    }catch(e){
-      console.error(e);
-      toast("تعذر المسح.", true);
-    }
-  });
-
-  // ===== PLANNER =====
-  $("btnAddPlan").addEventListener("click", addPlanCourse);
-  $("btnSuggestCourses").addEventListener("click", suggestCourses);
-
-  async function addPlanCourse(){
-    const code = $("planCode").value.trim().toUpperCase().replace(/\s+/g,"");
-    const name = $("planName").value.trim();
-    const credits = Math.max(1, Number($("planCredits").value||3));
-    const category = $("planCat").value;
-    const prereqRaw = ($("planPrereq")?.value || "").trim();
-    const prereqs = prereqRaw ? prereqRaw.split(",").map(x=>x.trim().toUpperCase().replace(/\s+/g,"")).filter(Boolean) : [];
-
-    if(!code){ toast("اكتب كود المادة.", true); return; }
-    if(!name){ toast("اكتب اسم المادة.", true); return; }
-
-    const payload = { code, name, credits, category, prereqs, createdAt: serverTimestamp() };
-
-    try{
-      await addDoc(colPlan(), payload);
-      $("planCode").value=""; $("planName").value=""; if($("planPrereq")) $("planPrereq").value="";
-      toast("تمت الإضافة ✅");
-      await loadAll();
-      renderPlan(); renderSysStatus();
-    }catch(e){
-      console.error(e);
-      toast("فشل إضافة مادة للخطة.", true);
-    }
-  }
-
-  function renderPlan(){
-    if(!UID) return;
-    const list = $("planList");
-    list.innerHTML = "";
-    if(plan.length===0){
-      list.innerHTML = `<div class="item"><div class="meta">أضف مواد خطتك (حتى 10 كبداية).</div></div>`;
-      return;
-    }
-
-    for(const c of plan){
-      const pre = (c.prereqs||[]).length ? (c.prereqs||[]).join(", ") : "—";
-      list.insertAdjacentHTML("beforeend", `
-        <div class="item" data-id="${esc(c.id)}">
-          <div class="top">
-            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-              <div class="badge">${esc(c.code)}</div>
-              <div style="font-weight:950">${esc(c.name)}</div>
-              <div class="meta">· ${esc(CAT_LABEL[c.category]||"—")} · ${Number(c.credits||0)} س</div>
-            </div>
-            <div class="actions">
-              <button class="btn smallBtn danger" data-act="del">حذف</button>
-            </div>
-          </div>
-          <div class="meta" style="margin-top:8px;">متطلبات: <b>${esc(pre)}</b></div>
-        </div>
-      `);
-    }
-
-    list.querySelectorAll(".item .btn").forEach(btn=>{
-      btn.addEventListener("click", async (e)=>{
-        const item = e.target.closest(".item");
-        const id = item.dataset.id;
-        if(!confirm("تحذف من الخطة؟")) return;
-        try{
-          await deleteDoc(doc(db,"users",UID,"courses",id));
-          toast("تم الحذف");
-          await loadAll(); renderPlan(); renderSysStatus();
-        }catch(err){
-          console.error(err);
-          toast("تعذر الحذف.", true);
-        }
-      });
-    });
-  }
-
-  function suggestCourses(){
-    if(!UID) return;
-
-    const doneCodes = new Set();
-    for(const t of taken){
-      const raw = String(t.name||"").trim().toUpperCase();
-      const m = raw.match(/[A-Z]{2,}\s*\d{2,}/);
-      if(m) doneCodes.add(m[0].replace(/\s+/g,""));
-      const exact = raw.replace(/\s+/g,"");
-      if(/^[A-Z]{2,}\d{2,}$/.test(exact)) doneCodes.add(exact);
-    }
-
-    const notTaken = plan.filter(c=> !doneCodes.has(String(c.code||"").toUpperCase().replace(/\s+/g,"")) );
-    const available = [];
-    const blocked = [];
-
-    for(const c of notTaken){
-      const reqs = (c.prereqs||[]).map(x=>String(x||"").toUpperCase().replace(/\s+/g,"")).filter(Boolean);
-      const missing = reqs.filter(r=> !doneCodes.has(r));
-      if(missing.length===0) available.push(c);
-      else blocked.push({c, missing});
-    }
-
-    const unlockScore = (code)=>{
-      const cd = String(code||"").toUpperCase().replace(/\s+/g,"");
-      let s=0;
-      for(const x of notTaken){
-        const reqs = (x.prereqs||[]).map(r=>String(r||"").toUpperCase().replace(/\s+/g,""));
-        if(reqs.includes(cd)) s++;
-      }
-      return s;
-    };
-
-    available.sort((a,b)=>{
-      const catRank = (x)=> x.category==="major"?0 : x.category==="support"?1 : x.category==="general"?2 : 3;
-      if(catRank(a)!==catRank(b)) return catRank(a)-catRank(b);
-      const ua = unlockScore(a.code), ub = unlockScore(b.code);
-      if(ua!==ub) return ub-ua;
-      return (Number(a.credits||0))-(Number(b.credits||0));
-    });
-
-    const sug = $("suggestList");
-    sug.innerHTML = "";
-
-    const top = available.slice(0,8);
-
-    if(top.length){
-      $("planMsg").textContent = "مواد متاحة حسب المتطلبات ✅";
-      sug.insertAdjacentHTML("beforeend", `<div class="item"><div class="meta"><b>مواد متاحة للتسجيل الآن</b></div></div>`);
-      for(const c of top){
-        sug.insertAdjacentHTML("beforeend", `
-          <div class="item">
-            <div class="top">
-              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-                <div class="badge">${esc(c.code)}</div>
-                <div style="font-weight:950">${esc(c.name)}</div>
-                <div class="meta">· ${esc(CAT_LABEL[c.category]||"—")} · ${Number(c.credits||0)} س</div>
-              </div>
-              <div class="badge warn">يفتح مواد: ${unlockScore(c.code)}</div>
-            </div>
-          </div>
-        `);
-      }
-    } else {
-      $("planMsg").textContent = "ما في مواد متاحة حسب المتطلبات… أو ناقص متطلبات.";
-      sug.insertAdjacentHTML("beforeend", `<div class="item"><div class="meta">ما في مواد متاحة الآن.</div></div>`);
-    }
-
-    if(blocked.length){
-      sug.insertAdjacentHTML("beforeend", `<div class="item"><div class="meta"><b>مواد غير متاحة</b> (ناقص متطلبات)</div></div>`);
-      for(const x of blocked.slice(0,6)){
-        sug.insertAdjacentHTML("beforeend", `
-          <div class="item">
-            <div class="top">
-              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-                <div class="badge danger">${esc(x.c.code)}</div>
-                <div style="font-weight:950">${esc(x.c.name)}</div>
-              </div>
-              <div class="meta">ناقص: <b class="dangerText">${esc(x.missing.join(", "))}</b></div>
-            </div>
-          </div>
-        `);
-      }
-    }
-
-    toast("تم تحليل المواد ✅");
-  }
-
-  // ===== INSIGHTS =====
-  function renderInsights(){
-    if(!UID) return;
-
-    const groups = {};
-    const reasonCount = {theory:0, problem:0, time:0, exam:0};
-
-    for(const t of taken){
-      const cat = t.category || "general";
-      if(!groups[cat]) groups[cat] = {sum:0, n:0};
-      const gp = Number(t.gradePoints ?? 0);
-      const c  = Number(t.credits ?? 0);
-      groups[cat].sum += gp * c;
-      groups[cat].n += c;
-      if(t.weakness && reasonCount[t.weakness] !== undefined) reasonCount[t.weakness] += 1;
-    }
-
-    let weakCat = null, weakAvg = Infinity;
-    for(const [cat,v] of Object.entries(groups)){
-      const avg = v.n ? (v.sum/v.n) : 999;
-      if(avg < weakAvg){ weakAvg = avg; weakCat = cat; }
-    }
-    $("weakCat").textContent = weakCat ? (CAT_LABEL[weakCat] || weakCat) : "—";
-
-    let wr = null, wrV = 0;
-    for(const [k,v] of Object.entries(reasonCount)){
-      if(v > wrV){ wrV = v; wr = k; }
-    }
-    const wrLabel = {theory:"نظري", problem:"حل مسائل", time:"وقت/تأجيل", exam:"امتحانات"};
-    $("weakReason").textContent = wr ? wrLabel[wr] : "—";
-
-    const tip = (!wr) ? "ابدأ 25 دقيقة لمهمة صعبة" :
-      (wr==="problem" ? "حل 10 مسائل قصيرة يوميًا" :
-      (wr==="theory" ? "خريطة مفاهيم + تلخيص صفحة" :
-      (wr==="time" ? "قفل مشتتات 30 دقيقة + مؤقت" :
-      "محاكاة امتحان + مراجعة أخطاء")));
-    $("weakTip").textContent = tip;
-
-    $("insightMsg").textContent = weakCat
-      ? `الأضعف عندك: ${CAT_LABEL[weakCat]||weakCat} (متوسط ≈ ${weakAvg.toFixed(2)}).`
-      : "أضف مواد GPA عشان يظهر التحليل.";
-
-    const bd = $("catBreakdown");
-    bd.innerHTML = "";
-    const entries = Object.entries(groups).map(([cat,v])=>{
-      const avg = v.n ? (v.sum/v.n) : 0;
-      return {cat, avg};
-    }).sort((a,b)=>a.avg-b.avg);
-
-    if(entries.length===0){
-      bd.innerHTML = `<div class="item"><div class="meta">أضف مواد GPA عشان يظهر التحليل.</div></div>`;
-    } else {
-      for(const e of entries){
-        const badge = e.avg < 2.6 ? "danger" : (e.avg < 3.0 ? "warn" : "");
-        bd.insertAdjacentHTML("beforeend", `
-          <div class="item">
-            <div class="top">
-              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-                <div class="badge ${badge}">${esc(CAT_LABEL[e.cat]||e.cat)}</div>
-                <div class="meta">متوسط Points: <b>${e.avg.toFixed(2)}</b></div>
-              </div>
-              <div class="meta">${e.avg < 3.0 ? "ركز على تحسينه" : "حافظ عليه"}</div>
-            </div>
-          </div>
-        `);
-      }
-    }
-
-    const ti = $("taskInsights");
-    ti.innerHTML = "";
-    const open = tasks.filter(t=>t.status!=="done");
-    const overdue = open.filter(t=>isOverdue(t));
-    const dueSoon = open.filter(t=>inNext7(t)).sort((a,b)=>{
-      const ad=getDueKey(a)||"9999-12-31", bd=getDueKey(b)||"9999-12-31";
-      return ad<bd?-1:1;
-    });
-
-    const totalMin = open.reduce((s,x)=>s+(Number(x.minutes)||0),0);
-
-    ti.insertAdjacentHTML("beforeend", `
-      <div class="item">
-        <div class="top">
-          <div style="font-weight:950">ضغطك الحالي</div>
-          <div class="meta">${open.length} مهمة · ${totalMin} دقيقة</div>
-        </div>
-        <div class="meta" style="margin-top:8px;">
-          ${overdue.length ? `<b class="dangerText">${overdue.length}</b> مهام متأخرة — خلّص وحدة اليوم.` : `ما عندك مهام متأخرة ✅`}
-        </div>
-      </div>
-    `);
-
-    if(dueSoon.length){
-      const top3 = dueSoon.slice(0,3).map(t=>{
-        const title = esc(t.title);
-        const d = esc(getDueKey(t) || "—");
-        return `• ${title} <span class="meta">(${d})</span>`;
-      }).join("<br>");
-
-      ti.insertAdjacentHTML("beforeend", `
-        <div class="item">
-          <div class="top">
-            <div style="font-weight:950">الأقرب موعدًا</div>
-            <div class="meta">أفضل 3</div>
-          </div>
-          <div class="quote" style="margin-top:10px;">${top3}</div>
-        </div>
-      `);
-    }
-  }
-
-  // ===== BACKUP / RESTORE =====
-  $("btnBackup").addEventListener("click", async ()=>{
-    if(!UID) return;
-    const data = { tasks, taken, plan, goal, exportedAt: new Date().toISOString(), email: USER_EMAIL };
-    const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+  function downloadJson(obj, filename){
+    const blob = new Blob([JSON.stringify(obj, null, 2)], {type:"application/json"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url;
-    a.download = `unipilot_backup_${todayKey()}.json`;
+    a.href = url; a.download = filename;
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(url);
-    toast("تم التصدير ✅");
-  });
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  }
 
-  $("btnRestore").addEventListener("click", ()=>{
-    if(!UID) return;
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "application/json";
-    input.onchange = async ()=>{
-      const file = input.files?.[0];
-      if(!file) return;
-      let json;
-      try{ json = JSON.parse(await file.text()); }
-      catch{ toast("ملف غير صالح.", true); return; }
+  function pickJsonFile(){
+    return new Promise((resolve)=>{
+      const inp = document.createElement("input");
+      inp.type = "file";
+      inp.accept = "application/json";
+      inp.onchange = ()=> resolve(inp.files?.[0] || null);
+      inp.click();
+    });
+  }
 
-      if(!confirm("سيتم إضافة بيانات الملف بدون مسح الحالي. موافق؟")) return;
+  async function restoreBackup(uid, data){
+    if(!data || typeof data !== "object") throw new Error("bad_backup");
 
-      try{
-        const adds = [];
-        for(const t of (json.tasks||[])){
-          const payload = {
-            title: (t.title||"").toString().slice(0,200),
-            course: (t.course||"").toString().slice(0,60),
-            dueDate: (t.dueDate||"").toString(),
-            minutes: Math.max(5, Number(t.minutes||60)),
-            prio: t.prio||"med",
-            type: t.type||"assignment",
-            notes: (t.notes||"").toString().slice(0,300),
-            status: t.status||"todo",
-            createdAt: serverTimestamp()
-          };
-          if(payload.title) adds.push(addDoc(colTasks(), payload));
-        }
-        for(const k of (json.taken||[])){
-          const grade = (k.grade||"B").toString();
-          const payload = {
-            name: (k.name||"").toString().slice(0,120),
-            credits: Math.max(1, Number(k.credits||3)),
-            grade,
-            gradePoints: Number(k.gradePoints ?? GRADE_POINTS[grade] ?? 3.0),
-            category: k.category||"major",
-            term: (k.term||"").toString().slice(0,20),
-            weakness: k.weakness||"",
-            createdAt: serverTimestamp()
-          };
-          if(payload.name) adds.push(addDoc(colTaken(), payload));
-        }
-        for(const c of (json.plan||[])){
-          const payload = {
-            code: String(c.code||"").toUpperCase().replace(/\s+/g,""),
-            name: (c.name||"").toString().slice(0,120),
-            credits: Math.max(1, Number(c.credits||3)),
-            category: c.category||"major",
-            prereqs: Array.isArray(c.prereqs) ? c.prereqs.map(x=>String(x||"").toUpperCase().replace(/\s+/g,"")) : [],
-            createdAt: serverTimestamp()
-          };
-          if(payload.code && payload.name) adds.push(addDoc(colPlan(), payload));
-        }
+    // profile
+    if(data.profile){
+      await setDoc(userDoc(uid), { profile: data.profile, lastSeen: nowISO() }, { merge:true });
+    }
 
-        if(json.goal && typeof json.goal === "object"){
-          await saveGoalToDb({
-            target: json.goal.target ?? null,
-            totalCredits: json.goal.totalCredits ?? null,
-            nextCredits: json.goal.nextCredits ?? null,
-            updatedAt: new Date().toISOString()
-          });
-        }
-
-        await Promise.allSettled(adds);
-        toast("تم الاستيراد ✅");
-        await loadAll(); await loadGoal(); renderAll();
-      }catch(e){
-        console.error(e);
-        toast("فشل الاستيراد.", true);
+    // tasks
+    if(Array.isArray(data.tasks)){
+      for(const t of data.tasks){
+        const { id, ...rest } = t;
+        await addDoc(tasksCol(uid), {
+          title: rest.title||"",
+          course: rest.course||"",
+          dueYMD: rest.dueYMD||"",
+          minutes: Number(rest.minutes||60),
+          prio: rest.prio||"med",
+          type: rest.type||"assignment",
+          notes: rest.notes||"",
+          done: !!rest.done,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
       }
-    };
-    input.click();
-  });
+    }
 
-  // ===== RESET ALL =====
-  $("btnResetAll").addEventListener("click", async ()=>{
-    if(!UID) return;
-    if(!confirm("تحذير: هذا سيمسح كل بياناتك من Firestore. متأكد؟")) return;
+    // taken
+    if(Array.isArray(data.taken)){
+      for(const c of data.taken){
+        const { id, ...rest } = c;
+        await addDoc(takenCol(uid), {
+          name: rest.name||"",
+          credits: Number(rest.credits||3),
+          grade: rest.grade||"",
+          cat: rest.cat||"major",
+          pointsMin: Number(rest.pointsMin||0),
+          pointsMax: Number(rest.pointsMax||0),
+          createdAt: serverTimestamp()
+        });
+      }
+    }
 
+    // plan
+    if(Array.isArray(data.plan)){
+      for(const c of data.plan){
+        const { id, ...rest } = c;
+        await addDoc(planCol(uid), {
+          code: rest.code||"",
+          name: rest.name||"",
+          credits: Number(rest.credits||3),
+          cat: rest.cat||"major",
+          prereq: Array.isArray(rest.prereq) ? rest.prereq : [],
+          createdAt: serverTimestamp()
+        });
+      }
+    }
+  }
+
+  btnBackup?.addEventListener("click", async ()=>{
+    const u = auth.currentUser;
+    if(!u) return;
     try{
-      const delAll = async (colRef)=>{
-        while(true){
-          const snap = await getDocs(query(colRef, limit(300)));
-          if(snap.empty) break;
-          await Promise.allSettled(snap.docs.map(d=>deleteDoc(d.ref)));
-        }
-      };
-
-      await delAll(colTasks());
-      await delAll(colTaken());
-      await delAll(colPlan());
-      await saveGoalToDb({ target:null, totalCredits:null, nextCredits:null, updatedAt: new Date().toISOString() });
-
-      tasks=[]; taken=[]; plan=[]; goal={target:null,totalCredits:null,nextCredits:null};
-      renderAll();
-      toast("تم المسح بالكامل.");
+      const backup = await buildBackup(u.uid);
+      downloadJson(backup, `unipilot-backup-${u.uid.slice(0,6)}.json`);
+      toast("تم التصدير ✅");
     }catch(e){
       console.error(e);
-      toast("تعذر المسح. راجع Rules.", true);
+      toast("فشل التصدير.", true);
     }
   });
 
-  // ===== System status =====
-  function renderSysStatus(){
-    const list = $("sysStatus");
-    if(!list) return;
-    list.innerHTML = "";
-    list.insertAdjacentHTML("beforeend", `
-      <div class="item"><div class="top"><div style="font-weight:950">Auth</div><div class="meta">${UID ? "Email ✅" : "—"}</div></div></div>
-    `);
-    list.insertAdjacentHTML("beforeend", `
-      <div class="item"><div class="top"><div style="font-weight:950">User</div><div class="meta">${esc(USER_EMAIL||"—")}</div></div></div>
-    `);
-    list.insertAdjacentHTML("beforeend", `
-      <div class="item"><div class="top"><div style="font-weight:950">Firestore</div><div class="meta">tasks:${tasks.length} · taken:${taken.length} · plan:${plan.length}</div></div></div>
-    `);
-    list.insertAdjacentHTML("beforeend", `
-      <div class="item"><div class="meta">إذا ظهر Permission Error: طبّق Rules في الإعدادات.</div></div>
-    `);
+  btnRestore?.addEventListener("click", async ()=>{
+    const u = auth.currentUser;
+    if(!u) return;
+    try{
+      const f = await pickJsonFile();
+      if(!f) return;
+      const txt = await f.text();
+      const data = JSON.parse(txt);
+      await restoreBackup(u.uid, data);
+      toast("تم الاستيراد ✅");
+    }catch(e){
+      console.error(e);
+      toast("فشل الاستيراد. تأكد من الملف.", true);
+    }
+  });
+
+  // =========================
+  // TASKS (FIXED: saves + shows instantly)
+  // =========================
+  let currentTaskFilter = "all";   // ✅ الافتراضي: الكل (عشان ما تختفي المهام)
+  let _tasksCache = [];
+  let _unsubTasks = null;
+
+  function parseDue(dueYMD){
+    if(!dueYMD) return null;
+    const [y,m,d] = dueYMD.split("-").map(Number);
+    if(!y || !m || !d) return null;
+    return new Date(y, m-1, d, 23, 59, 59);
   }
+
+  function taskStatusBadge(t){
+    const due = parseDue(t.dueYMD);
+    const done = !!t.done;
+    if(done) return `<span class="badge ok">منجزة</span>`;
+    if(due && new Date() > due) return `<span class="badge danger">متأخرة</span>`;
+    if(t.prio === "high") return `<span class="badge warn">عالية</span>`;
+    if(t.prio === "low") return `<span class="badge">منخفضة</span>`;
+    return `<span class="badge">متوسطة</span>`;
+  }
+
+  function filterTasks(list){
+    const today = ymd();
+    const weekEnd = addDaysYMD(today, 7);
+
+    if(currentTaskFilter === "all") return list;
+
+    if(currentTaskFilter === "today"){
+      return list.filter(t=> t.dueYMD === today );
+    }
+
+    if(currentTaskFilter === "week"){
+      return list.filter(t=>{
+        if(!t.dueYMD) return false;
+        return t.dueYMD >= today && t.dueYMD <= weekEnd;
+      });
+    }
+
+    if(currentTaskFilter === "over"){
+      return list.filter(t=>{
+        const due = parseDue(t.dueYMD);
+        return !t.done && due && new Date() > due;
+      });
+    }
+
+    return list;
+  }
+
+  function updateTaskKPIs(all){
+    const today = ymd();
+    const weekEnd = addDaysYMD(today, 7);
+
+    const todayCount = all.filter(t=> t.dueYMD === today && !t.done).length;
+    const weekCount  = all.filter(t=> t.dueYMD && t.dueYMD >= today && t.dueYMD <= weekEnd && !t.done).length;
+
+    const weekAll = all.filter(t=> t.dueYMD && t.dueYMD >= today && t.dueYMD <= weekEnd);
+    const doneCount = weekAll.filter(t=> !!t.done).length;
+    const donePct = weekAll.length ? Math.round((doneCount / weekAll.length)*100) : 0;
+
+    $("kToday").textContent = String(todayCount);
+    $("kWeek").textContent  = String(weekCount);
+    $("kDonePct").textContent = weekAll.length ? (donePct + "%") : "—";
+  }
+
+  function renderTasks(uid, all){
+    const list = filterTasks(all);
+    const wrap = $("taskList");
+    if(!wrap) return;
+
+    if(!list.length){
+      wrap.innerHTML = `<div class="item"><div class="meta">لا يوجد مهام حسب الفلتر الحالي.</div></div>`;
+      return;
+    }
+
+    // sort: due asc, then created
+    const sorted = [...list].sort((a,b)=>{
+      const da = a.dueYMD || "9999-12-31";
+      const db = b.dueYMD || "9999-12-31";
+      if(da !== db) return da < db ? -1 : 1;
+      const ca = a.createdAt?.seconds || 0;
+      const cb = b.createdAt?.seconds || 0;
+      return cb - ca;
+    });
+
+    wrap.innerHTML = sorted.map(t=>{
+      return `
+        <div class="item">
+          <div class="topRow">
+            <div style="font-weight:950">${esc(t.title||"")}</div>
+            <div>${taskStatusBadge(t)}</div>
+          </div>
+          <div class="hr"></div>
+          <div class="meta">
+            ${t.course ? `📌 ${esc(t.course)} · ` : ""}
+            ${t.type ? `🧩 ${esc(t.type)} · ` : ""}
+            ⏱ ${Number(t.minutes||60)} دقيقة
+            ${t.dueYMD ? ` · 📅 ${esc(t.dueYMD)}` : ""}
+          </div>
+          ${t.notes ? `<div class="hr"></div><div class="meta">${esc(t.notes)}</div>` : ""}
+
+          <div class="hr"></div>
+          <div class="actions">
+            <button class="btn smallBtn ok" data-act="toggle" data-id="${esc(t.id)}">${t.done ? "إرجاع" : "تم ✅"}</button>
+            <button class="btn smallBtn danger" data-act="del" data-id="${esc(t.id)}">حذف</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    // bind actions
+    wrap.querySelectorAll("button[data-act]").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        const act = btn.dataset.act;
+        const id = btn.dataset.id;
+        try{
+          if(act === "del"){
+            if(!confirm("حذف المهمة؟")) return;
+            await deleteDoc(doc(db, "users", uid, "tasks", id));
+            toast("تم الحذف ✅");
+          }else if(act === "toggle"){
+            const item = _tasksCache.find(x=>x.id === id);
+            if(!item) return;
+            await updateDoc(doc(db, "users", uid, "tasks", id), {
+              done: !item.done,
+              updatedAt: serverTimestamp()
+            });
+            toast("تم ✅");
+          }
+        }catch(e){
+          console.error(e);
+          toast("تعذر تنفيذ العملية.", true);
+        }
+      });
+    });
+  }
+
+  function startTasksListener(uid){
+    if(_unsubTasks) _unsubTasks();
+    const qy = query(tasksCol(uid), orderBy("createdAt","desc"));
+    _unsubTasks = onSnapshot(qy, (snap)=>{
+      const all = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+      _tasksCache = all;                // ✅ cache
+      renderTasks(uid, _tasksCache);    // ✅ render always
+      updateTaskKPIs(_tasksCache);
+      updateTodayPlanMsg();
+      updateCoachSummary();
+    }, (err)=>{
+      console.error(err);
+      toast("مشكلة قراءة المهام. راجع Rules.", true);
+    });
+  }
+
+  // filter buttons (instant render)
+  ["fToday","fWeek","fAll","fOver"].forEach(id=>{
+    const el = $(id);
+    if(!el) return;
+    el.addEventListener("click", ()=>{
+      currentTaskFilter = el.dataset.f;
+      document.querySelectorAll("#taskSeg .segBtn").forEach(b=> b.classList.toggle("active", b === el));
+      const u = auth.currentUser;
+      if(!u) return;
+      renderTasks(u.uid, _tasksCache);
+    });
+  });
+// ==========================================
+// 📥 استيراد الخطة الرسمية
+// ==========================================
+$("btnImportOfficial")?.addEventListener("click", async () => {
+  const u = auth.currentUser; if(!u) return;
+
+  // 1. معرفة تخصص الطالب من البروفايل
+  // نحتاج قراءة البروفايل أولاً (أو الاعتماد على القيم المحفوظة محلياً إذا كانت متاحة)
+  // للأمان، سنقرأ من Firestore مباشرة
+  const snap = await getDoc(userDoc(u.uid));
+  const p = snap.data()?.profile || {};
+
+  // تكوين المفتاح: University_College_Major
+  // ملاحظة: يجب أن تتطابق الأسماء في قاعدة البيانات مع الأسماء في OFFICIAL_PLANS تماماً
+  // سنستخدم دالة تنظيف بسيطة لضمان التطابق (اختياري)
+  
+  // في مثالنا: المفتاح هو AABU_IT_علم البيانات والذكاء الاصطناعي (حسب القيم المخزنة في القوائم)
+  // لكن القوائم ترجع "Data Science..." بالانجليزي أو العربي حسب ما برمجنا القائمة سابقاً
+  // لنفترض أننا خزنا الاسم كما في القائمة:
+  
+  // تذكير: في القائمة السابقة كان المفتاح "AABU" والكلية "IT" والتخصص "علم البيانات..."
+  const planKey = `${$("universitySelect").value}_${$("collegeSelect").value}_${$("majorSelect").value}`;
+  
+  // بحث في قاعدة البيانات المحلية
+  // هنا سنستخدم مفاتيح القوائم (AABU, IT) + اسم التخصص
+  // لذا يجب التأكد أن OFFICIAL_PLANS تستخدم نفس الـ Keys
+  
+  // حل سريع: سنستخدم القيم الحالية في الـ Dropdowns لأنها هي ما يحدد التخصص
+// ... داخل زر btnImportOfficial ...
+
+// 1. بناء المفتاح بنفس الطريقة الجديدة
+// Key format: University_College_Major (All English values now)
+const selectedUni = $("universitySelect").value; // "AABU"
+const selectedCol = $("collegeSelect").value;    // "IT"
+const selectedMaj = $("majorSelect").value;      // "Data Science and AI"
+
+const key = `${selectedUni}_${selectedCol}_${selectedMaj}`;
+
+// 2. البحث باستخدام window.OFFICIAL_PLANS
+const officialPlan = window.OFFICIAL_PLANS ? window.OFFICIAL_PLANS[key] : null;
+
+// ... باقي الكود كما هو ...
+  if (!officialPlan) {
+    toast(`عذراً، الخطة الدراسية لهذا التخصص (${key}) غير متوفرة في النظام حالياً.`, true);
+    return;
+  }
+
+  if(!confirm("سيتم استيراد مواد الخطة الرسمية إلى حسابك. هل أنت متأكد؟")) return;
+
+  // البدء بالنسخ
+  let count = 0;
+  try {
+    // Loop through Years -> Semesters -> Courses
+    for (const year in officialPlan) {
+      for (const sem in officialPlan[year]) {
+        const courses = officialPlan[year][sem];
+        for (const c of courses) {
+          // نضيف المادة للـ Plan في Firebase
+          // نتأكد أولاً أنها غير مضافة (اختياري لعدم التكرار، لكن الـ Firestore يولد ID عشوائي)
+          // الأفضل الاستعلام، لكن للسرعة سنضيفها
+          
+          await addDoc(planCol(u.uid), {
+            code: c.code,
+            name: c.name,
+            credits: c.credits,
+            prereq: c.prereq, // مصفوفة المتطلبات
+            suggestedYear: year, // نخزن السنة المقترحة (سنة 1، سنة 2)
+            suggestedSem: sem,   // نخزن الفصل المقترح
+            cat: "major", // افتراضي
+            createdAt: serverTimestamp()
+          });
+          count++;
+        }
+      }
+    }
+    toast(`تم استيراد ${count} مادة من الخطة بنجاح ✅`);
+  } catch(e) {
+    console.error(e);
+    toast("حدث خطأ أثناء الاستيراد.", true);
+  }
+});
+  // Add task
+  $("btnAddTask")?.addEventListener("click", async ()=>{
+    const u = auth.currentUser;
+    if(!u) return;
+
+    const title = ($("taskTitle").value||"").trim();
+    const course = ($("taskCourse").value||"").trim();
+    const dueYMD = ($("taskDue").value||"").trim();
+    const minutes = Number(($("taskMin").value||"60"));
+    const prio = ($("taskPrio").value||"med");
+    const type = ($("taskType").value||"assignment");
+    const notes = ($("taskNotes").value||"").trim();
+
+    if(!title){ toast("اكتب عنوان المهمة.", true); return; }
+
+    try{
+      await addDoc(tasksCol(u.uid), {
+        title, course, dueYMD,
+        minutes: Number.isFinite(minutes) ? minutes : 60,
+        prio, type, notes,
+        done:false,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+
+      // clear
+      $("taskTitle").value = "";
+      $("taskCourse").value = "";
+      $("taskNotes").value = "";
+
+      toast("تمت الإضافة ✅");
+    }catch(e){
+      console.error(e);
+      toast("فشل إضافة المهمة. راجع Rules.", true);
+    }
+  });
+
+  function updateTodayPlanMsg(){
+    const u = auth.currentUser;
+    if(!u) return;
+    const msg = $("todayPlanMsg");
+    if(!msg) return;
+
+    const today = ymd();
+    const over = _tasksCache.filter(t=>{
+      const due = parseDue(t.dueYMD);
+      return !t.done && due && new Date() > due;
+    });
+
+    const todays = _tasksCache
+      .filter(t=> !t.done && t.dueYMD === today)
+      .sort((a,b)=>(Number(a.minutes||60) - Number(b.minutes||60)));
+
+    if(over.length){
+      msg.textContent = `عندك ${over.length} مهمة متأخرة. خلّص وحدة صغيرة أولاً ✅`;
+      return;
+    }
+    if(todays.length){
+      const t = todays[0];
+      msg.textContent = `خطة اليوم: ابدأ بـ "${t.title}" لمدة ${Number(t.minutes||60)} دقيقة.`;
+      return;
+    }
+    msg.textContent = "اليوم خفيف ✅ إذا بدك: أضف مهمة صغيرة أو راجع مادة 20 دقيقة.";
+  }
+
+  $("btnPlanToday")?.addEventListener("click", ()=>{
+    const u = auth.currentUser;
+    if(!u) return;
+    updateTodayPlanMsg();
+    toast("تم تحديث خطة اليوم ✅");
+  });
+
+  // =========================
+  // GPA (grade symbols)
+  // =========================
+  const GRADE_MAP = {
+    "A+": [4.0,4.0], "A":[3.75,4.0], "A-":[3.5,3.75],
+    "B+":[3.25,3.5], "B":[3.0,3.25], "B-":[2.75,3.0],
+    "C+":[2.5,2.75], "C":[2.25,2.5], "C-":[2.0,2.25],
+    "D+":[1.75,2.0], "D":[1.5,1.75], "F":[0,0],
+
+    "أ+": [4.0,4.0], "أ":[3.75,4.0], "أ-":[3.5,3.75],
+    "ب+": [3.25,3.5], "ب":[3.0,3.25], "ب-":[2.75,3.0],
+    "ج+": [2.5,2.75], "ج":[2.25,2.5], "ج-":[2.0,2.25],
+    "د+": [1.75,2.0], "د":[1.5,1.75], "ر":[0,0]
+  };
+
+  // datalist
+  const ds = $("gradeSymbols");
+  if(ds){
+    ds.innerHTML = Object.keys(GRADE_MAP).map(k=> `<option value="${esc(k)}"></option>`).join("");
+  }
+
+  let _unsubTaken = null;
+  let _takenCache = [];
+
+  function calcGpa(list){
+    let creditsSum = 0;
+    let minPoints = 0;
+    let maxPoints = 0;
+
+    for(const c of list){
+      const cr = Number(c.credits||0);
+      if(!cr) continue;
+      creditsSum += cr;
+      minPoints += cr * Number(c.pointsMin||0);
+      maxPoints += cr * Number(c.pointsMax||0);
+    }
+    const gpaMin = creditsSum ? (minPoints/creditsSum) : 0;
+    const gpaMax = creditsSum ? (maxPoints/creditsSum) : 0;
+    const gpaMid = (gpaMin + gpaMax)/2;
+    return { creditsSum, gpaMin, gpaMax, gpaMid };
+  }
+
+  function renderTaken(uid, list){
+    const wrap = $("takenList");
+    if(!wrap) return;
+    if(!list.length){
+      wrap.innerHTML = `<div class="item"><div class="meta">لا يوجد مواد.</div></div>`;
+      return;
+    }
+    wrap.innerHTML = list.map(c=>`
+      <div class="item">
+        <div class="topRow">
+          <div style="font-weight:950">${esc(c.name||"")}</div>
+          <div class="meta">${Number(c.credits||0)} ساعات · ${esc(c.grade||"")}</div>
+        </div>
+        <div class="hr"></div>
+        <div class="meta">Points range: ${Number(c.pointsMin||0).toFixed(2)} — ${Number(c.pointsMax||0).toFixed(2)}</div>
+        <div class="hr"></div>
+        <div class="actions">
+          <button class="btn smallBtn danger" data-del="${esc(c.id)}">حذف</button>
+        </div>
+      </div>
+    `).join("");
+
+    wrap.querySelectorAll("button[data-del]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        if(!confirm("حذف المادة؟")) return;
+        try{
+          await deleteDoc(doc(db,"users",uid,"taken", b.dataset.del));
+          toast("تم الحذف ✅");
+        }catch(e){
+          console.error(e);
+          toast("فشل الحذف.", true);
+        }
+      });
+    });
+  }
+
+  function updateGpaUI(){
+    const { creditsSum, gpaMin, gpaMax, gpaMid } = calcGpa(_takenCache);
+    $("crDone").textContent = creditsSum ? String(creditsSum) : "—";
+    $("coursesCount").textContent = String(_takenCache.length || 0);
+
+    $("minGpaPossible").textContent = creditsSum ? gpaMin.toFixed(2) : "—";
+    $("maxGpaPossible").textContent = creditsSum ? gpaMax.toFixed(2) : "—";
+    $("gpaC").textContent = creditsSum ? gpaMid.toFixed(2) : "—";
+    $("ppc").textContent = creditsSum ? gpaMid.toFixed(2) : "—";
+
+    $("gpaMsg").textContent = creditsSum
+      ? `معدلك التقريبي ضمن رينج: ${gpaMin.toFixed(2)} — ${gpaMax.toFixed(2)}`
+      : "أضف موادك عشان يطلع التحليل.";
+  }
+
+  function startTakenListener(uid){
+    if(_unsubTaken) _unsubTaken();
+    const qy = query(takenCol(uid), orderBy("createdAt","desc"));
+    _unsubTaken = onSnapshot(qy, (snap)=>{
+      _takenCache = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      renderTaken(uid, _takenCache);
+      updateGpaUI();
+      updateCoachSummary();
+    }, (err)=>{
+      console.error(err);
+      toast("مشكلة قراءة GPA. راجع Rules.", true);
+    });
+  }
+
+  $("btnAddTaken")?.addEventListener("click", async ()=>{
+    const u = auth.currentUser;
+    if(!u) return;
+
+    const name = ($("takenName").value||"").trim();
+    const credits = Number(($("takenCredits").value||"3"));
+    const grade = ($("takenGrade").value||"").trim();
+    const cat = ($("takenCat").value||"major");
+
+    if(!name){ toast("اكتب اسم المادة.", true); return; }
+    if(!GRADE_MAP[grade]){ toast("اكتب رمز صحيح (A+ / أ+ ...).", true); return; }
+
+    const [min,max] = GRADE_MAP[grade];
+
+    try{
+      await addDoc(takenCol(u.uid), {
+        name,
+        credits: Number.isFinite(credits) ? credits : 3,
+        grade,
+        cat,
+        pointsMin: min,
+        pointsMax: max,
+        createdAt: serverTimestamp()
+      });
+
+      $("takenName").value="";
+      $("takenGrade").value="";
+      toast("تمت الإضافة ✅");
+    }catch(e){
+      console.error(e);
+      toast("فشل الإضافة. راجع Rules.", true);
+    }
+  });
+
+  // =========================
+  // Planner
+  // =========================
+  let _unsubPlan = null;
+  let _planCache = [];
+
+  function renderPlan(uid, list){
+    const wrap = $("planList");
+    if(!wrap) return;
+    if(!list.length){
+      wrap.innerHTML = `<div class="item"><div class="meta">لا يوجد مواد بالخطة.</div></div>`;
+      return;
+    }
+    wrap.innerHTML = list.map(c=>`
+      <div class="item">
+        <div class="topRow">
+          <div style="font-weight:950">${esc(c.code||"")} — ${esc(c.name||"")}</div>
+          <div class="meta">${Number(c.credits||0)} ساعات</div>
+        </div>
+        <div class="hr"></div>
+        <div class="meta">Prereq: ${(c.prereq||[]).map(esc).join(", ") || "—"}</div>
+        <div class="hr"></div>
+        <div class="actions">
+          <button class="btn smallBtn danger" data-del="${esc(c.id)}">حذف</button>
+        </div>
+      </div>
+    `).join("");
+
+    wrap.querySelectorAll("button[data-del]").forEach(b=>{
+      b.addEventListener("click", async ()=>{
+        if(!confirm("حذف المادة من الخطة؟")) return;
+        try{
+          await deleteDoc(doc(db,"users",uid,"plan", b.dataset.del));
+          toast("تم الحذف ✅");
+        }catch(e){
+          console.error(e);
+          toast("فشل الحذف.", true);
+        }
+      });
+    });
+  }
+
+  function startPlanListener(uid){
+    if(_unsubPlan) _unsubPlan();
+    const qy = query(planCol(uid), orderBy("createdAt","desc"));
+    _unsubPlan = onSnapshot(qy, (snap)=>{
+      _planCache = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      renderPlan(uid, _planCache);
+      updateCoachSummary();
+    }, (err)=>{
+      console.error(err);
+      toast("مشكلة قراءة الخطة. راجع Rules.", true);
+    });
+  }
+
+  $("btnAddPlan")?.addEventListener("click", async ()=>{
+    const u = auth.currentUser; if(!u) return;
+    const code = ($("planCode").value||"").trim().toUpperCase();
+    const name = ($("planName").value||"").trim();
+    const credits = Number(($("planCredits").value||"3"));
+    const cat = ($("planCat").value||"major");
+    const prereqRaw = ($("planPrereq").value||"").trim();
+    const prereq = prereqRaw ? prereqRaw.split(",").map(x=>x.trim().toUpperCase()).filter(Boolean) : [];
+
+    if(!code || !name){ toast("اكتب كود + اسم المادة.", true); return; }
+
+    try{
+      await addDoc(planCol(u.uid), {
+        code, name,
+        credits: Number.isFinite(credits)?credits:3,
+        cat, prereq,
+        createdAt: serverTimestamp()
+      });
+      $("planCode").value=""; $("planName").value=""; $("planPrereq").value="";
+      toast("تمت الإضافة ✅");
+    }catch(e){
+      console.error(e);
+      toast("فشل الإضافة. راجع Rules.", true);
+    }
+  });
+
+  $("btnSuggestCourses")?.addEventListener("click", ()=>{
+    const u = auth.currentUser; if(!u) return;
+    const wrap = $("suggestList");
+    if(!wrap) return;
+
+    // available if prereq all taken
+    const takenCodes = new Set(_takenCache.map(x=> String(x.name||"").toUpperCase()));
+    const available = _planCache.filter(c=>{
+      const pre = c.prereq || [];
+      if(!pre.length) return true;
+      return pre.every(p=> takenCodes.has(String(p).toUpperCase()));
+    });
+
+    if(!available.length){
+      wrap.innerHTML = `<div class="item"><div class="meta">ما في مواد متاحة حسب المتطلبات (أو ما أدخلت رموز موادك المأخوذة بنفس الكود).</div></div>`;
+      return;
+    }
+
+    wrap.innerHTML = available.slice(0,20).map(c=>`
+      <div class="item">
+        <div style="font-weight:950">${esc(c.code||"")} — ${esc(c.name||"")}</div>
+        <div class="meta">${Number(c.credits||0)} ساعات · Prereq: ${(c.prereq||[]).map(esc).join(", ") || "—"}</div>
+      </div>
+    `).join("");
+    toast("تم استخراج مواد متاحة ✅");
+  });
+
+  // =========================
+  // Coach (Gemini unified)
+  // =========================
+  async function geminiGenerate(promptText){
+    if(!GEMINI_API_KEY || GEMINI_API_KEY.includes("PUT_YOUR")){
+      throw new Error("missing_gemini_key");
+    }
+
+    const body = { contents: [{ role:"user", parts:[{text: promptText}]}] };
+    const res = await fetch(GEMINI_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok){
+      const t = await res.text().catch(()=> "");
+      throw new Error("gemini_http_" + res.status + "_" + t.slice(0,120));
+    }
+    const json = await res.json();
+    const text = json?.candidates?.[0]?.content?.parts?.map(p=>p.text).join("") || "ما طلع رد.";
+    return text.trim();
+  }
+// ==========================================
+// 🤖 المستشار الأكاديمي (AI Course Advisor)
+// ==========================================
+// ==========================================
+// 🤖 المستشار الأكاديمي المطور (Smart AI Planner)
+// ==========================================
+// 🛑 استبدل كود زر btnSmartSuggest القديم بهذا الجديد 🛑
+
+$("btnSmartSuggest").onclick = async () => {
+    const u = auth.currentUser; if(!u) return;
+    const out = $("suggestList");
+    out.innerHTML = `<div class="item">⏳ جاري تحليل السجل الأكاديمي والتحقق من المتطلبات...</div>`;
+
+    // 1. تجهيز البيانات (تنظيف ومقارنة)
+    const takenCodes = _takenCache.map(c => (c.name||"").split(" ")[0].trim().toUpperCase());
+    const takenNames = _takenCache.map(c => (c.name||"").trim().toLowerCase());
+
+    const labPref = $("labPref").value; // yes, no, focus
+    const targetHours = $("targetHours").value; // 12-15 etc
+
+    // 2. فلترة المواد من الخطة (المواد المتبقية فقط)
+    const available = _planCache.filter(p => {
+        // هل المادة مأخوذة سابقاً؟ (شيك ع الكود وع الاسم)
+        const code = (p.code||"").trim().toUpperCase();
+        const name = (p.name||"").trim().toLowerCase();
+        if(takenCodes.some(tc=>tc===code || (code && tc.includes(code)))) return false;
+        if(takenNames.includes(name)) return false;
+
+        // 🛑 فلتر اللابات: إذا الطالب اختار "no"، استثني أي مادة نوعها lab أو ساعاتها 1
+        if(labPref === "no" && (p.type === "lab" || p.credits === 1)) return false; 
+        
+        return true;
+    });
+
+    if(available.length === 0){
+        out.innerHTML = `<div class="item ok">🎉 لا يوجد مواد متبقية (أو الفلتر أخفى كل شيء).</div>`;
+        return;
+    }
+
+    // 3. بناء الرسالة لـ Gemini (Prompt)
+    const prompt = `
+    بصفتك مرشداً أكاديمياً خبيراً.
+    الطالب يريد تسجيل جدول للفصل القادم.
+    - الساعات المطلوبة: ${targetHours}
+    - تفضيل المختبرات: ${labPref === 'no' ? 'لا يريد مختبرات نهائياً' : 'يرغب بتنزيل مختبرات'}
+    - المواد التي أنهاها (Completed): [${takenCodes.join(", ")}]
+
+    المواد المتاحة في خطته الدراسية (Available Courses):
+    ${available.map(c => `- [${c.code}] ${c.name} (${c.credits}س, نوع:${c.type||'major'}) | المتطلب السابق: ${c.prereq}`).join("\n")}
+
+    المطلوب منك:
+    1. اقترح جدولاً دراسياً يحقق عدد الساعات (${targetHours}).
+    2. تأكد من المتطلبات: لا تقترح مادة إلا إذا كان الطالب قد أنهى متطلبها المذكور.
+    3. رتب المواد حسب الأهمية (مواد التخصص أولاً).
+    4. اكتب ملاحظة صغيرة بجانب كل مادة (لماذا اخترتها؟).
+    
+    الرد بتنسيق HTML (قائمة <ul>).
+    `;
+
+    // 4. الإرسال
+    try{
+        const aiRes = await geminiGenerate(prompt); // تأكد أن دالة geminiGenerate معرفة عندك
+        // تنظيف الرد من كود ماركداون
+        const cleanHtml = aiRes.replace(/```html/g,'').replace(/```/g,''); 
+        out.innerHTML = `<div class="item" style="background:#f0f9ff; border:1px solid #bae6fd;">${cleanHtml}</div>`;
+    } catch(e){
+        console.error(e);
+        out.innerHTML = `<div class="item danger">خطأ في الاتصال بالمستشار الذكي.</div>`;
+    }
+};
+$("btnCoachAsk")?.addEventListener("click", async ()=>{
+    const u = auth.currentUser; if(!u) return;
+
+    const focus = $("coachFocus")?.value || "weak";
+    const style = $("coachStyle")?.value || "steps";
+    const length = $("coachLength")?.value || "short"; // القيمة الجديدة
+    const userText = ($("coachInput")?.value || "").trim();
+
+    const out = $("coachAnswer");
+    if(out) out.textContent = "… جاري التفكير";
+
+    // 💡 تجهيز تعليمات الطول
+    let lengthInstruction = "";
+    if(length === "short") {
+      lengthInstruction = "مهم جداً: الرد يجب أن يكون قصيراً جداً (أقل من 60 كلمة). اعطِ الزبدة في 3 نقاط فقط بدون مقدمات ولا ختام.";
+    } else {
+      lengthInstruction = "الرد يجب أن يكون مفصلاً. اشرح الخطوات، الأسباب، وكيفية التطبيق بعمق.";
+    }
+
+    const prompt = `
+أنت مرشد أكاديمي (Mentor).
+الطالب يشتكي من: "${userText || "توجيه عام"}"
+التركيز: ${focus} | الأسلوب: ${style}
+
+${lengthInstruction}
+
+تكلم بلهجة طلابية مفهومة.
+`;
+
+    try{
+      const ans = await geminiGenerate(prompt);
+      out.textContent = ans;
+      toast("تم ✅");
+    }catch(e){
+      console.error(e);
+      out.textContent = "Error communicating with Coach.";
+      toast("خطأ", true);
+    }
+  });
+
+  $("btnCoachQuick")?.addEventListener("click", ()=>{
+    const u = auth.currentUser; if(!u) return;
+    const out = $("coachAnswer");
+    const today = ymd();
+    const over = _tasksCache.filter(t=>{
+      const due = parseDue(t.dueYMD);
+      return !t.done && due && new Date() > due;
+    });
+    const todays = _tasksCache.filter(t=> !t.done && t.dueYMD === today);
+
+    if(over.length){
+      out.textContent = `عندك ${over.length} مهمة متأخرة. اختار وحدة أقل وقت وابدأ 25 دقيقة الآن.`;
+    }else if(todays.length){
+      const t = todays.sort((a,b)=>Number(a.minutes||60)-Number(b.minutes||60))[0];
+      out.textContent = `ابدأ اليوم بـ "${t.title}" لمدة ${Number(t.minutes||60)} دقيقة. بعدين 5 دقائق راحة.`;
+    }else{
+      out.textContent = "اليوم فاضي؟ اعمل 20 دقيقة مراجعة لمادة ضعيفة + 10 دقائق ملخص.";
+    }
+    toast("اقتراح جاهز ✅");
+  });
+
+  function updateCoachSummary(){
+    const wrap = $("coachSummary");
+    if(!wrap) return;
+
+    const weak = _takenCache.length
+      ? [..._takenCache].sort((a,b)=> Number(a.pointsMax||0)-Number(b.pointsMax||0))[0]
+      : null;
+
+    const next = _tasksCache
+      .filter(t=> !t.done && t.dueYMD)
+      .sort((a,b)=> (a.dueYMD||"9999-12-31").localeCompare(b.dueYMD||"9999-12-31"))[0];
+
+    wrap.innerHTML = `
+      <div class="item">
+        <div style="font-weight:950">أضعف مادة</div>
+        <div class="meta">${weak ? `${esc(weak.name)} (${esc(weak.grade)})` : "—"}</div>
+      </div>
+      <div class="item">
+        <div style="font-weight:950">أقرب مهمة</div>
+        <div class="meta">${next ? `${esc(next.title)} · ${esc(next.dueYMD||"")}` : "—"}</div>
+      </div>
+      <div class="item">
+        <div style="font-weight:950">نصيحة سريعة</div>
+        <div class="meta">ابدأ بـ 25 دقيقة تركيز + 5 راحة. أهم شيء البداية.</div>
+      </div>
+    `;
+  }
+
+  // =========================
+  // Profile settings
+  // =========================
+  async function loadProfile(uid){
+    const snap = await getDoc(userDoc(uid));
+    if(!snap.exists()) return;
+    const data = snap.data();
+    const p = data.profile || {};
+    $("pName").value = p.name || "";
+    $("pPhone").value = p.phone || "";
+    $("pMajor").value = p.major || "";
+    $("pYear").value = p.year || "";
+    $("pTerm").value = p.term || "";
+    $("pDob").value = p.dob || "";
+    $("emailVerified").textContent = data.emailVerified ? "Yes" : "No";
+  }
+
+$("btnSaveProfile")?.addEventListener("click", async ()=>{
+    const u = auth.currentUser; if(!u) return;
+
+    // القيم الجديدة من القوائم
+    const secVal = $("sectorSelect").value;
+    const uniVal = $("universitySelect").value;
+    const colVal = $("collegeSelect").value;
+    const majVal = $("majorSelect").value;
+    const degVal = $("degreeLevelSelect").value; // الدرجة العلمية
+
+    // جلب الأسماء العربية للحفظ
+    let uniName = "";
+    let colName = "";
+    
+    if(window.JORDAN_ACADEMIC_DATA && uniVal){
+        const uData = window.JORDAN_ACADEMIC_DATA[uniVal];
+        uniName = uData.name;
+        if(colVal && uData.colleges[colVal]){
+            colName = uData.colleges[colVal].name;
+        }
+    }
+
+    const profile = {
+      name: ($("pName").value||"").trim(),
+      phone: ($("pPhone").value||"").trim(),
+      
+      // البيانات الأكاديمية الجديدة
+      sector: secVal,       // gov/pvt
+      degree: degVal,       // bachelor/diploma...
+      university: uniName,
+      college: colName,
+      major: majVal || ($("pMajor").value||"").trim(),
+
+      year: ($("pYear").value||"").trim(),
+      term: ($("pTerm").value||"").trim(),
+      dob: ($("pDob").value||"").trim()
+    };
+
+    try{
+      await setDoc(userDoc(u.uid), { profile, lastSeen: nowISO() }, { merge:true });
+      toast("تم الحفظ ✅");
+      $("profileMsg").textContent = "تم تحديث ملفك الأكاديمي ✅";
+    }catch(e){
+      console.error(e);
+      toast("فشل الحفظ.", true);
+    }
+  });
+
+  $("btnSendVerify")?.addEventListener("click", async ()=>{
+    const u = auth.currentUser; if(!u) return;
+    try{
+      await sendEmailVerification(u);
+      toast("تم إرسال رسالة التحقق ✅");
+    }catch(e){
+      console.error(e);
+      toast("تعذر إرسال التحقق.", true);
+    }
+  });
+
+  // =========================
+  // ADMIN (read users list)
+  // =========================
+  let _unsubAdminUsers = null;
+  let _adminUsersCache = [];
+  let _selectedUserId = "";
+
+  function isAdminUser(){
+    const u = auth.currentUser;
+    return !!u && (u.email||"").toLowerCase() === MAIN_ADMIN_EMAIL.toLowerCase();
+  }
+
+  function renderAdminUsers(){
+    const body = $("aTableBody");
+    if(!body) return;
+
+    const q = ($("aQ").value||"").trim().toLowerCase();
+    const year = ($("aYear").value||"").trim();
+    const sort = ($("aSort").value||"lastSeen_desc");
+
+    let list = [..._adminUsersCache];
+
+    if(q){
+      list = list.filter(u=>{
+        const n = (u.profile?.name||u.displayName||"").toLowerCase();
+        const e = (u.email||"").toLowerCase();
+        const m = (u.profile?.major||"").toLowerCase();
+        return n.includes(q) || e.includes(q) || m.includes(q);
+      });
+    }
+    if(year){
+      list = list.filter(u=> String(u.profile?.year||"") === year);
+    }
+
+    if(sort === "created_desc"){
+      list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    }else{
+      // lastSeen desc
+      list.sort((a,b)=> String(b.lastSeen||"").localeCompare(String(a.lastSeen||"")));
+    }
+
+    body.innerHTML = list.slice(0,200).map(u=>`
+      <tr class="clickRow" data-id="${esc(u.id)}">
+        <td>${esc(u.profile?.name || u.displayName || "—")}</td>
+        <td>${esc(u.email || "—")}</td>
+        <td>${esc(u.profile?.major || "—")}</td>
+        <td>${esc(u.profile?.year || "—")}</td>
+        <td>${esc(u.lastSeen ? u.lastSeen.slice(0,19).replace("T"," ") : "—")}</td>
+      </tr>
+    `).join("");
+
+    body.querySelectorAll("tr[data-id]").forEach(r=>{
+      r.addEventListener("click", ()=> selectAdminUser(r.dataset.id));
+    });
+
+    $("aUsers").textContent = String(_adminUsersCache.length || 0);
+
+    // active 7 days approx
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-7);
+    const active = _adminUsersCache.filter(u=>{
+      const ls = u.lastSeen ? new Date(u.lastSeen) : null;
+      return ls && ls >= cutoff;
+    }).length;
+    $("aActive").textContent = String(active);
+
+    // avg gpa approx from stored field if exists (we won’t store it now)
+    $("aAvgGpa").textContent = "—";
+  }
+
+  async function selectAdminUser(uid){
+    _selectedUserId = uid;
+    $("aSel").textContent = uid ? uid.slice(0,10)+"…" : "—";
+
+    const wrap = $("aDetails");
+    if(!wrap) return;
+
+    try{
+      const snap = await getDoc(doc(db,"users",uid));
+      if(!snap.exists()){
+        wrap.innerHTML = `<div class="item"><div class="meta">User not found.</div></div>`;
+        return;
+      }
+      const u = snap.data();
+      wrap.innerHTML = `
+        <div class="item">
+          <div style="font-weight:950">Profile</div>
+          <div class="meta">
+            الاسم: ${esc(u.profile?.name||u.displayName||"—")}<br>
+            الإيميل: ${esc(u.email||"—")}<br>
+            التخصص: ${esc(u.profile?.major||"—")}<br>
+            السنة: ${esc(u.profile?.year||"—")}<br>
+            آخر نشاط: ${esc(u.lastSeen||"—")}
+          </div>
+        </div>
+      `;
+
+      // read last tasks (read-only)
+      const tSnap = await getDocs(query(collection(db,"users",uid,"tasks"), orderBy("createdAt","desc"), limit(5)));
+      const tasks = tSnap.docs.map(d=>({id:d.id, ...d.data()}));
+
+      wrap.innerHTML += `
+        <div class="item">
+          <div style="font-weight:950">آخر 5 مهام</div>
+          <div class="meta">${tasks.length ? tasks.map(t=>`• ${esc(t.title)} ${t.dueYMD?`(${esc(t.dueYMD)})`:""} ${t.done?"✅":""}`).join("<br>") : "—"}</div>
+        </div>
+      `;
+
+      const gSnap = await getDocs(query(collection(db,"users",uid,"taken"), orderBy("createdAt","desc"), limit(5)));
+      const taken = gSnap.docs.map(d=>({id:d.id, ...d.data()}));
+      wrap.innerHTML += `
+        <div class="item">
+          <div style="font-weight:950">آخر 5 مواد (GPA)</div>
+          <div class="meta">${taken.length ? taken.map(c=>`• ${esc(c.name)} (${esc(c.grade||"")})`).join("<br>") : "—"}</div>
+        </div>
+      `;
+    }catch(e){
+      console.error(e);
+      wrap.innerHTML = `<div class="item"><div class="meta">لا يمكن قراءة تفاصيل الطالب. راجع Rules.</div></div>`;
+    }
+  }
+
+  function startAdminUsersListener(){
+    if(_unsubAdminUsers) _unsubAdminUsers();
+    // users list
+    const qy = query(collection(db,"users"), orderBy("lastSeen","desc"), limit(300));
+    _unsubAdminUsers = onSnapshot(qy, (snap)=>{
+      _adminUsersCache = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      renderAdminUsers();
+
+      // recent list
+      const recent = $("aRecent");
+      if(recent){
+        recent.innerHTML = _adminUsersCache.slice(0,12).map(u=>`
+          <div class="item">
+            <div style="font-weight:950">${esc(u.profile?.name || u.displayName || "—")}</div>
+            <div class="meta">${esc(u.email||"—")}<br>LastSeen: ${esc(u.lastSeen||"—")}</div>
+          </div>
+        `).join("");
+      }
+      $("adminHomeMsg").textContent = "جاهز ✅";
+    }, (err)=>{
+      console.error(err);
+      $("adminHomeMsg").textContent = "لا يمكن قراءة users. افحص Rules.";
+      toast("Admin read failed. Check Rules.", true);
+    });
+  }
+
+  $("btnAdminRefresh")?.addEventListener("click", ()=>{
+    if(!isAdminUser()) return;
+    renderAdminUsers();
+    toast("تم التحديث ✅");
+  });
+  $("aQ")?.addEventListener("input", ()=> renderAdminUsers());
+  $("aYear")?.addEventListener("change", ()=> renderAdminUsers());
+  $("aSort")?.addEventListener("change", ()=> renderAdminUsers());
+
+  // =========================
+  // Auth State
+  // =========================
+  onAuthStateChanged(auth, async (user)=>{
+    // cleanup
+    if(_unsubTasks) { _unsubTasks(); _unsubTasks = null; }
+    if(_unsubTaken) { _unsubTaken(); _unsubTaken = null; }
+    if(_unsubPlan)  { _unsubPlan();  _unsubPlan  = null; }
+    if(_unsubAdminUsers){ _unsubAdminUsers(); _unsubAdminUsers=null; }
+
+    _tasksCache = [];
+    _takenCache = [];
+    _planCache  = [];
+    $("taskList").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
+    $("takenList").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
+    $("planList").innerHTML = `<div class="item"><div class="meta">سجّل دخولك عشان تظهر بياناتك.</div></div>`;
+    $("coachSummary").innerHTML = "";
+    $("coachAnswer").textContent = " ✅";
+    $("todayPlanMsg").textContent ="";
+
+    if(!user){
+      resetGuestUI();
+      return;
+    }
+
+    authBack.classList.add("hidden");
+
+    const email = (user.email || "").toLowerCase();
+    const isAdmin = email === MAIN_ADMIN_EMAIL.toLowerCase();
+
+    if(userLabel){
+      userLabel.textContent = (user.email || "—") + (user.displayName ? ` (${user.displayName})` : "");
+    }
+    if(roleLabel){
+      roleLabel.textContent = isAdmin ? "Admin" : "طالب";
+    }
+
+    // ensure root
+    try{ await ensureUserRoot(user); }catch(e){ console.warn(e); }
+
+    // enable
+    btnOpenSettings && (btnOpenSettings.disabled = false);
+    btnBackup && (btnBackup.disabled = false);
+    btnRestore && (btnRestore.disabled = false);
+    btnLogout && (btnLogout.disabled = false);
+
+    // enable feature buttons
+    ["btnAddTask","btnPlanToday","fToday","fWeek","fAll","fOver","btnAddTaken","btnAddPlan","btnSuggestCourses","btnCoachAsk","btnCoachQuick","btnSaveProfile","btnSendVerify","btnAdminRefresh"]
+      .forEach(id=>{ const el = $(id); if(el) el.disabled = false; });
+
+    // show correct app
+    if(isAdmin){
+      adminApp?.classList.remove("hidden");
+      adminTabs?.classList.remove("hidden");
+      studentApp?.classList.add("hidden");
+      studentTabs?.classList.add("hidden");
+      showAdminView("admin_home");
+      startAdminUsersListener();
+    }else{
+      studentApp?.classList.remove("hidden");
+      studentTabs?.classList.remove("hidden");
+      adminApp?.classList.add("hidden");
+      adminTabs?.classList.add("hidden");
+      showStudentView("tasks");
+    }
+
+    // listeners for everyone (admin sees his own too if he uses student view? but we keep admin views only)
+    startTasksListener(user.uid);
+    startTakenListener(user.uid);
+    startPlanListener(user.uid);
+    loadProfile(user.uid);
+
+    toast("جاهز ✅");
+  });
+
+  toast("✅ UniPilot جاهز");
+// ==========================================
+// 📚 قاعدة بيانات الخطط الدراسية (The Syllabus DB)
+// ==========================================
+// المفتاح هنا يتم تركيبه من: University_College_Major (التي اخترناها في الإعدادات)
+// ملاحظة: قمت بتعبئة خطة "آل البيت - علم البيانات" كمثال حقيقي تقريبي.
+
+const OFFICIAL_PLANS = {
+
+  // مثال: جامعة آل البيت -> كلية IT -> علم البيانات
+
+  "AABU_IT_Data Science and Artificial Intelligence": {
+    "Year 1": {
+      "Semester 1": [
+        { code: "CS111", name: "مقدمة في علم الحاسوب", credits: 3, prereq: [] },
+        { code: "MATH101", name: "تفاضل وتكامل 1", credits: 3, prereq: [] },
+        { code: "ENG101", name: "لغة إنجليزية 1", credits: 3, prereq: [] },
+        { code: "ARB101", name: "لغة عربية 1", credits: 3, prereq: [] },
+        { code: "MS100", name: "العلوم العسكرية", credits: 3, prereq: [] }
+      ],
+      "Semester 2": [
+        { code: "CS112", name: "Object Oriented", credits: 3, prereq: ["CS111"], type: "major" },
+        { code: "MATH102", name: "تفاضل وتكامل 2", credits: 3, prereq: ["MATH101"] },
+        { code: "PHYS101", name: "فيزياء عامة 1", credits: 3, prereq: [] },
+        { code: "CS181", name: "تطبيقات الويب", credits: 3, prereq: ["CS111"] }
+      ]
+    },
+    "Year 2": {
+      "Semester 1": [
+        { code: "CS211", name: "تراكيب البيانات", credits: 3, prereq: ["CS112", "MATH241"] },
+        { code: "DS201", name: "مقدمة في علم البيانات", credits: 3, prereq: ["CS112"] },
+        { code: "MATH241", name: "رياضيات منفصلة", credits: 3, prereq: [] },
+        { code: "STAT101", name: "احصاء واحتمالات", credits: 3, prereq: [] }
+      ],
+      "Semester 2": [
+        { code: "CS221", name: "خوارزميات", credits: 3, prereq: ["CS211"] },
+        { code: "AI201", name: "مقدمة في الذكاء الاصطناعي", credits: 3, prereq: ["CS112"] },
+        { code: "DS210", name: "تحليل البيانات", credits: 3, prereq: ["DS201", "STAT101"] }
+      ]
+    },
+    "Year 3": {
+       // ... تكملة باقي السنوات بنفس النمط
+       "Semester 1": [
+         { code: "AI301", name: "تعلم الآلة (Machine Learning)", credits: 3, prereq: ["AI201", "STAT101"] },
+         { code: "DS320", name: "البيانات الضخمة (Big Data)", credits: 3, prereq: ["DS210"] }
+       ]
+    }
+  }
+  // يمكنك هنا إضافة خطة الجامعة الأردنية، التكنو، إلخ...
+
+  
+};
+</script>
+<script>
+// ==========================================================
+// 1. JORDAN ACADEMIC DATA (English Values for Stability)
+// ==========================================================
+// جعلناها window لتكون عامة وشاملة
+window.JORDAN_ACADEMIC_DATA = {
+  // ==========================================
+  // 🏛️ GOVERNMENT UNIVERSITIES (الجامعات الحكومية)
+  // ==========================================
+  "JU": {
+    type: "gov",
+    name: "University of Jordan (JU)",
+    colleges: {
+      "IT": { name: "King Abdullah II School of IT", majors: ["Computer Science", "Computer Information Systems (CIS)", "Business Information Technology (BIT)", "Artificial Intelligence", "Data Science"] },
+      "Eng": { name: "School of Engineering", majors: ["Civil Engineering", "Architecture", "Electrical Engineering", "Mechanical Engineering", "Chemical Engineering", "Industrial Engineering", "Computer Engineering", "Mechatronics Engineering"] },
+      "Med": { name: "Health Schools", majors: ["Medicine", "Dentistry", "Pharmacy", "Doctor of Pharmacy", "Nursing", "Rehabilitation Sciences"] },
+      "Sci": { name: "School of Science", majors: ["Mathematics", "Physics", "Chemistry", "Biological Sciences", "Geology", "Medical Analysis"] },
+      "Bus": { name: "School of Business", majors: ["Business Administration", "Accounting", "Finance", "Marketing", "MIS", "Public Administration", "Economics"] },
+      "Art": { name: "School of Arts & Languages", majors: ["Arabic Language", "English Language", "French", "History", "Geography", "Philosophy", "Sociology", "Psychology"] },
+      "Law": { name: "School of Law", majors: ["Law"] },
+      "Sha": { name: "School of Sharia", majors: ["Foundations of Religion", "Islamic Jurisprudence"] },
+      "Agr": { name: "School of Agriculture", majors: ["Plant Production", "Animal Production", "Nutrition and Food Tech", "Land and Water"] }
+    }
+  },
+  "JUST": {
+    type: "gov",
+    name: "Jordan Univ of Science & Tech (JUST)",
+    colleges: {
+      "IT": { name: "Computer & Info Technology", majors: ["Computer Engineering", "Computer Science", "Software Engineering", "Network Engineering", "Artificial Intelligence", "Cybersecurity"] },
+      "Eng": { name: "Engineering", majors: ["Civil Engineering", "Electrical Engineering", "Mechanical Engineering", "Chemical Engineering", "Biomedical Engineering", "Industrial Engineering", "Aeronautical Engineering", "Nuclear Engineering"] },
+      "Med": { name: "Medical Faculties", majors: ["Medicine", "Dentistry", "Pharmacy", "Doctor of Pharmacy", "Nursing", "Health Management"] },
+      "App": { name: "Applied Medical Sciences", majors: ["Medical Lab Sciences", "Radiologic Technology", "Paramedic", "Physical Therapy", "Occupational Therapy", "Optometry"] },
+      "Sci": { name: "Science & Arts", majors: ["Mathematics", "Physics", "Chemistry", "Biotechnology", "English Linguistics"] },
+      "Agr": { name: "Agriculture", majors: ["Plant Production", "Animal Production", "Nutrition"] },
+      "Arc": { name: "Architecture & Design", majors: ["Architecture", "Urban Planning", "Design"] }
+    }
+  },
+  "AABU": {
+    type: "gov",
+    name: "Al al-Bayt University (AABU)",
+    colleges: {
+      "IT": { name: "Prince Hussein Bin Abdullah IT", majors: ["Data Science and AI", "Computer Science (CS)", "CIS", "Information Security (Cybersecurity)", "Software Engineering"] },
+      "Eng": { name: "Engineering", majors: ["Civil Engineering", "Architecture", "Surveying Engineering", "Renewable Energy Engineering"] },
+      "Sci": { name: "Science", majors: ["Mathematics", "Physics", "Chemistry", "Biological Sciences", "Medical Lab Sciences"] },
+      "Bus": { name: "Finance & Business", majors: ["Business Administration", "Accounting", "Finance & Banking", "Marketing", "MIS", "Economics"] },
+      "Law": { name: "Law", majors: ["Law"] },
+      "Sha": { name: "Sharia", majors: ["Jurisprudence (Fiqh)", "Foundations of Religion"] },
+      "Nur": { name: "Nursing", majors: ["Nursing"] },
+      "Art": { name: "Arts & Humanities", majors: ["Arabic Language", "English Language", "History", "Geography", "Modern Languages"] },
+      "Edu": { name: "Educational Sciences", majors: ["Class Teacher", "Special Education", "Child Education"] }
+    }
+  },
+  "HU": {
+    type: "gov",
+    name: "Hashemite University (HU)",
+    colleges: {
+      "IT": { name: "Prince Hussein Bin Abdullah IT", majors: ["Computer Science", "Software Engineering", "CIS", "Business Information Technology", "Data Science and AI"] },
+      "Eng": { name: "Engineering", majors: ["Civil Engineering", "Electrical Engineering", "Mechanical Engineering", "Industrial Engineering", "Mechatronics Engineering", "Biomedical Engineering", "Architecture"] },
+      "Med": { name: "Health Sciences", majors: ["Medicine", "Pharmacy", "Medical Lab Sciences", "Clinical Nutrition", "Nursing", "Physical Therapy"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Administration", "Banking & Finance", "Risk Management", "MIS", "Economics", "Digital Marketing"] },
+      "Art": { name: "Arts", majors: ["Arabic", "English", "Literature", "International Relations"] },
+      "Chi": { name: "Queen Rania for Childhood", majors: ["Early Childhood", "Special Education"] }
+    }
+  },
+  "YU": {
+    type: "gov",
+    name: "Yarmouk University (YU)",
+    colleges: {
+      "IT": { name: "IT & Computer Science", majors: ["Computer Science", "CIS", "Business Information Technology", "Cybersecurity", "Data Science"] },
+      "Eng": { name: "Hijjawi Faculty for Engineering", majors: ["Electronics Engineering", "Telecommunications Engineering", "Electrical Power Engineering", "Computer Engineering", "Biomedical Systems", "Civil Engineering", "Industrial Engineering", "Architecture"] },
+      "Sci": { name: "Science", majors: ["Mathematics", "Physics", "Chemistry", "Biological Sciences", "Statistics", "Earth & Environmental Sciences"] },
+      "Med": { name: "Medicine & Pharmacy", majors: ["Medicine", "Pharmacy"] },
+      "Bus": { name: "Economics & Admin", majors: ["Economics", "Accounting", "Business Administration", "Finance", "Marketing", "Public Administration"] },
+      "Art": { name: "Arts", majors: ["Arabic", "English", "Modern Languages", "History", "Geography", "Sociology", "Political Science"] },
+      "Fin": { name: "Fine Arts", majors: ["Design", "Plastic Arts", "Music", "Drama"] },
+      "Law": { name: "Law", majors: ["Law"] },
+      "Mas": { name: "Mass Communication", majors: ["Journalism", "Radio & TV", "Public Relations"] }
+    }
+  },
+  "BAU": {
+    type: "gov",
+    name: "Balqa Applied University (BAU - Center & Colleges)",
+    colleges: {
+      "Eng": { name: "Engineering (Salt)", majors: ["Civil Engineering", "Architecture", "Surveying", "Materials Engineering", "Computer Engineering"] },
+      "Sci": { name: "Science (Salt)", majors: ["Mathematics", "Physics", "Chemistry", "Medical Analysis", "Biotechnology"] },
+      "AI":  { name: "Prince Abdullah Bin Ghazi IT (Salt)", majors: ["Computer Science", "Software Engineering", "Cybersecurity", "Virtual Reality (VR)", "Data Science", "AI"] },
+      "Pol": { name: "Engineering Technology (Polytechnic)", majors: ["Mechatronics", "Autotronics", "Civil Engineering", "HVAC Engineering", "Electrical Engineering", "Chemical Engineering"] },
+      "Bus": { name: "Business (Salt/Amman)", majors: ["Accounting", "Business Administration", "MIS", "Planning & Project Management", "Finance"] },
+      "Agr": { name: "Agriculture", majors: ["Plant Production", "Nutrition", "Water Resources"] }
+    }
+  },
+  "MUTAH": {
+    type: "gov",
+    name: "Mutah University",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Software Engineering", "CIS"] },
+      "Eng": { name: "Engineering", majors: ["Civil Engineering", "Electrical Engineering", "Mechanical Engineering", "Chemical Engineering", "Computer Engineering", "Industrial Systems"] },
+      "Med": { name: "Medical Faculities", majors: ["Medicine", "Nursing", "Pharmacy", "Medical Lab Sciences"] },
+      "Sci": { name: "Science", majors: ["Math", "Physics", "Chemistry", "Biology"] },
+      "Art": { name: "Arts", majors: ["Arabic", "English", "History"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin", "Economics"] }
+    }
+  },
+  "GJU": {
+    type: "gov",
+    name: "German Jordanian University (GJU)",
+    colleges: {
+      "Eng": { name: "Applied Technical Sciences", majors: ["Mechatronics Engineering", "Energy Engineering", "Industrial Engineering", "Maintenance Engineering", "Civil & Environmental Engineering"] },
+      "IT": { name: "Computer Engineering & IT", majors: ["Computer Engineering", "Computer Science", "Network Security Engineering"] },
+      "Bus": { name: "Management & Logistics", majors: ["International Business", "Logistics Sciences", "Accounting"] },
+      "Arc": { name: "Architecture & Built Environment", majors: ["Architecture", "Design and Visual Communication"] }
+    }
+  },
+  "AHU": {
+    type: "gov",
+    name: "Al-Hussein Bin Talal University (AHU)",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Software Engineering", "CIS"] },
+      "Eng": { name: "Engineering", majors: ["Civil", "Mining", "Environmental", "Computer", "Communications"] },
+      "Bus": { name: "Business", majors: ["Business Admin", "Accounting"] }
+    }
+  },
+  "TTU": {
+    type: "gov",
+    name: "Tafila Technical University (TTU)",
+    colleges: {
+      "Eng": { name: "Engineering", majors: ["Civil", "Electrical", "Mechanical", "Mechatronics", "Mining"] },
+      "Sci": { name: "Science", majors: ["Math", "Physics", "Chemistry"] },
+      "IT": { name: "ICT", majors: ["CIS", "Computer Science"] }
+    }
+  },
+
+  // ==========================================
+  // 🏢 PRIVATE UNIVERSITIES (الجامعات الخاصة)
+  // ==========================================
+  "PSUT": {
+    type: "pvt",
+    name: "Princess Sumaya University (PSUT)",
+    colleges: {
+      "IT": { name: "King Hussein School of Computing", majors: ["Computer Science", "Computer Graphics", "Software Engineering", "Cybersecurity", "Data Science and AI"] },
+      "Eng": { name: "King Abdullah II School of Engineering", majors: ["Electronics Engineering", "Computer Engineering", "Communications Engineering", "Power & Energy", "Network Security Engineering"] },
+      "Bus": { name: "King Talal School of Business", majors: ["Business Information Technology (BIT)", "Accounting", "Business Administration", "E-Marketing"] }
+    }
+  },
+  "HTU": {
+    type: "pvt",
+    name: "Al Hussein Technical University (HTU)",
+    colleges: {
+      "Eng": { name: "Engineering", majors: ["Civil Engineering", "Architecture", "Mechanical Engineering", "Electrical Engineering", "Energy Engineering"] },
+      "IT": { name: "Informatics & Computing", majors: ["Computer Science", "Data Science and AI", "Cybersecurity"] }
+    }
+  },
+  "ZUJ": {
+    type: "pvt",
+    name: "Al-Zaytoonah University of Jordan",
+    colleges: {
+      "IT": { name: "Science & IT", majors: ["Computer Science", "Software Engineering", "Artificial Intelligence", "Cybersecurity", "Data Science"] },
+      "Eng": { name: "Engineering", majors: ["Civil", "Mechanical", "Architecture", "Alternative Energy"] },
+      "Pha": { name: "Pharmacy", majors: ["Pharmacy"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin", "Marketing"] }
+    }
+  },
+  "ASU": {
+    type: "pvt",
+    name: "Applied Science University (ASU)",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Software Engineering", "Data Science"] },
+      "Eng": { name: "Engineering", majors: ["Civil", "Mechanical", "Electrical", "Architecture"] },
+      "Pha": { name: "Pharmacy", majors: ["Pharmacy"] },
+      "Art": { name: "Arts & Design", majors: ["Graphic Design", "Interior Design"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin"] }
+    }
+  },
+  "PU": {
+    type: "pvt",
+    name: "Philadelphia University",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Software Engineering", "Information Security", "Web Engineering"] },
+      "Eng": { name: "Engineering", majors: ["Mechatronics", "Civil", "Architecture", "Renewable Energy", "Computer Engineering"] },
+      "Pha": { name: "Pharmacy", majors: ["Pharmacy"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin", "Marketing"] }
+    }
+  },
+  "UOP": {
+    type: "pvt",
+    name: "University of Petra (UOP)",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Information Security", "Software Engineering", "Data Science"] },
+      "Arc": { name: "Architecture & Design", majors: ["Architecture", "Interior Design", "Animation", "Graphic Design"] },
+      "Pha": { name: "Pharmacy", majors: ["Pharmacy"] },
+      "Bus": { name: "Business", majors: ["Business Admin", "Accounting", "Banking", "Marketing"] },
+      "Art": { name: "Arts & Sciences", majors: ["English", "Chemistry", "Journalism"] }
+    }
+  },
+  "MEU": {
+    type: "pvt",
+    name: "Middle East University (MEU)",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Artificial Intelligence"] },
+      "Eng": { name: "Engineering", majors: ["Civil", "Renewable Energy", "Architecture"] },
+      "Med": { name: "Media", majors: ["Journalism", "Radio & TV"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin"] },
+      "Pha": { name: "Pharmacy", majors: ["Pharmacy"] }
+    }
+  },
+  "AAU": {
+    type: "pvt",
+    name: "Amman Arab University",
+    colleges: {
+      "IT": { name: "Computer Science & Informatics", majors: ["Computer Science", "Software Engineering", "Mobile Computing", "CIS"] },
+      "Eng": { name: "Engineering", majors: ["Civil", "Architecture", "Renewable Energy"] },
+      "Pha": { name: "Pharmacy", majors: ["Pharmacy"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin", "HRM", "Marketing"] }
+    }
+  },
+  "ISRA": {
+    type: "pvt",
+    name: "Isra University",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Software Engineering", "CIS", "Multimedia"] },
+      "Eng": { name: "Engineering", majors: ["Civil", "Architecture", "Electrical"] },
+      "Nur": { name: "Nursing", majors: ["Nursing"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin", "Finance"] }
+    }
+  },
+  "JPU": {
+    type: "pvt",
+    name: "Jerash University",
+    colleges: {
+      "IT": { name: "Computer Science & IT", majors: ["Computer Science", "Networks"] },
+      "Eng": { name: "Engineering", majors: ["Civil", "Architecture"] },
+      "Agr": { name: "Agriculture", majors: ["Plant Production"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin"] }
+    }
+  },
+  "AJL": {
+    type: "pvt",
+    name: "Ajloun National University",
+    colleges: {
+      "IT": { name: "Information Technology", majors: ["Computer Science", "Software Engineering"] },
+      "Bus": { name: "Business", majors: ["Accounting", "Business Admin", "Banking"] },
+      "Law": { name: "Law", majors: ["Law"] }
+    }
+  },
+  "AUM": {
+    type: "pvt",
+    name: "American University of Madaba (AUM)",
+    colleges: {
+      "Eng": { name: "Engineering", majors: ["Civil", "Mechanical", "Architecture"] },
+      "Sci": { name: "Science", majors: ["Biology", "Biotechnology"] },
+      "IT":  { name: "IT", majors: ["Computer Science", "Data Science"] },
+      "Bus": { name: "Business", majors: ["Risk Management", "Business Admin", "Accounting", "Marketing"] }
+    }
+  }
+};
+
+// ==========================================================
+// 2. OFFICIAL SYLLABUS PLANS (English Keys)
+// ==========================================================
+// Key Format: University_College_Major
+// Matches EXACTLY the values selected in the dropdowns above.
+
+// ==========================================================
+// 2. OFFICIAL SYLLABUS PLANS (CORRECTED SYNTAX)
+// ==========================================================
+window.OFFICIAL_PLANS = {
+  // =========================================================================
+  // 🏛️ AABU (Al al-Bayt) - Data Science (REAL)
+  // =========================================================================
+  "AABU_IT_Data Science and AI": {
+    "Year 1": {
+      "Semester 1": [
+        { code: "CS111", name: "Intro to CS", credits: 3, prereq: [], type: "major" },
+        { code: "MATH101", name: "Calculus 1", credits: 3, prereq: [], type: "coll" },
+        { code: "ENG101", name: "English 101", credits: 3, prereq: [], type: "uni" },
+        { code: "ARB101", name: "Arabic 101", credits: 3, prereq: [], type: "uni" },
+        { code: "MS100", name: "Military Science", credits: 3, prereq: [], type: "uni" }
+      ],
+      "Semester 2": [
+        { code: "CS112", name: "OOP (1)", credits: 3, prereq: ["CS111"], type: "major" },
+        { code: "CS113", name: "OOP Lab", credits: 1, prereq: ["CS111"], type: "lab" },
+        { code: "MATH102", name: "Calculus 2", credits: 3, prereq: ["MATH101"], type: "coll" },
+        { code: "PHYS101", name: "General Physics 1", credits: 3, prereq: [], type: "coll" },
+        { code: "CS181", name: "Web Development", credits: 3, prereq: ["CS111"], type: "major" }
+      ]
+    },
+    "Year 2": {
+      "Semester 1": [
+        { code: "CS211", name: "Data Structures", credits: 3, prereq: ["CS112"], type: "major" },
+        { code: "DS201", name: "Intro to Data Science", credits: 3, prereq: ["CS112"], type: "major" },
+        { code: "MATH241", name: "Discrete Math", credits: 3, prereq: [], type: "coll" },
+        { code: "STAT101", name: "Statistics", credits: 3, prereq: [], type: "coll" },
+        { code: "PHYS103", name: "Physics Lab", credits: 1, prereq: ["PHYS101"], type: "lab" }
+      ],
+      "Semester 2": [
+        { code: "CS221", name: "Algorithms", credits: 3, prereq: ["CS211"], type: "major" },
+        { code: "AI201", name: "Intro to AI", credits: 3, prereq: ["CS112"], type: "major" },
+        { code: "DS210", name: "Data Analysis", credits: 3, prereq: ["DS201"], type: "major" },
+        { code: "DS211", name: "Data Analysis Lab", credits: 1, prereq: ["DS201"], type: "lab" }
+      ]
+    },
+    "Year 3": {
+      "Semester 1": [
+        { code: "AI301", name: "Machine Learning", credits: 3, prereq: ["AI201"], type: "major" },
+        { code: "AI302", name: "Machine Learning Lab", credits: 1, prereq: ["AI201"], type: "lab" },
+        { code: "DS320", name: "Big Data", credits: 3, prereq: ["DS210"], type: "major" },
+        { code: "CS351", name: "Database Systems", credits: 3, prereq: ["CS211"], type: "major" }
+      ],
+      "Semester 2": [
+         { code: "AI320", name: "Deep Learning", credits: 3, prereq: ["AI301"], type: "major" },
+         { code: "DS340", name: "Data Mining", credits: 3, prereq: ["DS210"], type: "major" }
+      ]
+    }
+  },
+
+  // =========================================================================
+  // 🏛️ JUST (Jordan Univ of Science & Tech)
+  // =========================================================================
+  "JUST_IT_Computer Science": {
+    "Year 1": {
+      "Semester 1": [
+        { code: "CS112", name: "Intro to Programming", credits: 3, prereq: [], type: "major" },
+        { code: "MATH101", name: "Calculus 1", credits: 3, prereq: [], type: "coll" },
+        { code: "HSS103", name: "Intro to IT", credits: 3, prereq: [], type: "major" },
+        { code: "LG101", name: "Communication Skills (En)", credits: 3, prereq: [], type: "uni" },
+        { code: "PHY101", name: "General Physics 1", credits: 3, prereq: [], type: "coll" }
+      ],
+      "Semester 2": [
+        { code: "CS113", name: "Object Oriented", credits: 3, prereq: ["CS112"], type: "major" },
+        { code: "MATH102", name: "Calculus 2", credits: 3, prereq: ["MATH101"], type: "coll" },
+        { code: "MATH241", name: "Discrete Math", credits: 3, prereq: [], type: "coll" },
+        { code: "ARB101", name: "Arabic Language", credits: 3, prereq: [], type: "uni" }
+      ]
+    },
+    "Year 2": {
+      "Semester 1": [
+        { code: "CIS201", name: "Web Design", credits: 3, prereq: ["CS113"], type: "major" },
+        { code: "MATH240", name: "Linear Algebra", credits: 3, prereq: ["MATH101"], type: "coll" },
+        { code: "CS211", name: "Data Structures", credits: 3, prereq: ["CS113"], type: "major" }
+      ],
+      "Semester 2": [
+        { code: "CIS221", name: "Database Systems", credits: 3, prereq: ["CS211"], type: "major" },
+        { code: "CS282", name: "Theory of Computing", credits: 3, prereq: ["MATH241"], type: "major" },
+        { code: "CPE231", name: "Digital Logic Design", credits: 3, prereq: ["CS113"], type: "coll" }
+      ]
+    }
+  },
+
+  // =========================================================================
+  // 🏛️ JU (University of Jordan)
+  // =========================================================================
+  "JU_IT_Computer Science": {
+    "Year 1": {
+      "Semester 1": [
+        { code: "1901101", name: "CS Fundamentals", credits: 3, prereq: [], type: "major" },
+        { code: "0301101", name: "Calculus 1", credits: 3, prereq: [], type: "coll" },
+        { code: "1904101", name: "IT Fundamentals", credits: 3, prereq: [], type: "major" },
+        { code: "1802101", name: "English 1", credits: 3, prereq: [], type: "uni" }
+      ],
+      "Semester 2": [
+        { code: "1901102", name: "OOP", credits: 3, prereq: ["1901101"], type: "major" },
+        { code: "0301102", name: "Calculus 2", credits: 3, prereq: ["0301101"], type: "coll" },
+        { code: "0302101", name: "Physics 1", credits: 3, prereq: [], type: "coll" },
+        { code: "1801101", name: "Arabic 1", credits: 3, prereq: [], type: "uni" }
+      ]
+    },
+    "Year 2": {
+      "Semester 1": [
+        { code: "1904231", name: "Digital Logic", credits: 3, prereq: [], type: "coll" },
+        { code: "0301241", name: "Linear Algebra", credits: 3, prereq: ["0301102"], type: "coll" },
+        { code: "1901211", name: "Data Structures", credits: 3, prereq: ["1901102"], type: "major" }
+      ],
+      "Semester 2": [
+        { code: "1901321", name: "Algorithms", credits: 3, prereq: ["1901211"], type: "major" },
+        { code: "1902224", name: "Database Systems", credits: 3, prereq: ["1901102"], type: "major" },
+        { code: "1901331", name: "Operating Systems", credits: 3, prereq: ["1901211"], type: "major" }
+      ]
+    }
+  },
+
+  // =========================================================================
+  // 🏛️ YU (Yarmouk University)
+  // =========================================================================
+  "YU_IT_Computer Science": {
+    "Year 1": {
+      "Semester 1": [
+        { code: "CS110", name: "Programming 1", credits: 3, prereq: [], type: "major" },
+        { code: "CS110L", name: "Programming 1 Lab", credits: 1, prereq: [], type: "lab" },
+        { code: "MATH101", name: "Calculus 1", credits: 3, prereq: [], type: "coll" },
+        { code: "CIS100", name: "Computer Skills", credits: 3, prereq: [], type: "coll" }
+      ],
+      "Semester 2": [
+        { code: "CS111", name: "Programming 2", credits: 3, prereq: ["CS110"], type: "major" },
+        { code: "CS111L", name: "Programming 2 Lab", credits: 1, prereq: ["CS110L"], type: "lab" },
+        { code: "MATH241", name: "Discrete Math", credits: 3, prereq: [], type: "coll" },
+        { code: "MATH102", name: "Calculus 2", credits: 3, prereq: ["MATH101"], type: "coll" }
+      ]
+    }
+  },
+
+  // =========================================================================
+  // 🏢 PSUT (Princess Sumaya)
+  // =========================================================================
+  "PSUT_IT_Computer Science": {
+    "Year 1": {
+      "Semester 1": [
+        { code: "11102", name: "Intro to CS", credits: 3, prereq: [], type: "major" },
+        { code: "20132", name: "Calculus 1", credits: 3, prereq: [], type: "coll" },
+        { code: "31111", name: "Arabic Language", credits: 3, prereq: [], type: "uni" }
+      ],
+      "Semester 2": [
+        { code: "11103", name: "Structured Programming", credits: 3, prereq: ["11102"], type: "major" },
+        { code: "11151", name: "Programming Lab", credits: 1, prereq: [], coreq: "11103", type: "lab" },
+        { code: "20133", name: "Calculus 2", credits: 3, prereq: ["20132"], type: "coll" },
+        { code: "20134", name: "Discrete Math 1", credits: 3, prereq: [], type: "coll" }
+      ]
+    },
+    "Year 2": {
+      "Semester 1": [
+        { code: "11206", name: "OOP", credits: 3, prereq: ["11103"], type: "major" },
+        { code: "11253", name: "OOP Lab", credits: 1, prereq: [], coreq: "11206", type: "lab" },
+        { code: "11240", name: "Digital Logic", credits: 3, prereq: ["11102"], type: "coll" }
+      ]
+    }
+  },
+
+  // =========================================================================
+  // 🏛️ HU (Hashemite University)
+  // =========================================================================
+  "HU_IT_Computer Science": {
+    "Year 1": {
+      "Semester 1": [
+        { code: "110108101", name: "Calculus 1", credits: 3, prereq: [], type: "coll" },
+        { code: "110102101", name: "Physics 1", credits: 3, prereq: [], type: "coll" },
+        { code: "1001101", name: "CS Fundamentals", credits: 3, prereq: [], type: "major" }
+      ],
+      "Semester 2": [
+        { code: "1001102", name: "OOP", credits: 3, prereq: ["1001101"], type: "major" },
+        { code: "110108102", name: "Calculus 2", credits: 3, prereq: ["110108101"], type: "coll" },
+        { code: "110101152", name: "Discrete Math", credits: 3, prereq: [], type: "coll" }
+      ]
+    }
+  }
+};
+
+// ==========================================
+// 🛠️ CASCADING DROPDOWN LOGIC
+// ==========================================
+const secSel = document.getElementById("sectorSelect");
+const uniSel = document.getElementById("universitySelect");
+const colSel = document.getElementById("collegeSelect");
+const majSel = document.getElementById("majorSelect");
+const pMajorInput = document.getElementById("pMajor");
+
+// 1. Sector Change
+secSel.addEventListener("change", function(){
+  const type = this.value;
+  uniSel.innerHTML = '<option value="">-- Select University --</option>';
+  colSel.innerHTML = '<option value="">-- Select Sector First --</option>';
+  majSel.innerHTML = '<option value="">-- Select University First --</option>';
+  uniSel.disabled = true; colSel.disabled = true; majSel.disabled = true;
+
+  if(!type) return;
+
+  // Use window.JORDAN_ACADEMIC_DATA
+  for (const [key, data] of Object.entries(window.JORDAN_ACADEMIC_DATA)) {
+    if(data.type === type){
+      const opt = document.createElement("option");
+      opt.value = key; // e.g. "AABU"
+      opt.textContent = data.name; // e.g. "Al al-Bayt University"
+      uniSel.appendChild(opt);
+    }
+  }
+  uniSel.disabled = false;
+});
+
+// 2. University Change
+uniSel.addEventListener("change", function() {
+  const uniKey = this.value;
+  colSel.innerHTML = '<option value="">-- Select College --</option>';
+  majSel.innerHTML = '<option value="">-- Select Major --</option>';
+  colSel.disabled = true; majSel.disabled = true;
+
+  if (uniKey && window.JORDAN_ACADEMIC_DATA[uniKey]) {
+    const colleges = window.JORDAN_ACADEMIC_DATA[uniKey].colleges;
+    for (const [colKey, colData] of Object.entries(colleges)) {
+      const opt = document.createElement("option");
+      opt.value = colKey; // e.g. "IT"
+      opt.textContent = colData.name;
+      colSel.appendChild(opt);
+    }
+    colSel.disabled = false;
+  }
+});
+
+// 3. College Change
+colSel.addEventListener("change", function() {
+  const uniKey = uniSel.value;
+  const colKey = this.value;
+  majSel.innerHTML = '<option value="">-- Select Major --</option>';
+  majSel.disabled = true;
+
+  if (uniKey && colKey && window.JORDAN_ACADEMIC_DATA[uniKey].colleges[colKey]) {
+    const majors = window.JORDAN_ACADEMIC_DATA[uniKey].colleges[colKey].majors;
+    // majors is now an array of English strings
+    majors.forEach(majorName => {
+      const opt = document.createElement("option");
+      opt.value = majorName; // "Data Science and AI"
+      opt.textContent = majorName;
+      majSel.appendChild(opt);
+    });
+    majSel.disabled = false;
+  }
+});
+
+// 4. Update text field
+majSel.addEventListener("change", function() {
+  if (pMajorInput) {
+    pMajorInput.value = this.value;
+  }
+});
 </script>
 
 </body>
